@@ -1,0 +1,28 @@
+name: Gobi General Review
+
+on:
+  push:
+    branches:
+      - nate/fix-wf
+  pull_request:
+    types: [opened, ready_for_review]
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+  pull-requests: write
+  issues: write
+
+jobs:
+  general-code-review:
+    name: Gobi General Review
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Run Gobi PR Review Action
+        uses: gourmand/gobi/actions/general-review@main
+        with:
+          gobi-api-key: ${{ secrets.GOBI_API_KEY }}
+          gobi-org: "gobidev"
+          gobi-config: "gobidev/review-bot"

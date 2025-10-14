@@ -1,0 +1,192 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>com.github.gourmand.gobiintellijextension</id>
+    <name>Gobi</name>
+    <vendor url="https://www.gourmand.dev/">gobi-dev</vendor>
+    <change-notes>
+        <![CDATA[View the latest release notes on <a href="https://github.com/gourmand/gobi/releases">GitHub</a>]]></change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>org.jetbrains.plugins.terminal</depends>
+
+    <!-- See here for why this is optional:  https://github.com/gourmand/gobi/issues/2775#issuecomment-2535620877-->
+    <depends optional="true" config-file="gobiintellijextension-withJSON.xml">
+        com.intellij.modules.json
+    </depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <toolWindow id="Gobi" anchor="right" icon="com.github.gourmand.gobiintellijextension.Icons.Gobi"
+                    factoryClass="com.github.gourmand.gobiintellijextension.toolWindow.GobiPluginToolWindowFactory"/>
+        <projectService id="GobiPluginService"
+                        serviceImplementation="com.github.gourmand.gobiintellijextension.services.GobiPluginService"/>
+        <projectService
+                id="DiffStreamService"
+                serviceImplementation="com.github.gourmand.gobiintellijextension.editor.DiffStreamService"/>
+
+        <projectService serviceInterface="com.github.gourmand.gobiintellijextension.autocomplete.CompletionService"
+                        serviceImplementation="com.github.gourmand.gobiintellijextension.autocomplete.GobiCompletionService"/>
+        <projectService
+                serviceInterface="com.github.gourmand.gobiintellijextension.nextEdit.NextEditService"
+                serviceImplementation="com.github.gourmand.gobiintellijextension.nextEdit.GobiNextEditService"/>
+
+        <projectService
+                serviceImplementation="com.github.gourmand.gobiintellijextension.nextEdit.NextEditWindowManager"/>
+
+        <projectService
+                serviceImplementation="com.github.gourmand.gobiintellijextension.nextEdit.NextEditJumpManager"/>
+
+        <inline.completion.provider id="Gobi" implementation="com.github.gourmand.gobiintellijextension.autocomplete.GobiInlineCompletionProvider"/>
+        
+        <notificationGroup id="Gobi"
+                           displayType="BALLOON"/>
+        <actionPromoter order="last"
+                        implementation="com.github.gourmand.gobiintellijextension.actions.GobiActionPromote"/>
+        <errorHandler implementation="com.github.gourmand.gobiintellijextension.error.GobiErrorSubmitter"/>
+        <postStartupActivity
+                implementation="com.github.gourmand.gobiintellijextension.activities.GobiPluginStartupActivity"/>
+        <postStartupActivity implementation="com.github.gourmand.gobiintellijextension.proxy.ProxyPoolingActivity"/>
+        <applicationConfigurable
+                parentId="tools"
+                instance="com.github.gourmand.gobiintellijextension.services.GobiExtensionConfigurable"
+                id="com.github.gourmand.gobiintellijextension.services.GobiExtensionConfigurable"
+                displayName="Gobi"/>
+        <applicationService
+                serviceImplementation="com.github.gourmand.gobiintellijextension.services.GobiExtensionSettings"/>
+    </extensions>
+
+    <actions>
+        <action class="com.github.gourmand.gobiintellijextension.editor.InlineEditAction"
+                id="gobi.inlineEdit"
+                description="Inline Edit"
+                text="Inline Edit">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="ctrl I"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="meta I"/>
+            <override-text place="GoToAction" text="Gobi: Edit Code"/>
+        </action>
+
+        <action id="gobi.acceptDiff"
+                class="com.github.gourmand.gobiintellijextension.actions.AcceptDiffAction"
+                text="Accept Diff" description="Accept Diff">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="shift ctrl ENTER"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="shift meta ENTER"/>
+            <override-text place="GoToAction" text="Gobi: Accept Diff"/>
+        </action>
+
+        <action id="gobi.restartProcess"
+                class="com.github.gourmand.gobiintellijextension.actions.RestartGobiProcess"
+                text="Restart Process"
+                description="Restart Process">
+            <override-text place="GoToAction" text="Gobi: Restart Process"/>
+        </action>
+
+        <action id="gobi.rejectDiff"
+                class="com.github.gourmand.gobiintellijextension.actions.RejectDiffAction"
+                text="Reject Diff" description="Reject Diff">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="shift ctrl BACK_SPACE"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="shift meta BACK_SPACE"/>
+            <override-text place="GoToAction" text="Gobi: Reject Diff"/>
+        </action>
+
+        <action id="gobi.acceptVerticalDiffBlock"
+                class="com.github.gourmand.gobiintellijextension.actions.AcceptDiffAction"
+                text="Accept Diff" description="Accept Vertical Diff Block">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="alt shift Y"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="alt shift Y"/>
+            <override-text place="GoToAction" text="Gobi: Accept Vertical Diff Block"/>
+        </action>
+
+        <action id="gobi.rejectVerticalDiffBlock"
+                class="com.github.gourmand.gobiintellijextension.actions.RejectDiffAction"
+                text="Reject Diff" description="Reject Vertical Diff Block">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="alt shift N"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="alt shift N"/>
+            <override-text place="GoToAction" text="Gobi: Reject Vertical Diff Block"/>
+        </action>
+
+        <action id="gobi.addLicenseKey"
+                class="com.github.gourmand.gobiintellijextension.license.AddLicenseKey"
+                text="Enter Enterprise License Key"
+                description="Enter Enterprise License Key">
+            <override-text place="GoToAction" text="Gobi: Enter Enterprise License Key"/>
+        </action>
+
+        <action id="gobi.focusGobiInputWithoutClear"
+                class="com.github.gourmand.gobiintellijextension.actions.FocusGobiInputWithoutClearAction"
+                text="Add selected code to context"
+                description="Focus Gobi Input With Edit">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="ctrl shift J"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="meta shift J"/>
+            <override-text place="GoToAction" text="Gobi: Add Highlighted Code to Context"/>
+        </action>
+
+        <action id="gobi.newGobiSession"
+                icon="AllIcons.General.Add"
+                class="com.github.gourmand.gobiintellijextension.actions.NewGobiSessionAction"
+                text="New Session"
+                description="New Session">
+
+            <override-text place="GoToAction" text="New Session"/>
+        </action>
+
+        <action id="gobi.viewHistory"
+                icon="AllIcons.Vcs.History"
+                class="com.github.gourmand.gobiintellijextension.actions.ViewHistoryAction"
+                text="View History"
+                description="View History">
+            <override-text place="GoToAction" text="View History"/>
+        </action>
+
+        <action id="gobi.openConfigPage"
+                class="com.github.gourmand.gobiintellijextension.actions.OpenConfigAction"
+                icon="AllIcons.General.GearPlain"
+                text="Settings"
+                description="Settings">
+            <override-text place="GoToAction" text="Settings"/>
+        </action>
+
+        <action id="gobi.openLogs"
+                class="com.github.gourmand.gobiintellijextension.actions.OpenLogsAction"
+                icon="AllIcons.General.ShowInfos"
+                text="Open Logs"
+                description="Open Gobi Logs">
+            <override-text place="GoToAction" text="Open Gobi Logs"/>
+        </action>
+
+        <group id="GobiSidebarActionsGroup">
+            <reference ref="gobi.newGobiSession"/>
+            <reference ref="gobi.viewHistory"/>
+            <reference ref="gobi.openConfigPage"/>
+        </group>
+
+        <action id="gobi.focusGobiInput"
+                class="com.github.gourmand.gobiintellijextension.actions.FocusGobiInputAction"
+                text="Add selected code to context"
+                description="Focus Gobi Input">
+            <keyboard-shortcut keymap="$default"
+                               first-keystroke="ctrl J"/>
+            <keyboard-shortcut keymap="Mac OS X"
+                               first-keystroke="meta J"/>
+            <add-to-group group-id="EditorPopupMenu"/>
+            <override-text place="GoToAction" text="Gobi: Add Highlighted Code to Context and Clear Chat"/>
+        </action>
+        <group id="GobiProjectViewPopUpMenuGroup" popup="true" text="Gobi" icon="/icons/gobi.svg">
+            <action id="com.github.gourmand.gobiintellijextension.actions.AddToChatAction"
+                    class="com.github.gourmand.gobiintellijextension.actions.AddToChatAction"
+                    text="Add to Chat">
+            </action>
+            <add-to-group group-id="ProjectViewPopupMenu" anchor="last"/>
+        </group>
+    </actions>
+</idea-plugin>

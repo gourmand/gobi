@@ -1,0 +1,10 @@
+<idea-plugin>
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory
+                implementation="com.github.gourmand.gobiintellijextension.gobi.ConfigJsonSchemaProviderFactory"/>
+    </extensions>
+    <extensions defaultExtensionNs="JavaScript.JsonSchema">
+        <ProviderFactory
+                implementation="com.github.gourmand.gobiintellijextension.gobi.ConfigRcJsonSchemaProviderFactory"/>
+    </extensions>
+</idea-plugin>

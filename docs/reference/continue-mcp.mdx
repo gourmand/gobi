@@ -1,0 +1,69 @@
+---
+title: Gobi Documentation MCP Server
+description: Set up an MCP server to search Gobi documentation
+keywords: [mcp, documentation, search, mintlify, reference]
+---
+
+The Gobi Documentation MCP Server allows you to search and retrieve information from the Gobi documentation directly within your agent conversations.
+
+## Set up
+
+### Configure Gobi
+
+1. Create a folder called `.gobi/mcpServers` at the top level of your workspace
+2. Add a file called `gobi-docs-mcp.yaml` to this folder
+3. Write the following contents and save:
+
+```yaml title=".gobi/mcpServers/gobi-docs-mcp.yaml"
+name: Gobi Documentation MCP
+version: 0.0.1
+schema: v1
+mcpServers:
+  - uses: gourmand/gobi-docs-mcp
+```
+
+### Enable Agent Mode
+
+MCP servers only work in agent mode. Make sure to switch to agent mode in Gobi before testing.
+
+## Usage Examples
+
+Once configured, you can use the MCP server to search Gobi documentation:
+
+### Model Configuration Help
+
+```
+How do I add Claude 4 Sonnet as a model from Bedrock in Gobi?
+```
+
+### Context Providers
+
+```
+What context providers are available in Gobi?
+```
+
+### Customization
+
+```
+How do I add custom rules to my configuration in Gobi?
+```
+
+## Troubleshooting
+
+### MCP Server Not Loading
+
+1. **Check configuration**: Ensure your YAML configuration uses the correct `uses` field with `gourmand/gobi-docs-mcp`
+2. **Check agent mode**: MCP servers only work in agent mode
+3. **Restart Gobi**: Try restarting the Gobi extension
+
+### No Search Results
+
+1. **Verify connection**: The MCP server needs internet access to search the documentation
+2. **Check query format**: Try rephrasing your search query
+3. **Test with known topics**: Search for well-documented features like "model configuration"
+
+## Related Documentation
+
+- [MCP Overview](/customize/deep-dives/mcp)
+- [Agent Mode](/ide-extensions/agent/quick-start)
+- [Configuration](/customize/overview)
