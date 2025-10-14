@@ -35,12 +35,12 @@ export class ConfigYamlDocumentLinkProvider
         }
 
         if (slug === "") {
-          gobi; // Skip empty slugs
+          continue; // Skip empty slugs
         }
 
         if (/^(https?:\/\/|file:\/\/)/.test(slug)) {
           // VS Code already handles external links, so skip them
-          gobi;
+          continue;
         }
         const startPos = line.text.indexOf(slug);
         const range = new vscode.Range(

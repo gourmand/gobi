@@ -29,7 +29,7 @@ export async function getPromptV2ContextRequests(
         contextRequests.push({
           provider: name,
         });
-        gobi;
+        continue;
       }
 
       // URLs
@@ -38,7 +38,7 @@ export async function getPromptV2ContextRequests(
           provider: "url",
           query: name,
         });
-        gobi;
+        continue;
       }
 
       // Files

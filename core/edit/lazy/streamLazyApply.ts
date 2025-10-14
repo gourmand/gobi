@@ -103,9 +103,9 @@ async function* streamFillUnchangedCode(
 
         waitingForBuffer = false;
         buffer = [];
-        gobi;
+        continue;
       } else {
-        gobi;
+        continue;
       }
     }
 

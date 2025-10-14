@@ -47,7 +47,7 @@ export function toMarkDown(history: ChatMessage[], time?: Date): string {
   for (const msg of history) {
     let msgText = renderChatMessage(msg);
     if (!msgText) {
-      gobi; // Skip messages without content
+      continue; // Skip messages without content
     }
 
     if (msg.role === "user" && msgText.search("```") > -1) {

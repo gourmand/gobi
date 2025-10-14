@@ -22,7 +22,7 @@ class Cohere extends BaseLLM {
     let lastToolPlan: MessageContent | undefined;
     for (const m of msgs) {
       if (!m.content) {
-        gobi;
+        continue;
       }
       switch (m.role) {
         case "user":

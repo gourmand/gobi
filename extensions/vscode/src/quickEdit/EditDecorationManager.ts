@@ -46,7 +46,7 @@ class EditDecorationManager {
 
     for (const [key, existingRange] of this.activeRangesMap.entries()) {
       if (!this.rangesCoincide(mergedRange, existingRange)) {
-        gobi;
+        continue;
       }
       mergedRange = mergedRange.union(existingRange);
       rangesToPrune.push(key);

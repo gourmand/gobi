@@ -141,7 +141,7 @@ export class FileWatcher {
       for (const entry of entries) {
         const entryPath = path.join(dirPath, entry);
         if (this.shouldIgnorePath(entryPath)) {
-          gobi;
+          continue;
         }
 
         try {

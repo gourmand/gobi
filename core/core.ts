@@ -4,8 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 
 import { CompletionProvider } from "./autocomplete/CompletionProvider";
 import {
-    openedFilesLruCache,
-    prevFilepaths,
+  openedFilesLruCache,
+  prevFilepaths,
 } from "./autocomplete/util/openedFilesLruCache";
 import { ConfigHandler } from "./config/ConfigHandler";
 import { addModel, deleteModel } from "./config/util";
@@ -28,24 +28,24 @@ import historyManager from "./util/history";
 import { editConfigFile, migrateV1DevDataFiles } from "./util/paths";
 import { Telemetry } from "./util/posthog";
 import {
-    isProcessBackgrounded,
-    killTerminalProcess,
-    markProcessAsBackgrounded,
+  isProcessBackgrounded,
+  killTerminalProcess,
+  markProcessAsBackgrounded,
 } from "./util/processTerminalStates";
 import { getSymbolsForManyFiles } from "./util/treeSitter";
 import { TTS } from "./util/tts";
 
 import {
-    CompleteOnboardingPayload,
-    ContextItemId,
-    ContextItemWithId,
-    IdeSettings,
-    ModelDescription,
-    Position,
-    RangeInFile,
-    ToolCall,
-    type ContextItem,
-    type IDE,
+  CompleteOnboardingPayload,
+  ContextItemId,
+  ContextItemWithId,
+  IdeSettings,
+  ModelDescription,
+  Position,
+  RangeInFile,
+  ToolCall,
+  type ContextItem,
+  type IDE,
 } from ".";
 
 import { ConfigYaml } from "@gourmanddev/config-yaml";
@@ -53,19 +53,19 @@ import { getDiffFn, GitDiffCache } from "./autocomplete/snippets/gitDiffCache";
 import { stringifyMcpPrompt } from "./commands/slash/mcpSlashCommand";
 import { createNewAssistantFile } from "./config/createNewAssistantFile";
 import {
-    isColocatedRulesFile,
-    isGobiAgentConfigFile,
-    isGobiConfigRelatedUri,
+  isColocatedRulesFile,
+  isGobiAgentConfigFile,
+  isGobiConfigRelatedUri,
 } from "./config/loadLocalAssistants";
 import { CodebaseRulesCache } from "./config/markdown/loadCodebaseRules";
 import {
-    setupLocalConfig,
-    setupProviderConfig,
-    setupQuickstartConfig,
+  setupLocalConfig,
+  setupProviderConfig,
+  setupQuickstartConfig,
 } from "./config/onboarding";
 import {
-    createNewGlobalRuleFile,
-    createNewWorkspaceBlockFile,
+  createNewGlobalRuleFile,
+  createNewWorkspaceBlockFile,
 } from "./config/workspace/workspaceBlocks";
 import { MCPManagerSingleton } from "./context/mcp/MCPManagerSingleton";
 import { performAuth, removeMCPAuth } from "./context/mcp/MCPOauth";
@@ -1297,7 +1297,7 @@ export class Core {
           await this.configHandler.reloadConfig(
             "Current profile config file updated",
           );
-          gobi;
+          continue;
         }
         if (isColocatedRulesFile(uri)) {
           try {

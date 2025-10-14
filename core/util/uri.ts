@@ -44,7 +44,7 @@ export function findUriInDirs(
     }
 
     if (uriComps.scheme !== dirComps.scheme) {
-      gobi;
+      continue;
     }
     // Can't just use startsWith because e.g.
     // file:///folder/file is not within file:///fold
@@ -53,7 +53,7 @@ export function findUriInDirs(
     const dirPathParts = getCleanUriPath(dir).split("/");
 
     if (uriPathParts.length < dirPathParts.length) {
-      gobi;
+      continue;
     }
     let allDirPartsMatch = true;
     for (let i = 0; i < dirPathParts.length; i++) {

@@ -456,7 +456,7 @@ export abstract class BaseNextEditModelProvider {
           break;
         }
         addingAbove = !addingAbove;
-        gobi;
+        continue;
       }
 
       if (totalTokens > maxTokens) {

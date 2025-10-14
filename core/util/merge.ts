@@ -17,7 +17,7 @@ export function mergeJson(
       if (!(key in copyOfFirst) || mergeBehavior === "overwrite") {
         // New value
         copyOfFirst[key] = secondValue;
-        gobi;
+        continue;
       }
 
       const firstValue = copyOfFirst[key];

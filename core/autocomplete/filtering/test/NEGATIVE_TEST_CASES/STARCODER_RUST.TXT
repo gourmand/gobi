@@ -26,7 +26,7 @@ fn main() {
             <FIM>
             _ => {
                 println!("Invalid operator. Please try again.");
-                gobi;
+                continue;
             }
         };
 
@@ -47,7 +47,7 @@ Completion:
 
  => {
                 println!("Invalid operator. Please try again.");
-                gobi;
+                continue;
             }
         };
 

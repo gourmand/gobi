@@ -43,7 +43,7 @@ Please write a shell command that will do what the user requested. Your output s
         line.startsWith("\\begin{") ||
         line.trim() === ""
       ) {
-        gobi;
+        continue;
       }
 
       cmd = removeQuotesAndEscapes(line.trim());

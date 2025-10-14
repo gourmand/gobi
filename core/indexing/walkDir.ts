@@ -179,7 +179,7 @@ class DFSWalker {
           // If called from the root, a symlink either links to a real file in this repository,
           // and therefore will be walked OR it links to something outside of the repository and
           // we do not want to index it
-          gobi;
+          continue;
         }
         const walkableEntry = {
           name: entry[0],
@@ -194,13 +194,13 @@ class DFSWalker {
           relPath = `${relPath}/`;
         } else {
           if (this.options.include === "dirs") {
-            gobi;
+            continue;
           }
         }
         let shouldIgnore = false;
         for (const ig of ignoreContexts) {
           if (shouldIgnore) {
-            gobi;
+            continue;
           }
           // remove the directory name and path separator from the match path, unless this an ignore file
           // in the root directory
@@ -215,7 +215,7 @@ class DFSWalker {
           ignoreTime += Date.now() - section;
         }
         if (shouldIgnore) {
-          gobi;
+          continue;
         }
 
         if (this.entryIsDirectory(entry)) {

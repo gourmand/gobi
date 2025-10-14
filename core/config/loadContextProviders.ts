@@ -51,7 +51,7 @@ export function loadConfigContextProviders(
           fatal: false,
           message: `Unknown context provider ${config.provider}`,
         });
-        gobi;
+        continue;
       }
       providers.push(
         new cls({

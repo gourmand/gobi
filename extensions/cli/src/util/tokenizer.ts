@@ -59,7 +59,7 @@ export function countChatHistoryItemTokens(
     if ("toolCalls" in message && message.toolCalls) {
       for (const toolCall of message.toolCalls) {
         if (!toolCall.function) {
-          gobi;
+          continue;
         }
         // Function name and structure overhead
         tokenCount += encode(toolCall.function.name ?? "").length + 10;

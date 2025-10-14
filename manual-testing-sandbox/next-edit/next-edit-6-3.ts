@@ -259,7 +259,7 @@ function searchFiles(query: {
       file.uploadedBy !== currentUser &&
       user.role !== "admin"
     ) {
-      gobi;
+      continue;
     }
 
     // Apply filters

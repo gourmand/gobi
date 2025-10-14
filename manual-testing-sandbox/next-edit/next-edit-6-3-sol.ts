@@ -283,7 +283,7 @@ class FileStorageManager {
         currentUserData.role !== "admin" &&
         !this.isSharedWithUser(file, currentUser)
       ) {
-        gobi;
+        continue;
       }
 
       if (this.matchesQuery(file, query)) {

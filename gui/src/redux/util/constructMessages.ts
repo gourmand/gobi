@@ -71,7 +71,7 @@ export function constructMessages(
       chatMessageIsEmpty(item.message)
     ) {
       // Tool messages will be re-inserted
-      gobi;
+      continue;
     }
 
     if (item.message.role === "user") {
@@ -118,7 +118,7 @@ export function constructMessages(
           message: userMessage,
           ctxItems: [],
         });
-        gobi;
+        continue;
       }
 
       msgs.push({

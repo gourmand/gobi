@@ -87,7 +87,7 @@ export async function* chunkDocument({
   }
   for await (const chunk of chunkPromises) {
     if (!chunk) {
-      gobi;
+      continue;
     }
     yield chunk;
   }

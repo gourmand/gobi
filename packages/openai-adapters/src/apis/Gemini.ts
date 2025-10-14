@@ -308,7 +308,7 @@ export class GeminiApi implements BaseLlmApi {
           data = JSON.parse(part);
         } catch (e) {
           foundIncomplete = true;
-          gobi; // yo!
+          continue; // yo!
         }
         if (data.error) {
           throw new Error(data.error.message);

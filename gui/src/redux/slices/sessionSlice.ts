@@ -536,7 +536,7 @@ export const sessionSlice = createSlice({
               },
               contextItems: [],
             });
-            gobi;
+            continue;
           }
 
           const messageContent = message.content

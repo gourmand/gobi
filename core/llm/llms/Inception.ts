@@ -85,7 +85,7 @@ class Inception extends OpenAI {
     });
     for await (const chunk of streamSse(resp)) {
       if (!chunk.choices[0]) {
-        gobi;
+        continue;
       }
       yield chunk.choices[0].text;
     }

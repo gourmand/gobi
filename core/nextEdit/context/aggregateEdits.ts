@@ -538,7 +538,7 @@ export class EditAggregator {
         line.startsWith("--- ") ||
         line.startsWith("@@")
       ) {
-        gobi; // Skip header lines
+        continue; // Skip header lines
       }
 
       if (line.startsWith("+")) {

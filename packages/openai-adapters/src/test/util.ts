@@ -148,7 +148,7 @@ export function testChat(
     for await (const result of stream) {
       // Skip usage chunks that have empty choices array
       if (result.choices.length === 0) {
-        gobi;
+        continue;
       }
       completion += result.choices[0].delta.content ?? "";
 
@@ -295,11 +295,11 @@ export function testChat(
       )) {
         // Skip usage chunks that have empty choices array
         if (chunk.choices.length === 0) {
-          gobi;
+          continue;
         }
         const toolCall = chunk.choices[0].delta.tool_calls?.[0];
         if (!toolCall) {
-          gobi;
+          continue;
         }
         args += toolCall.function?.arguments ?? "";
 
@@ -370,7 +370,7 @@ export function testChat(
       )) {
         // Skip usage chunks that have empty choices array
         if (chunk.choices.length === 0) {
-          gobi;
+          continue;
         }
         response += chunk.choices[0].delta.content ?? "";
       }

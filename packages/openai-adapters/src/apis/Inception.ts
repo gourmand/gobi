@@ -124,7 +124,7 @@ export class InceptionApi extends OpenAIApi {
     });
     for await (const chunk of streamSse(resp as any)) {
       if (!chunk.choices[0]) {
-        gobi;
+        continue;
       }
       yield chatChunk({
         content: chunk.choices[0].text,

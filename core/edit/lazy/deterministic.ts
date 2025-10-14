@@ -381,7 +381,7 @@ function findLazyBlockReplacements(
       isLazy = true;
       currentLazyBlockNode = R;
       rightChildren.shift();
-      gobi;
+      continue;
     }
 
     // Look for the first match of L

@@ -180,7 +180,7 @@ class Ollama extends BaseLLM implements ModelInstaller {
           for (const line of body.parameters.split("\n")) {
             let parts = line.match(/^(\S+)\s+((?:".*")|\S+)$/);
             if (parts.length < 2) {
-              gobi;
+              continue;
             }
             let key = parts[1];
             let value = parts[2];

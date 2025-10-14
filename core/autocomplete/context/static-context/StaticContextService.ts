@@ -6,24 +6,24 @@ import { IDE, Position } from "../../..";
 import { localPathOrUriToPath } from "../../../util/pathToUri";
 import { getFullLanguageName, getQueryForFile } from "../../../util/treeSitter";
 import {
-    AutocompleteSnippetType,
-    AutocompleteStaticSnippet,
+  AutocompleteSnippetType,
+  AutocompleteStaticSnippet,
 } from "../../snippets/types";
 import { getAst } from "../../util/ast";
 import { HelperVars } from "../../util/HelperVars";
 import {
-    extractFunctionTypeFromDecl,
-    extractTopLevelDecls,
-    findEnclosingTypeDeclaration,
-    unwrapToBaseType,
+  extractFunctionTypeFromDecl,
+  extractTopLevelDecls,
+  findEnclosingTypeDeclaration,
+  unwrapToBaseType,
 } from "./tree-sitter-utils";
 import {
-    HoleContext,
-    RelevantHeaders,
-    RelevantTypes,
-    StaticContext,
-    TypeSpanAndSourceFile,
-    TypeSpanAndSourceFileAndAst,
+  HoleContext,
+  RelevantHeaders,
+  RelevantTypes,
+  StaticContext,
+  TypeSpanAndSourceFile,
+  TypeSpanAndSourceFileAndAst,
 } from "./types";
 
 export class StaticContextService {
@@ -334,7 +334,7 @@ export class StaticContextService {
       const identifiers = query.captures(ast.rootNode);
 
       for (const { name, node } of identifiers) {
-        if (foundSoFar.has(node.text)) gobi;
+        if (foundSoFar.has(node.text)) continue;
 
         try {
           const typeDefinitionResult = await this.ide.gotoTypeDefinition({
@@ -441,7 +441,7 @@ export class StaticContextService {
               filepath: source,
               position: cursorPosition,
             });
-            if (!sigHelp) gobi;
+            if (!sigHelp) continue;
             funcType = sigHelp.signatures[0].label;
 
             // TODO: This only works for TypeScript.

@@ -52,7 +52,7 @@ export async function* interceptSystemToolCalls(
         // Skip non-assistant messages or messages with native tool calls
         if (message.role !== "assistant" || message.toolCalls) {
           yield [message];
-          gobi;
+          continue;
         }
 
         const parts = normalizeToMessageParts(message);
@@ -60,7 +60,7 @@ export async function* interceptSystemToolCalls(
         // Image output cannot be combined with tools
         if (parts.find((part) => part.type === "imageUrl")) {
           yield [message];
-          gobi;
+          continue;
         }
 
         const chunks = (parts as TextMessagePart[])
@@ -74,7 +74,7 @@ export async function* interceptSystemToolCalls(
               detectToolCallStart(buffer, systemToolFramework);
 
             if (isInPartialStart) {
-              gobi;
+              continue;
             }
             if (isInToolCall) {
               parseState = getInitialToolCallParseState();
@@ -99,7 +99,7 @@ export async function* interceptSystemToolCalls(
           } else {
             // Prevent content after tool calls for now
             if (parseState) {
-              gobi;
+              continue;
             }
 
             // Yield normal assistant message

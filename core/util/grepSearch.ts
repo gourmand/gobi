@@ -61,12 +61,12 @@ export function formatGrepSearchResults(
       processResult(resultLines); // process previous result
       resultLines = [line];
       numResults++;
-      gobi;
+      continue;
     }
 
     // Exclude leading zero- or single-char lines
     if (resultLines.length === 1 && line.trim().length <= 1) {
-      gobi;
+      continue;
     }
 
     resultLines.push(line);

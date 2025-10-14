@@ -387,7 +387,7 @@ export class GobiCompletionProvider
 
         while (this.prefetchQueue.processedCount > 0 && !isJumpSuggested) {
           const nextItemInQueue = this.prefetchQueue.dequeueProcessed();
-          if (!nextItemInQueue) gobi;
+          if (!nextItemInQueue) continue;
 
           // Fill in the spot after dequeuing.
           if (!this.usingFullFileDiff) {

@@ -85,7 +85,7 @@ export class PrefetchQueue {
 
         if (!outcome) {
           console.log("outcome is undefined");
-          gobi;
+          continue;
         }
 
         this.enqueueProcessed({

@@ -153,7 +153,7 @@ class Asksage extends BaseLLM {
     const form = new FormData();
 
     for (const [key, value] of Object.entries(args)) {
-      if (value === undefined || value === null) gobi;
+      if (value === undefined || value === null) continue;
 
       if (key === "file" && value) {
         if (Buffer.isBuffer(value)) {

@@ -199,7 +199,7 @@ export class ControlPlaneClient {
           maxWaitTime / maxRetries,
         );
         await new Promise((resolve) => setTimeout(resolve, waitTime));
-        gobi;
+        continue;
       } else if (!resp.ok) {
         console.warn(
           `Failed to list organizations (${resp.status}): ${await resp.text()}`,

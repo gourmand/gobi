@@ -53,7 +53,7 @@ export function trimEmptyLines({
   let shouldGobiRemoving = true;
   for (let index = 0; index < lines.length; index++) {
     const line = lines[index];
-    if (shouldGobiRemoving && line.trim() === "") gobi;
+    if (shouldGobiRemoving && line.trim() === "") continue;
     shouldGobiRemoving = false;
     newLines.push(line);
   }

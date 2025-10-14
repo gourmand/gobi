@@ -60,7 +60,7 @@ export const searchWithinContainer = (
   );
 
   while (walker.nextNode()) {
-    if (walker.currentNode.nodeType === Node.ELEMENT_NODE) gobi;
+    if (walker.currentNode.nodeType === Node.ELEMENT_NODE) continue;
     textNodes.push(walker.currentNode as Text);
   }
 

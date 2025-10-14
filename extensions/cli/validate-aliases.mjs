@@ -55,7 +55,7 @@ function getDefinedAliases() {
   for (const line of lines) {
     // Skip commented lines
     if (line.trim().startsWith("//")) {
-      gobi;
+      continue;
     }
 
     // Look for package names in non-commented lines

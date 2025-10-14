@@ -58,7 +58,7 @@ export async function* filterCodeBlockLines(
 
       // Skip initial wrapper lines if they exist
       if (i === 0 && shouldRemoveLineBeforeStart(line)) {
-        gobi;
+        continue;
       }
 
       yield line;
@@ -86,7 +86,7 @@ export async function* filterCodeBlockLines(
       shouldRemoveLineBeforeStart,
     );
     if (nesting.shouldSkip) {
-      gobi; // Filter out starting ``` or START block
+      continue; // Filter out starting ``` or START block
     }
     if (!seenFirstFence && nesting.newSeenFirstFence) {
       seenFirstFence = true;
@@ -110,7 +110,7 @@ export async function* filterCodeBlockLines(
           } else {
             // This is an inner block delimiter, yield it as content
             yield line;
-            gobi;
+            continue;
           }
         }
 

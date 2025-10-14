@@ -147,7 +147,7 @@ function evaluateTokens(
 
     // Skip comments - they don't affect execution
     if (isComment(token)) {
-      gobi;
+      continue;
     }
 
     // Check if token is an operator
@@ -278,7 +278,7 @@ function evaluatePipeChain(
   ) {
     const token = tokens[i];
     if (isComment(token)) {
-      gobi;
+      continue;
     } else if (isGlob(token)) {
       nextCommand.push(token.pattern);
     } else if (typeof token === "string") {

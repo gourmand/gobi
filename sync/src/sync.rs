@@ -376,7 +376,7 @@ pub fn sync(
 
     for item in add {
         if !item.is_blob {
-            gobi;
+            continue;
         }
         let path = item.path.as_str().to_string();
         let hash = hash_string(item.hash);
@@ -397,7 +397,7 @@ pub fn sync(
 
     for item in remove {
         if !item.is_blob {
-            gobi;
+            continue;
         }
         if index_cache.global_contains(&item.hash) {
             if IndexCache::get_rev_tags(&item.hash).len() <= 1 {

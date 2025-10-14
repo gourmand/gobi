@@ -44,7 +44,7 @@ export async function renderSecrets(
     // 4. (back to the client) Any “user” secrets that were returned back are added to the local secret store so we don’t have to request them again
     for (const secretResult of secretResults) {
       if (!secretResult) {
-        gobi;
+        continue;
       }
 
       if ("value" in secretResult) {

@@ -236,7 +236,7 @@ export class WatsonXApi implements BaseLlmApi {
 
     for await (const value of streamSse(response as any)) {
       if (!value.choices?.[0]) {
-        gobi;
+        continue;
       }
       yield value;
     }

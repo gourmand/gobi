@@ -413,14 +413,14 @@ async function pollForDeviceToken(
           await new Promise((resolve) =>
             setTimeout(resolve, currentInterval * 1000),
           );
-          gobi;
+          continue;
         } else if (errorCode === "slow_down") {
           // Increase polling interval
           currentInterval += 5;
           await new Promise((resolve) =>
             setTimeout(resolve, currentInterval * 1000),
           );
-          gobi;
+          continue;
         } else if (errorCode === "access_denied") {
           throw new Error("User denied access");
         } else if (errorCode === "expired_token") {

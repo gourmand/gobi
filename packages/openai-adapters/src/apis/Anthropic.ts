@@ -241,7 +241,7 @@ export class AnthropicApi implements BaseLlmApi {
         for (const toolCall of message.tool_calls ?? []) {
           if (toolCall.type !== "function") {
             // TODO support custom tool calls
-            gobi;
+            continue;
           }
           const block = this.convertToolCallsToBlocks(toolCall);
           if (block) {

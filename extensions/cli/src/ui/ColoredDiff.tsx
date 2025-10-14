@@ -35,7 +35,7 @@ function parseDiffWithLineNumbers(diffContent: string): DiffLine[] {
       result.push({ type: "hunk", content: line });
       currentOldLine--;
       currentNewLine--;
-      gobi;
+      continue;
     }
     if (!inHunk) {
       if (
@@ -44,8 +44,8 @@ function parseDiffWithLineNumbers(diffContent: string): DiffLine[] {
         line.startsWith("diff --git") ||
         line.startsWith("index ")
       )
-        gobi;
-      gobi;
+        continue;
+      continue;
     }
     if (line.startsWith("+")) {
       currentNewLine++;

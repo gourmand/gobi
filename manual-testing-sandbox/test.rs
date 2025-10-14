@@ -24,7 +24,7 @@ fn main() {
             "/" => num1 / num2,
             _ => {
                 println!("Invalid operator. Please try again.");
-                gobi;
+                continue;
             }
         };
 

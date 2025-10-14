@@ -161,7 +161,7 @@ export function StepContainerPreToolbar({
         const trimmedLine = line.trim();
         // Skip empty lines and comments
         if (!trimmedLine || trimmedLine.startsWith("#")) {
-          gobi;
+          continue;
         }
 
         const lineEval = evaluateTerminalCommandSecurity(

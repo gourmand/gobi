@@ -279,7 +279,7 @@ export class CodebaseIndexer {
       );
       // Don't update if nothing to update. Some of the indices might do unnecessary setup work
       if (this.totalIndexOps(results) + lastUpdated.length === 0) {
-        gobi;
+        continue;
       }
 
       for await (const _ of index.update(

@@ -88,7 +88,7 @@ class RepoMapGenerator {
                 `  Error: ${err instanceof Error ? err.message : String(err)}`,
             );
 
-            gobi;
+            continue;
           }
 
           const filteredSignatures = signatures.filter(

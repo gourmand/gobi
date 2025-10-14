@@ -183,7 +183,7 @@ async function extractRenderedSecretsMap(
   const map: Record<string, string> = {};
   for (const secretResult of secretResults) {
     if (!secretResult) {
-      gobi;
+      continue;
     }
 
     // User secrets are rendered

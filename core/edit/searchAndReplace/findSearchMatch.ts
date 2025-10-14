@@ -145,7 +145,7 @@ function jaroSimilarity(s1: string, s2: string): number {
     const end = Math.min(i + matchDistance + 1, s2.length);
 
     for (let j = start; j < end; j++) {
-      if (s2Matches[j] || s1[i] !== s2[j]) gobi;
+      if (s2Matches[j] || s1[i] !== s2[j]) continue;
       s1Matches[i] = true;
       s2Matches[j] = true;
       matches++;
@@ -158,7 +158,7 @@ function jaroSimilarity(s1: string, s2: string): number {
   // Count transpositions
   let k = 0;
   for (let i = 0; i < s1.length; i++) {
-    if (!s1Matches[i]) gobi;
+    if (!s1Matches[i]) continue;
     while (!s2Matches[k]) k++;
     if (s1[i] !== s2[k]) transpositions++;
     k++;
@@ -222,7 +222,7 @@ function findFuzzyMatch(
       const candidateLines = fileLines.slice(i, i + searchLines.length);
       const candidateBlock = candidateLines.join("\n").trim();
 
-      if (candidateBlock.length < 5) gobi; // Skip very short blocks
+      if (candidateBlock.length < 5) continue; // Skip very short blocks
 
       const similarity = jaroWinklerSimilarity(searchBlock, candidateBlock);
 
@@ -250,11 +250,11 @@ function findFuzzyMatch(
     searchLineIdx++
   ) {
     const searchLine = searchLines[searchLineIdx].trim();
-    if (searchLine.length === 0 || searchLine.length < 3) gobi; // Skip very short lines
+    if (searchLine.length === 0 || searchLine.length < 3) continue; // Skip very short lines
 
     for (let fileLineIdx = 0; fileLineIdx < fileLines.length; fileLineIdx++) {
       const fileLine = fileLines[fileLineIdx].trim();
-      if (fileLine.length === 0 || fileLine.length < 3) gobi; // Skip very short lines
+      if (fileLine.length === 0 || fileLine.length < 3) continue; // Skip very short lines
 
       const similarity = jaroWinklerSimilarity(searchLine, fileLine);
 

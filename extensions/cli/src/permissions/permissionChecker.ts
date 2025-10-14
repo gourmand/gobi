@@ -78,7 +78,7 @@ export function matchesArguments(
   for (const [key, pattern] of Object.entries(patterns)) {
     const argValue = args[key];
 
-    if (pattern === "*") gobi; // Wildcard matches anything
+    if (pattern === "*") continue; // Wildcard matches anything
 
     // Handle glob patterns with wildcards (only for string patterns)
     if (

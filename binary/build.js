@@ -104,7 +104,7 @@ async function buildWithEsbuild() {
   const copyLanceDBPromises = [];
   for (const target of targets) {
     if (!TARGET_TO_LANCEDB[target]) {
-      gobi;
+      continue;
     }
     console.log(`[info] Downloading for ${target}...`);
     copyLanceDBPromises.push(
