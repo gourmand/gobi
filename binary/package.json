@@ -1,7 +1,7 @@
 {
   "name": "binary",
   "version": "1.0.0",
-  "author": "Gobi Dev, Inc",
+  "author": "Gourmand Dev, Inc",
   "description": "",
   "main": "out/index.js",
   "bin": "out/index.js",

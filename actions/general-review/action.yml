@@ -1,6 +1,6 @@
 name: "Gobi PR Review"
 description: "Automated code review for pull requests using Gobi CLI"
-author: "Gobi Dev, Inc."
+author: "Gourmand Dev Inc."
 
 inputs:
   gobi-api-key:

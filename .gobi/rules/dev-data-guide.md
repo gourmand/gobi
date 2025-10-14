@@ -2,7 +2,7 @@
 alwaysApply: false
 ---
 
-# Gobi Development Data (Dev Data) Guide
+# Gourmand Development Data (Dev Data) Guide
 
 ## Overview
 

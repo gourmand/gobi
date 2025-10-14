@@ -13,7 +13,7 @@ This file provides guidance to AI coding agents when working with code in this r
 
 ## Architecture Overview
 
-This is a CLI tool for Gobi Dev that provides an interactive AI-assisted development experience. The architecture consists of:
+This is a CLI tool for Gourmand Dev that provides an interactive AI-assisted development experience. The architecture consists of:
 
 ### Core Components
 

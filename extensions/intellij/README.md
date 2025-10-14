@@ -40,6 +40,6 @@
 
 ## License
 
-[Apache 2.0 © 2023-2025 Gobi Dev, Inc.](./LICENSE)
+[Apache 2.0 © 2023-2025 Gourmand Dev Inc.](./LICENSE)
 
 <!-- Plugin description end -->

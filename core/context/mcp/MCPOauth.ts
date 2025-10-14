@@ -128,7 +128,7 @@ class MCPConnectionOauthProvider implements OAuthClientProvider {
       token_endpoint_auth_method: "none",
       grant_types: ["authorization_code", "refresh_token"],
       response_types: ["code"],
-      client_name: "Gobi Dev, Inc", // get this from package.json?
+      client_name: "Gourmand Dev, Inc", // get this from package.json?
       client_uri: "https://gourmand.dev", // get this from package.json?
     };
   }

@@ -11,7 +11,7 @@
     "build": "tsc",
     "clean": "rm -rf dist"
   },
-  "author": "Gobi Dev, Inc",
+  "author": "Gourmand Dev, Inc",
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/node": "^20.11.19",

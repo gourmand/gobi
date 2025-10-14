@@ -6,7 +6,7 @@ info:
     These endpoints are primarily used by the Gobi IDE extensions for VS Code and JetBrains.
   version: 1.0.0
   contact:
-    name: Gobi Dev Team
+    name: Gourmand Dev Team
     url: https://gourmand.dev
 servers:
   - url: https://api.gourmand.dev

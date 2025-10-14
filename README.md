@@ -66,4 +66,4 @@ join [#contribute on Discord](https://discord.gg/vapESyrFmJ).
 
 ## License
 
-[Apache 2.0 © 2023-2024 Gobi Dev, Inc.](./LICENSE)
+[Apache 2.0 © 2023-2024 Gourmand Dev Inc.](./LICENSE)

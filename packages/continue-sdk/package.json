@@ -11,7 +11,7 @@
     "generate-client:ALL": "npm run generate-client:typescript && npm run generate-client:python",
     "swagger-ui": "node swagger-ui-server.js"
   },
-  "author": "Gobi Dev, Inc.",
+  "author": "Gourmand Dev Inc.",
   "license": "Apache-2.0",
   "dependencies": {
     "@gourmanddev/config-yaml": "file:../config-yaml",

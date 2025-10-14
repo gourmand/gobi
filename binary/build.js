@@ -93,7 +93,7 @@ async function buildWithEsbuild() {
       {
         name: "binary",
         version: "1.0.0",
-        author: "Gobi Dev, Inc",
+        author: "Gourmand Dev, Inc",
         license: "Apache-2.0",
       },
       undefined,

@@ -34,7 +34,7 @@ setup(
     name=NAME,
     version=VERSION,
     description="Gobi Hub IDE API",
-    author="Gobi Dev Team",
+    author="Gourmand Dev Team",
     author_email="team@openapitools.org",
     url="",
     keywords=["OpenAPI", "OpenAPI-Generator", "Gobi Hub IDE API"],
