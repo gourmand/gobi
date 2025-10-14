@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0
-          token: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Setup Node.js
         uses: actions/setup-node@v5
@@ -198,7 +198,7 @@ jobs:
 
       - name: Create stable release on GitHub
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Create a git tag for the stable release
           git config --local user.email "action@github.com"
@@ -215,7 +215,7 @@ jobs:
       - name: Update GitHub release notes for beta promotion
         if: ${{ (inputs.release_type || 'promote-beta') == 'promote-beta' }}
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Mark the original beta release as superseded
           gh release edit "v${{ steps.find_beta.outputs.beta_version }}" \
