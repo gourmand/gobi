@@ -697,6 +697,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
+    "@esbuild/darwin-arm64": "^0.17.19",
     "@nestjs/common": "^11.0.16",
     "@openapitools/openapi-generator-cli": "^2.23.1",
     "@types/chai": "^5.0.1",
@@ -715,7 +716,7 @@
     "@vscode/vsce": "^2.22.0",
     "cargo-cp-artifact": "^0.1",
     "chai": "^4.5.0",
-    "esbuild": "0.17.19",
+    "esbuild": "^0.17.19",
     "esbuild-visualizer": "^0.6.0",
     "eslint": "^8.28.0",
     "json-schema-to-typescript": "^12.0.0",
@@ -726,9 +727,9 @@
     "vscode-extension-tester": "^8.14.1"
   },
   "dependencies": {
+    "@electron/rebuild": "^3.2.10",
     "@gourmanddev/config-types": "file:../../packages/config-types",
     "@gourmanddev/fetch": "file:../../packages/fetch",
-    "@electron/rebuild": "^3.2.10",
     "@reduxjs/toolkit": "^1.9.3",
     "@vscode/ripgrep": "^1.15.9",
     "axios": "^1.2.5",
