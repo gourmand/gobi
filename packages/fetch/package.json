@@ -1,6 +1,6 @@
 {
   "name": "@gourmanddev/fetch",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -12,7 +12,7 @@
   "author": "Gourmand.dev",
   "license": "Apache-2.0",
   "dependencies": {
-    "@gourmanddev/config-types": "^1.0.13",
+    "@gourmanddev/config-types": "^1.0.15",
     "follow-redirects": "^1.15.6",
     "http-proxy-agent": "^7.0.2",
     "https-proxy-agent": "^7.0.5",

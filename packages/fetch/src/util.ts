@@ -45,7 +45,7 @@ export function getReqOptionsNoProxyPatterns(
   options: RequestOptions | undefined,
 ): string[] {
   return (
-    options?.noProxy?.map((i) => i.trim().toLowerCase()).filter((i) => !!i) ??
+    options?.noProxy?.map((i: string) => i.trim().toLowerCase()).filter((i: string) => !!i) ??
     []
   );
 }
