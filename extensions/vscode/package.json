@@ -697,7 +697,6 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
-    "@esbuild/darwin-arm64": "^0.17.19",
     "@nestjs/common": "^11.0.16",
     "@openapitools/openapi-generator-cli": "^2.23.1",
     "@types/chai": "^5.0.1",
