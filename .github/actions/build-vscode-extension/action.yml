@@ -149,7 +149,12 @@ runs:
       run: |
         cd extensions/vscode
         npm run package
-
+        - name: Upload VSIX as artifact
+          uses: actions/upload-artifact@v4
+          with:
+          name: vscode-extension-${{ steps.set-target.outputs.target }}
+          path: extensions/vscode/*.vsix
+          
     - name: Package extension (.vsix files)
       shell: bash
       run: |
