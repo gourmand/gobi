@@ -1,7 +1,7 @@
 {
   "name": "@gourmanddev/sdk-generator",
   "version": "0.0.1",
-  "description": "SDK Generator for gourmand.dev",
+  "description": "SDK Generator for gourmand.dev gobi",
   "type": "module",
   "scripts": {
     "build": "echo 'No build step needed'",
