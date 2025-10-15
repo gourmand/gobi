@@ -14,7 +14,7 @@
     "sentry:sourcemaps": "sentry-cli sourcemaps inject --org gobi-xd --project gobi ./dist && sentry-cli sourcemaps upload --org gobi-xd --project gobi ./dist"
   },
   "type": "module",
-  "author": "Gourmand Dev, Inc",
+  "author": "gourmand.dev",
   "license": "Apache-2.0",
   "devDependencies": {
     "@babel/preset-env": "^7.24.7",

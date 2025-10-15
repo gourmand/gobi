@@ -9,7 +9,7 @@
     "test": "vitest",
     "build": "tsc"
   },
-  "author": "Nate Sesti and Ty Dunn",
+  "author": "Gourmand.dev",
   "license": "Apache-2.0",
   "dependencies": {
     "@anthropic-ai/sdk": "^0.62.0",

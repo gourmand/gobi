@@ -1,22 +1,22 @@
 import { streamSse } from "@gourmanddev/fetch";
 import { OpenAI } from "openai/index";
 import {
-    ChatCompletion,
-    ChatCompletionChunk,
-    ChatCompletionCreateParamsNonStreaming,
-    ChatCompletionCreateParamsStreaming,
-    Completion,
-    CompletionCreateParamsNonStreaming,
-    CompletionCreateParamsStreaming,
+  ChatCompletion,
+  ChatCompletionChunk,
+  ChatCompletionCreateParamsNonStreaming,
+  ChatCompletionCreateParamsStreaming,
+  Completion,
+  CompletionCreateParamsNonStreaming,
+  CompletionCreateParamsStreaming,
 } from "openai/resources/index";
 import { ChatCompletionCreateParams } from "openai/resources/index.js";
 import { WatsonXConfig } from "../types.js";
 import { chatCompletion, customFetch } from "../util.js";
 import {
-    BaseLlmApi,
-    CreateRerankResponse,
-    FimCreateParamsStreaming,
-    RerankCreateParams,
+  BaseLlmApi,
+  CreateRerankResponse,
+  FimCreateParamsStreaming,
+  RerankCreateParams,
 } from "./base.js";
 
 export class WatsonXApi implements BaseLlmApi {
@@ -60,7 +60,6 @@ export class WatsonXApi implements BaseLlmApi {
       // In certain WatsonX environments, ZenApiKey authentication is disabled,
       // and it's necessary to call this endpoint with username+api_key to get a bearer token.
       // See the docs: https://www.ibm.com/docs/en/watsonx/w-and-w/2.1.0?topic=keys-generating-bearer-token
-      // Ask @sestinj why the rest is commented out.
       const base64Decoded = Buffer.from(
         this.config.apiKey ?? "",
         "base64",

@@ -2,7 +2,7 @@
   "name": "@gourmanddev/hub-api",
   "version": "0.0.1",
   "description": "OpenAPI client for @gourmanddev/hub-api",
-  "author": "OpenAPI-Generator",
+  "author": "gourmand.dev",
   "repository": {
     "type": "git",
     "url": "https://github.com/GIT_USER_ID/GIT_REPO_ID.git"

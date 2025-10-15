@@ -19,15 +19,8 @@ jobs:
         id: check-author
         run: |
           USERS=(
-            "TyDunn"
-            "jpoly1219"
-            "bdougie"
-            "uinstinct"
-            "sestinj"
-            "tingwai"
-            "tomasz-stefaniak"
-            "RomneyDa"
-            "Patrick-Erichsen"
+            "bsneider"
+            "aneeshv12"
           )
           
           PR_AUTHOR="${{ github.event.pull_request.user.login }}"

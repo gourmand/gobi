@@ -2,7 +2,7 @@
 name = "sync"
 version = "0.1.0"
 description = "Gobi Codebase Syncing"
-authors = ["Nate Sesti and Ty Dunn"]
+authors = ["Gourmand.dev"]
 license = "Apache-2.0"
 edition = "2018"
 exclude = ["index.node"]

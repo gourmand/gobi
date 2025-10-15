@@ -2,7 +2,7 @@
   "name": "gui",
   "private": true,
   "type": "module",
-  "author": "Gourmand Dev, Inc",
+  "author": "gourmand.dev",
   "license": "Apache-2.0",
   "scripts": {
     "dev": "vite",

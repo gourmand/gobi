@@ -9,7 +9,7 @@
     "test": "vitest run",
     "build": "tsc"
   },
-  "author": "Nate Sesti and Ty Dunn",
+  "author": "Gourmand.dev",
   "license": "Apache-2.0",
   "dependencies": {
     "@gourmanddev/config-types": "^1.0.13",

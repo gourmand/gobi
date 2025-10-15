@@ -1,7 +1,7 @@
 {
   "name": "gobi",
   "icon": "media/icon.png",
-  "author": "Gourmand Dev, Inc",
+  "author": "gourmand.dev",
   "version": "1.3.18",
   "repository": {
     "type": "git",
