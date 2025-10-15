@@ -150,7 +150,6 @@ async function package(target, os, arch, exe) {
     "gui/assets/index.css",
 
     // Tutorial
-    "media/move-chat-panel-right.md",
     "gobi_tutorial.py",
     "config_schema.json",
 
