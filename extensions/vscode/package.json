@@ -13,15 +13,15 @@
   ],
   "bugs": {
     "url": "https://github.com/gourmand/gobi/issues",
-    "email": "nate@gourmand.dev"
+    "email": "bugs@gourmand.dev"
   },
   "homepage": "https://gourmand.dev",
   "qna": "https://github.com/gourmand/gobi/issues/new/choose",
   "license": "Apache-2.0",
-  "displayName": "Gobi - open-source AI code agent",
+  "displayName": "Gobi - tasty AI agents for secure environments",
   "pricing": "Free",
-  "description": "The leading open-source AI code agent",
-  "publisher": "Gobi",
+  "description": "Tasty AI agents for secure environments",
+  "publisher": "gourmand",
   "engines": {
     "vscode": "^1.70.0",
     "node": ">=20.19.0"
