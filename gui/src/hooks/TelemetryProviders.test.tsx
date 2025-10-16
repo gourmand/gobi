@@ -156,7 +156,7 @@ describe("TelemetryProviders", () => {
       // Verify Sentry initialization
       expect(mockSentry.init).toHaveBeenCalledWith(
         expect.objectContaining({
-          dsn: "https://fe99934dcdc537d84209893a3f96a196@o4505462064283648.ingest.us.sentry.io/4508184596054016",
+          dsn: "https://d59405dff1df50b798d4073f95daa750@o4510196520386560.ingest.us.sentry.io/4510196521893888",
           environment: "development",
           tracesSampleRate: 0.25,
         }),

@@ -67,7 +67,7 @@ class GobiSentryService(
     private companion object {
         private const val PLUGIN_ID = "com.github.gourmand.gobiintellijextension"
         private const val SENTRY_DSN =
-            "https://fe99934dcdc537d84209893a3f96a196@o4505462064283648.ingest.us.sentry.io/4508184596054016"
+            "https://d59405dff1df50b798d4073f95daa750@o4510196520386560.ingest.us.sentry.io/4510196521893888"
 
         private fun recognizeEnvironment() =
             when {

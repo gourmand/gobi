@@ -2,4 +2,4 @@
  * Sentry configuration constants
  */
 export const SENTRY_DSN =
-  "https://fe99934dcdc537d84209893a3f96a196@o4505462064283648.ingest.us.sentry.io/4508184596054016";
+  "https://d59405dff1df50b798d4073f95daa750@o4510196520386560.ingest.us.sentry.io/4510196521893888";
