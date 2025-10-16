@@ -1,19 +1,19 @@
 import {
-    BedrockRuntimeClient,
-    ContentBlock,
-    ContentBlockDelta,
-    ContentBlockStart,
-    ContentBlockStartEvent,
-    ConversationRole,
-    ConverseStreamCommand,
-    ConverseStreamCommandOutput,
-    ImageFormat,
-    InvokeModelCommand,
-    Message,
-    ReasoningContentBlockDelta,
-    ToolConfiguration,
-    ToolUseBlock,
-    ToolUseBlockDelta,
+  BedrockRuntimeClient,
+  ContentBlock,
+  ContentBlockDelta,
+  ContentBlockStart,
+  ContentBlockStartEvent,
+  ConversationRole,
+  ConverseStreamCommand,
+  ConverseStreamCommandOutput,
+  ImageFormat,
+  InvokeModelCommand,
+  Message,
+  ReasoningContentBlockDelta,
+  ToolConfiguration,
+  ToolUseBlock,
+  ToolUseBlockDelta,
 } from "@aws-sdk/client-bedrock-runtime";
 import { fromNodeProviderChain } from "@aws-sdk/credential-providers";
 
@@ -47,6 +47,13 @@ class Bedrock extends BaseLLM {
     profile: "bedrock",
   };
 
+  // Declaring variables to force usage of Bedrock Guardrails
+  private guardrailId?: string;
+  private guardrailVersion?: string;
+  private guardrailTrace?: "enabled" | "disabled";
+  // by default we want guardrails to be active, otherwise Bedrock should not work.
+  private requireGuardrails = true;
+
   private _promptCachingMetrics: PromptCachingMetrics = {
     cacheReadInputTokens: 0,
     cacheWriteInputTokens: 0,
@@ -62,6 +69,26 @@ class Bedrock extends BaseLLM {
     super(options);
     if (!options.apiBase) {
       this.apiBase = `https://bedrock-runtime.${options.region}.amazonaws.com`;
+    }
+    const env = (options as any)?.env ?? {};
+    this.guardrailId = env.guardrail_id;
+    this.guardrailVersion = env.guardrail_version;
+    this.guardrailTrace = (env.guardrail_trace ?? "enabled") as "enabled" | "disabled";
+
+    this.requireGuardrails = String(env.require_guardrails ?? "true").toLowerCase() === "true";
+    console.log(`Bedrock Guardrails -> id=${this.guardrailId ?? "NA"} ver=${this.guardrailVersion ?? "NA"} trace=${this.guardrailTrace} required=${this.requireGuardrails}`);
+
+    //
+    if(this.requireGuardrails){
+      const missing: string[] = [];
+      if(!this.guardrailId) missing.push("guardrail_id");
+      if(!this.guardrailVersion) missing.push("guardrail_version");
+      if(!this.guardrailTrace) missing.push("guardrail_trace");
+      if(missing.length) {
+        throw new Error(
+          `Bedrock Guardrails required but missing ${missing.join(", ")}. ` + `Add them under env in config.yaml please.`
+        )
+      }
     }
 
     this.requestOptions = {
@@ -264,6 +291,16 @@ class Bedrock extends BaseLLM {
       shouldCacheSystemMessage ||
       this.cacheBehavior?.cacheConversation ||
       this.completionOptions.promptCaching;
+      
+    const hasGR = !!this.guardrailId && !!this.guardrailVersion && !!this.guardrailTrace;
+
+    const guardrailConfig = hasGR
+    ? {
+      guardrailIdentifier: this.guardrailId,
+      guardrailVersion: this.guardrailVersion,
+      trace: this.guardrailTrace
+    }
+    : undefined;
 
     if (enablePromptCaching) {
       this.requestOptions.headers = {
@@ -328,6 +365,7 @@ class Bedrock extends BaseLLM {
           ?.filter((stop) => stop.trim() !== "")
           .slice(0, 4),
       },
+      guardrailConfig,
       additionalModelRequestFields: {
         thinking: options.reasoning
           ? {
@@ -335,7 +373,7 @@ class Bedrock extends BaseLLM {
               budget_tokens: options.reasoningBudgetTokens,
             }
           : undefined,
-        anthropic_beta: options.model.includes("claude")
+        anthropic_beta: options.model.includes("claude") && !String(this.region).toLowerCase().includes("gov")
           ? ["fine-grained-tool-streaming-2025-05-14"]
           : undefined,
       },
