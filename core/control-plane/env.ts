@@ -1,16 +1,16 @@
 import * as fs from "node:fs";
 import { IdeSettings } from "..";
 import {
-    getLocalEnvironmentDotFilePath,
-    getStagingEnvironmentDotFilePath,
+  getLocalEnvironmentDotFilePath,
+  getStagingEnvironmentDotFilePath,
 } from "../util/paths";
 import { AuthType, ControlPlaneEnv } from "./AuthTypes";
 import { getLicenseKeyData } from "./mdm/mdm";
 
 export const EXTENSION_NAME = "gobi";
 
-const WORKOS_CLIENT_ID_PRODUCTION = "client_01J0FW6XN8N2XJAECF7NE0Y65J";
-const WORKOS_CLIENT_ID_STAGING = "client_01J0FW6XCPMJMQ3CG51RB4HBZQ";
+const WORKOS_CLIENT_ID_PRODUCTION = "client_01K7N7M0JCX6X1PW4G4WPDF9Y3";
+const WORKOS_CLIENT_ID_STAGING = "client_01K7N7M0JCX6X1PW4G4WPDF9Y3";
 
 const PRODUCTION_HUB_ENV: ControlPlaneEnv = {
   DEFAULT_CONTROL_PLANE_PROXY_URL: "https://api.gourmand.dev/",

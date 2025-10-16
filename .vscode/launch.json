@@ -142,7 +142,7 @@
       "env": {
         "NODE_ENV": "development"
         // "GOBI_API_BASE": "http://localhost:3001/",
-        // "WORKOS_CLIENT_ID": "client_01J0FW6XCPMJMQ3CG51RB4HBZQ",
+        // "WORKOS_CLIENT_ID": "client_01K7N7M0JCX6X1PW4G4WPDF9Y3",
         // "HUB_URL": "http://localhost:3000"
       },
       "console": "integratedTerminal",
@@ -172,7 +172,7 @@
         "NODE_ENV": "development",
         "GOBI_USE_BEDROCK": "1"
         // "GOBI_API_BASE": "http://localhost:3001/",
-        // "WORKOS_CLIENT_ID": "client_01J0FW6XCPMJMQ3CG51RB4HBZQ",
+        // "WORKOS_CLIENT_ID": "client_01K7N7M0JCX6X1PW4G4WPDF9Y3",
         // "HUB_URL": "http://localhost:3000"
       },
       "console": "integratedTerminal",
