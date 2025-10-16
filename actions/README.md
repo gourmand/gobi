@@ -47,10 +47,10 @@ jobs:
 
 The action accepts the following inputs:
 
-| Input              | Description                            | Required |
-| ------------------ | -------------------------------------- | -------- |
-| `gobi-api-key` | API key for Gobi service           | Yes      |
-| `gobi-org`     | Organization for Gobi config       | Yes      |
+| Input          | Description                            | Required |
+| -------------- | -------------------------------------- | -------- |
+| `gobi-api-key` | API key for Gobi service               | Yes      |
+| `gobi-org`     | Organization for Gobi config           | Yes      |
 | `gobi-config`  | Config path (e.g., "myorg/review-bot") | Yes      |
 
 ## Setup Requirements
@@ -145,4 +145,4 @@ For issues or questions:
 
 - [Gobi Documentation](https://docs.gourmand.dev)
 - [GitHub Issues](https://github.com/gourmand/gobi/issues)
-- [Discord Community](https://discord.gg/vapESyrFmJ)
+- [Discord Community](https://discord.gg/TODO)

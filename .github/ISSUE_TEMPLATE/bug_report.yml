@@ -13,7 +13,7 @@ body:
       options:
         - label: I've tried using the "Ask AI" feature on the [Gobi docs site](https://docs.gourmand.dev/) to see if the docs have an answer
           required: false
-        - label: I believe this is a bug. I'll try to join the [Gobi Discord](https://discord.gg/NWtdYexhMs) for questions
+        - label: I believe this is a bug. I'll try to join the [Gobi Discord](https://discord.gg/TODO) for questions
           required: false
         - label: I'm not able to find an [open issue](https://github.com/gourmand/gobi/issues?q=is%3Aopen+is%3Aissue) that reports the same bug
           required: false

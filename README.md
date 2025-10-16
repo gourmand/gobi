@@ -17,7 +17,7 @@
 <a target="_blank" href="https://changelog.gourmand.dev" style="background:none">
     <img src="https://img.shields.io/badge/changelog-%96EFF3" style="height: 22px;" />
 </a>
-<a target="_blank" href="https://discord.gg/vapESyrFmJ" style="background:none">
+<a target="_blank" href="https://discord.gg/TODO" style="background:none">
     <img src="https://img.shields.io/badge/discord-join-gobi.svg?labelColor=191937&color=6F6FF7&logo=discord" style="height: 22px;" />
 </a>
 
@@ -62,7 +62,7 @@ Get started in [VS Code](https://marketplace.visualstudio.com/items?itemName=Gob
 ## Contributing
 
 Read the [contributing guide](https://github.com/gourmand/gobi/blob/main/CONTRIBUTING.md), and
-join [#contribute on Discord](https://discord.gg/vapESyrFmJ).
+join [#contribute on Discord](https://discord.gg/TODO).
 
 ## License
 
