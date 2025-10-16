@@ -1,8 +1,8 @@
 import * as Sentry from "@sentry/react";
 import { HubSessionInfo } from "core/control-plane/AuthTypes";
 import {
-    anonymizeSentryEvent,
-    anonymizeUserInfo,
+  anonymizeSentryEvent,
+  anonymizeUserInfo,
 } from "core/util/sentry/anonymization";
 import { SENTRY_DSN } from "core/util/sentry/constants";
 import posthog from "posthog-js";
@@ -32,7 +32,7 @@ const TelemetryProviders = ({ children }: PropsWithChildren) => {
     // PostHog depends only on allowAnonymousTelemetry
     if (allowAnonymousTelemetry) {
       // Initialize PostHog (existing logic)
-      posthog.init("phc_JS6XFROuNbhJtVCEdTSYk6gl5ArRrTNMpCcguAXlSPs", {
+      posthog.init("phc_lBYRoFPHpgi5rYPDxRDtQmLic4ogXsJmJQlpX2wsuFi", {
         api_host: "https://app.posthog.com",
         disable_session_recording: true,
         autocapture: false,

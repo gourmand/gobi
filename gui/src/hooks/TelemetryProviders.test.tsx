@@ -141,7 +141,7 @@ describe("TelemetryProviders", () => {
 
       // Verify PostHog initialization
       expect(mockPosthog.init).toHaveBeenCalledWith(
-        "phc_JS6XFROuNbhJtVCEdTSYk6gl5ArRrTNMpCcguAXlSPs",
+        "phc_lBYRoFPHpgi5rYPDxRDtQmLic4ogXsJmJQlpX2wsuFi",
         expect.objectContaining({
           api_host: "https://app.posthog.com",
           disable_session_recording: true,

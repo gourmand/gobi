@@ -52,7 +52,7 @@ export class PosthogService {
       if (!this._client) {
         const { PostHog } = await import("posthog-node");
         this._client = new PostHog(
-          "phc_JS6XFROuNbhJtVCEdTSYk6gl5ArRrTNMpCcguAXlSPs",
+          "phc_lBYRoFPHpgi5rYPDxRDtQmLic4ogXsJmJQlpX2wsuFi",
           {
             host: "https://app.posthog.com",
           },

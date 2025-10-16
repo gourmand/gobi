@@ -27,6 +27,6 @@ class GobiPostHogService(
     }
 
     private companion object {
-        private const val POSTHOG_API_KEY = "phc_JS6XFROuNbhJtVCEdTSYk6gl5ArRrTNMpCcguAXlSPs"
+        private const val POSTHOG_API_KEY = "phc_lBYRoFPHpgi5rYPDxRDtQmLic4ogXsJmJQlpX2wsuFi"
     }
 }
