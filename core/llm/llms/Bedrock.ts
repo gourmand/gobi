@@ -26,6 +26,14 @@ import { PROVIDER_TOOL_SUPPORT } from "../toolSupport.js";
 import { getSecureID } from "../utils/getSecureID.js";
 import { withLLMRetry } from "../utils/retry.js";
 
+// Helper function to find last index in messages array
+function indexOfLastUser(messages: ChatMessage[]): number {
+  for (let i = messages.length - 1; i >= 0; i--){
+    if(messages[i].role === "user") return i;
+  }
+  return -1
+}
+
 interface ModelConfig {
   formatPayload: (text: string) => any;
   extractEmbeddings: (responseBody: any) => number[][];
@@ -410,6 +418,8 @@ class Bedrock extends BaseLLM {
     const nonSystemMessages = messages.filter((m) => m.role !== "system");
     const hasAddedToolCallIds = new Set<string>();
 
+    const lastUserIdxInNonSys = indexOfLastUser(nonSystemMessages);
+
     for (let idx = 0; idx < nonSystemMessages.length; idx++) {
       const message = nonSystemMessages[idx];
 
@@ -428,11 +438,25 @@ class Bedrock extends BaseLLM {
             typeof message.content === "string"
               ? message.content.trim()
               : message.content;
-          if (trimmedContent) {
-            currentBlocks.push(
-              ...this._convertMessageContentToBlocks(trimmedContent),
-            );
+              
+          const parts = this._convertMessageContentToBlocks(trimmedContent as MessageContent);
+
+          // If this is the last user message: wrap TEXT blocks in guardContent
+          if(idx === lastUserIdxInNonSys) {
+            for (const b of parts) {
+              if ((b as any).text) {
+                const t = (b as any).text;
+                currentBlocks.push({
+                  guardContent: {text: { text: t } } as any,
+                } as any); 
+              } else {
+                currentBlocks.push(b);
+              }
+            }
+          } else {
+            currentBlocks.push(...parts);
           }
+          
         }
         // TOOL messages:
         // Tool messages are represented by "toolResult" blocks
