@@ -4,7 +4,7 @@ import * as path from "path";
 
 import * as vscode from "vscode";
 
-const ENCRYPTION_KEY_NAME = "dev.gobi.gobi";
+const ENCRYPTION_KEY_NAME = "dev.gourmand.gobi";
 
 /**
  * vscode.SecretStorage is not reliable (often loads older values for a key)

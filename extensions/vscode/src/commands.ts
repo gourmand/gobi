@@ -19,16 +19,16 @@ import { convertJsonToYamlConfig } from "../../../packages/config-yaml/dist";
 
 import { NextEditLoggingService } from "core/nextEdit/NextEditLoggingService";
 import {
-    getAutocompleteStatusBarDescription,
-    getAutocompleteStatusBarTitle,
-    getNextEditMenuItems,
-    getStatusBarStatus,
-    getStatusBarStatusFromQuickPickItemLabel,
-    handleNextEditToggle,
-    isNextEditToggleLabel,
-    quickPickStatusText,
-    setupStatusBar,
-    StatusBarStatus,
+  getAutocompleteStatusBarDescription,
+  getAutocompleteStatusBarTitle,
+  getNextEditMenuItems,
+  getStatusBarStatus,
+  getStatusBarStatusFromQuickPickItemLabel,
+  handleNextEditToggle,
+  isNextEditToggleLabel,
+  quickPickStatusText,
+  setupStatusBar,
+  StatusBarStatus,
 } from "./autocomplete/statusBar";
 import { processDiff } from "./diff/processDiff";
 import { VerticalDiffManager } from "./diff/vertical/manager";
@@ -37,9 +37,9 @@ import { GobiGUIWebviewViewProvider } from "./GobiGUIWebviewViewProvider";
 import EditDecorationManager from "./quickEdit/EditDecorationManager";
 import { QuickEdit, QuickEditShowParams } from "./quickEdit/QuickEditQuickPick";
 import {
-    addCodeToContextFromRange,
-    addEntireFileToContext,
-    addHighlightedCodeToContext,
+  addCodeToContextFromRange,
+  addEntireFileToContext,
+  addHighlightedCodeToContext,
 } from "./util/addCode";
 import { Battery } from "./util/battery";
 import { getMetaKeyLabel } from "./util/util";
@@ -51,7 +51,7 @@ let fullScreenPanel: vscode.WebviewPanel | undefined;
 function getFullScreenTab() {
   const tabs = vscode.window.tabGroups.all.flatMap((tabGroup) => tabGroup.tabs);
   return tabs.find((tab) =>
-    (tab.input as any)?.viewType?.endsWith("gobi.gobiGUIView"),
+    (tab.input as any)?.viewType?.endsWith("gourmand.gobiGUIView"),
   );
 }
 
@@ -74,7 +74,7 @@ function focusGUI() {
     fullScreenPanel?.reveal();
   } else {
     // focus sidebar
-    vscode.commands.executeCommand("gobi.gobiGUIView.focus");
+    vscode.commands.executeCommand("gourmand.gobiGUIView.focus");
     // vscode.commands.executeCommand("workbench.action.focusAuxiliaryBar");
   }
 }
@@ -212,17 +212,14 @@ const getCommandsMap: (
       captureCommandTelemetry("rejectVerticalDiffBlock");
       verticalDiffManager.acceptRejectVerticalDiffBlock(false, fileUri, index);
     },
-    "gobi.quickFix": async (
-      range: vscode.Range,
-      diagnosticMessage: string,
-    ) => {
+    "gobi.quickFix": async (range: vscode.Range, diagnosticMessage: string) => {
       captureCommandTelemetry("quickFix");
 
       const prompt = `Please explain the cause of this error and how to solve it: ${diagnosticMessage}`;
 
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("gobi.gobiGUIView.focus");
+      vscode.commands.executeCommand("gourmand.gobiGUIView.focus");
     },
     // Passthrough for telemetry purposes
     "gobi.defaultQuickAction": async (args: QuickEditShowParams) => {
@@ -237,7 +234,7 @@ const getCommandsMap: (
 
       addCodeToContextFromRange(range, sidebar.webviewProtocol, prompt);
 
-      vscode.commands.executeCommand("gobi.gobiGUIView.focus");
+      vscode.commands.executeCommand("gourmand.gobiGUIView.focus");
     },
     "gobi.customQuickActionStreamInlineEdit": async (
       prompt: string,
@@ -398,7 +395,7 @@ const getCommandsMap: (
 
       const terminalContents = await ide.getTerminalContents();
 
-      vscode.commands.executeCommand("gobi.gobiGUIView.focus");
+      vscode.commands.executeCommand("gourmand.gobiGUIView.focus");
 
       sidebar.webviewProtocol?.request("userInput", {
         input: `I got the following error, can you please help explain how to fix it?\n\n${terminalContents.trim()}`,
@@ -414,7 +411,7 @@ const getCommandsMap: (
     "gobi.addModel": () => {
       captureCommandTelemetry("addModel");
 
-      vscode.commands.executeCommand("gobi.gobiGUIView.focus");
+      vscode.commands.executeCommand("gourmand.gobiGUIView.focus");
       sidebar.webviewProtocol?.request("addModel", undefined);
     },
     "gobi.newSession": () => {
@@ -460,9 +457,7 @@ const getCommandsMap: (
     "gobi.viewHistory": () => {
       vscode.commands.executeCommand("gobi.navigateTo", "/history", true);
     },
-    "gobi.focusGobiSessionId": async (
-      sessionId: string | undefined,
-    ) => {
+    "gobi.focusGobiSessionId": async (sessionId: string | undefined) => {
       if (!sessionId) {
         sessionId = await vscode.window.showInputBox({
           prompt: "Enter the Session ID",
@@ -486,7 +481,7 @@ const getCommandsMap: (
         throw new Error("No files were selected");
       }
 
-      vscode.commands.executeCommand("gobi.gobiGUIView.focus");
+      vscode.commands.executeCommand("gourmand.gobiGUIView.focus");
 
       for (const uri of uris) {
         // If it's a folder, add the entire folder contents recursively by using walkDir (to ignore ignored files)
@@ -585,8 +580,7 @@ const getCommandsMap: (
       const quickPick = vscode.window.createQuickPick();
 
       const { config: gobiConfig } = await configHandler.loadConfig();
-      const autocompleteModels =
-        gobiConfig?.modelsByRole.autocomplete ?? [];
+      const autocompleteModels = gobiConfig?.modelsByRole.autocomplete ?? [];
       const selected =
         gobiConfig?.selectedModelByRole?.autocomplete?.title ?? undefined;
 
@@ -822,7 +816,7 @@ const getCommandsMap: (
 
       // Create the full screen panel
       let panel = vscode.window.createWebviewPanel(
-        "gobi.gobiGUIView",
+        "gourmand.gobiGUIView",
         "Gobi",
         vscode.ViewColumn.One,
         {
@@ -844,10 +838,7 @@ const getCommandsMap: (
       const sessionLoader = panel.onDidChangeViewState(() => {
         vscode.commands.executeCommand("gobi.newSession");
         if (sessionId) {
-          vscode.commands.executeCommand(
-            "gobi.focusGobiSessionId",
-            sessionId,
-          );
+          vscode.commands.executeCommand("gobi.focusGobiSessionId", sessionId);
         }
         panel.reveal();
         sessionLoader.dispose();

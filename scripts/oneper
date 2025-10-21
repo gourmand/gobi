@@ -313,7 +313,7 @@ install_from_pr() {
 
 install_latest() {
     echo "🚀 Installing latest pre-release Gobi extension..."
-    if code --install-extension --pre-release Gobi.gobi --force; then
+    if code --install-extension --pre-release Gourmand.gobi --force; then
         echo "✅ Successfully installed latest pre-release Gobi extension"
         echo ""
         echo "💡 To use the new extension version, reload your VS Code window:"

@@ -17,7 +17,7 @@ const MAX_INTERACTIONS = 50;
 export class GobiConsoleWebviewViewProvider
   implements vscode.WebviewViewProvider
 {
-  public static readonly viewType = "gobi.gobiConsoleView";
+  public static readonly viewType = "gourmand.gobiConsoleView";
 
   resolveWebviewView(
     webviewView: vscode.WebviewView,

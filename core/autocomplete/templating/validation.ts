@@ -1,8 +1,8 @@
 import {
-    AutocompleteClipboardSnippet,
-    AutocompleteCodeSnippet,
-    AutocompleteSnippet,
-    AutocompleteSnippetType,
+  AutocompleteClipboardSnippet,
+  AutocompleteCodeSnippet,
+  AutocompleteSnippet,
+  AutocompleteSnippetType,
 } from "../snippets/types";
 
 const MAX_CLIPBOARD_AGE = 5 * 60 * 1000;
@@ -28,7 +28,7 @@ export const isValidSnippet = (snippet: AutocompleteSnippet): boolean => {
 
   if (
     (snippet as AutocompleteCodeSnippet).filepath?.startsWith(
-      "output:extension-output-Gobi.gobi",
+      "output:extension-output-Gourmand.gobi",
     )
   ) {
     return false;

@@ -53,7 +53,7 @@
   "activationEvents": [
     "onUri",
     "onStartupFinished",
-    "onView:gobiGUIView"
+    "onView:gourmand.gobiGUIView"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -501,7 +501,7 @@
     ],
     "submenus": [
       {
-        "id": "gobi.gobiSubMenu",
+        "id": "gourmand.gobiSubMenu",
         "label": "Gobi"
       }
     ],
@@ -531,7 +531,7 @@
       ],
       "editor/context": [
         {
-          "submenu": "gobi.gobiSubMenu",
+          "submenu": "gourmand.gobiSubMenu",
           "group": "0_agobi"
         }
       ],
@@ -542,7 +542,7 @@
           "when": "gobi.streamingDiff"
         }
       ],
-      "gobi.gobiSubMenu": [
+      "gourmand.gobiSubMenu": [
         {
           "command": "gobi.focusGobiInputWithoutClear",
           "group": "Gobi"
@@ -563,34 +563,34 @@
         {
           "command": "gobi.newSession",
           "group": "navigation@1",
-          "when": "view == gobi.gobiGUIView"
+          "when": "view == gourmand.gobiGUIView"
         },
         {
           "command": "gobi.viewHistory",
           "group": "navigation@2",
-          "when": "view == gobi.gobiGUIView"
+          "when": "view == gourmand.gobiGUIView"
         },
         {
           "command": "gobi.openConfigPage",
           "group": "navigation@4",
-          "when": "view == gobi.gobiGUIView"
+          "when": "view == gourmand.gobiGUIView"
         },
         {
           "command": "gobi.clearConsole",
           "group": "navigation@1",
-          "when": "view == gobi.gobiConsoleView"
+          "when": "view == gourmand.gobiConsoleView"
         }
       ],
       "editor/title": [
         {
           "command": "gobi.newSession",
           "group": "navigation@1",
-          "when": "activeWebviewPanelId == gobi.gobiGUIView"
+          "when": "activeWebviewPanelId == gourmand.gobiGUIView"
         },
         {
           "command": "gobi.viewHistory",
           "group": "navigation@2",
-          "when": "activeWebviewPanelId == gobi.gobiGUIView"
+          "when": "activeWebviewPanelId == gourmand.gobiGUIView"
         }
       ],
       "terminal/context": [
@@ -620,7 +620,7 @@
       "gobi": [
         {
           "type": "webview",
-          "id": "gobi.gobiGUIView",
+          "id": "gourmand.gobiGUIView",
           "name": "Gobi",
           "icon": "media/icon-sidebar.svg",
           "visibility": "visible"
@@ -629,7 +629,7 @@
       "gobiConsole": [
         {
           "type": "webview",
-          "id": "gobi.gobiConsoleView",
+          "id": "gourmand.gobiConsoleView",
           "name": "Gobi Console",
           "icon": "$(window)",
           "visibility": "visible",

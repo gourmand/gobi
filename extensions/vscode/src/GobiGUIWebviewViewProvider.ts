@@ -7,10 +7,8 @@ import { VsCodeWebviewProtocol } from "./webviewProtocol";
 
 import type { FileEdit } from "core";
 
-export class GobiGUIWebviewViewProvider
-  implements vscode.WebviewViewProvider
-{
-  public static readonly viewType = "gobi.gobiGUIView";
+export class GobiGUIWebviewViewProvider implements vscode.WebviewViewProvider {
+  public static readonly viewType = "gourmand.gobiGUIView";
   public webviewProtocol: VsCodeWebviewProtocol;
 
   public get isReady(): boolean {

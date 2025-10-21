@@ -156,7 +156,7 @@ export function getMetaKeyName() {
 }
 
 export function getExtensionVersion(): string {
-  const extension = vscode.extensions.getExtension("gobi.gobi");
+  const extension = vscode.extensions.getExtension("gourmand.gobi");
   return extension?.packageJSON.version || "0.1.0";
 }
 

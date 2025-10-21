@@ -1,10 +1,10 @@
 import {
-    InputBox,
-    Key,
-    WebDriver,
-    WebElement,
-    WebView,
-    Workbench,
+  InputBox,
+  Key,
+  WebDriver,
+  WebElement,
+  WebView,
+  Workbench,
 } from "vscode-extension-tester";
 
 import { DEFAULT_TIMEOUT } from "../constants";
@@ -16,9 +16,7 @@ export class GUIActions {
     await GUIActions.toggleGui();
     await TestUtils.waitForSuccess(async () => {
       await new Workbench().executeCommand("View: Move View");
-      await (
-        await InputBox.create(DEFAULT_TIMEOUT.MD)
-      ).selectQuickPick("Gobi");
+      await (await InputBox.create(DEFAULT_TIMEOUT.MD)).selectQuickPick("Gobi");
       await (
         await InputBox.create(DEFAULT_TIMEOUT.MD)
       ).selectQuickPick("New Secondary Side Bar Entry");
@@ -42,7 +40,7 @@ export class GUIActions {
     for (let i = 0; i < iframes.length; i++) {
       const iframe = iframes[i];
       const src = await iframe.getAttribute("src");
-      if (src.includes("extensionId=Gobi.gobi")) {
+      if (src.includes("extensionId=Gourmand.gobi")) {
         gobiIFrame = iframe;
         break;
       }

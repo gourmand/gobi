@@ -8,19 +8,19 @@ import { Core } from "core/core";
 import { FromCoreProtocol, ToCoreProtocol } from "core/protocol";
 import { InProcessMessenger } from "core/protocol/messenger";
 import {
-    getConfigJsonPath,
-    getConfigTsPath,
-    getConfigYamlPath,
-    getGobiGlobalPath,
+  getConfigJsonPath,
+  getConfigTsPath,
+  getConfigYamlPath,
+  getGobiGlobalPath,
 } from "core/util/paths";
 import { v4 as uuidv4 } from "uuid";
 import * as vscode from "vscode";
 
 import { GobiCompletionProvider } from "../autocomplete/completionProvider";
 import {
-    monitorBatteryChanges,
-    setupStatusBar,
-    StatusBarStatus,
+  monitorBatteryChanges,
+  setupStatusBar,
+  StatusBarStatus,
 } from "../autocomplete/statusBar";
 import { registerAllCommands } from "../commands";
 import { VerticalDiffManager } from "../diff/vertical/manager";
@@ -33,8 +33,8 @@ import { QuickEdit } from "../quickEdit/QuickEditQuickPick";
 import { setupRemoteConfigSync } from "../stubs/activation";
 import { UriEventHandler } from "../stubs/uriHandler";
 import {
-    getControlPlaneSessionInfo,
-    WorkOsAuthProvider,
+  getControlPlaneSessionInfo,
+  WorkOsAuthProvider,
 } from "../stubs/WorkOsAuthProvider";
 import { Battery } from "../util/battery";
 import { FileSearch } from "../util/FileSearch";
@@ -53,11 +53,11 @@ import { isNextEditTest } from "core/nextEdit/utils";
 import { localPathOrUriToPath } from "core/util/pathToUri";
 import { JumpManager } from "../activation/JumpManager";
 import setupNextEditWindowManager, {
-    NextEditWindowManager,
+  NextEditWindowManager,
 } from "../activation/NextEditWindowManager";
 import {
-    HandlerPriority,
-    SelectionChangeManager,
+  HandlerPriority,
+  SelectionChangeManager,
 } from "../activation/SelectionChangeManager";
 import { GhostTextAcceptanceTracker } from "../autocomplete/GhostTextAcceptanceTracker";
 import { getDefinitionsFromLsp } from "../autocomplete/lsp";
@@ -264,7 +264,7 @@ export class VsCodeExtension {
     // Sidebar
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
-        "gobi.gobiGUIView",
+        "gourmand.gobiGUIView",
         this.sidebar,
         {
           webviewOptions: { retainContextWhenHidden: true },
@@ -413,7 +413,7 @@ export class VsCodeExtension {
 
     context.subscriptions.push(
       vscode.window.registerWebviewViewProvider(
-        "gobi.gobiConsoleView",
+        "gourmand.gobiConsoleView",
         this.consoleView,
       ),
     );

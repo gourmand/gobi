@@ -230,7 +230,7 @@ jobs:
       #     apple-notary-password: ${{ secrets.APPLE_NOTARY_PASSWORD }}
       #     apple-notary-tool: altool
       #     apple-team-id: 43XFLY66ZD
-      #     apple-product-id: dev.gobi.gobi-binary
+      #     apple-product-id: dev.gourmand.gobi-binary
       #     options: --options runtime --entitlements entitlements.xml
 
       # Build the plugin if not publishing

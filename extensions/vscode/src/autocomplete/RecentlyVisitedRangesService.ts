@@ -1,7 +1,7 @@
 import { IDE } from "core";
 import {
-    AutocompleteCodeSnippet,
-    AutocompleteSnippetType,
+  AutocompleteCodeSnippet,
+  AutocompleteSnippetType,
 } from "core/autocomplete/snippets/types";
 import { isSecurityConcern } from "core/indexing/ignore";
 import { PosthogFeatureFlag, Telemetry } from "core/util/posthog";
@@ -124,9 +124,7 @@ export class RecentlyVisitedRangesService {
           (s.filepath !== currentFilepath &&
             // Exclude Gobi's own output as it makes it super-hard for users to test the autocomplete feature
             // while looking at the prompts in the Gobi's output
-            !s.filepath.startsWith(
-              "output:extension-output-Gobi.gobi",
-            )),
+            !s.filepath.startsWith("output:extension-output-Gourmand.gobi")),
       )
       .sort((a, b) => b.timestamp - a.timestamp)
       .map(({ timestamp, ...snippet }) => snippet);
