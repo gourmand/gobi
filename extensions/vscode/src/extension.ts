@@ -6,6 +6,7 @@ import { setupCa } from "core/util/ca";
 import { extractMinimalStackTraceInfo } from "core/util/extractMinimalStackTraceInfo";
 import { Telemetry } from "core/util/posthog";
 import * as vscode from "vscode";
+import { initHttpInterceptor, disposeHttpInterceptor } from "./security/interceptor";
 
 import { SentryLogger } from "core/util/sentry/SentryLogger";
 import { getExtensionVersion } from "./util/util";
@@ -18,6 +19,8 @@ async function dynamicImportAndActivate(context: vscode.ExtensionContext) {
 }
 
 export function activate(context: vscode.ExtensionContext) {
+
+  initHttpInterceptor();
   return dynamicImportAndActivate(context).catch((e) => {
     console.log("Error activating extension: ", e);
     Telemetry.capture(
@@ -47,6 +50,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
+  disposeHttpInterceptor();
   void Telemetry.capture(
     "deactivate",
     {

@@ -729,6 +729,7 @@
     "@electron/rebuild": "^3.2.10",
     "@gourmanddev/config-types": "file:../../packages/config-types",
     "@gourmanddev/fetch": "file:../../packages/fetch",
+    "@mswjs/interceptors": "^0.39.8",
     "@reduxjs/toolkit": "^1.9.3",
     "@vscode/ripgrep": "^1.15.9",
     "axios": "^1.2.5",
