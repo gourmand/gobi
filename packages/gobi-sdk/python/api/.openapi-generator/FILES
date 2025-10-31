@@ -51,12 +51,4 @@ setup.cfg
 setup.py
 test-requirements.txt
 test/__init__.py
-test/test_get_free_trial_status200_response.py
-test/test_get_models_add_on_checkout_url200_response.py
-test/test_get_models_add_on_checkout_url500_response.py
-test/test_get_policy200_response.py
-test/test_list_assistant_full_slugs429_response.py
-test/test_list_organizations200_response.py
-test/test_list_organizations200_response_organizations_inner.py
-test/test_sync_secrets_request.py
 tox.ini

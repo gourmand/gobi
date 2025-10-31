@@ -4,8 +4,6 @@
   "enumPropertyNaming": "UPPERCASE",
   "apiPackage": "api",
   "modelPackage": "models",
-  "npmName": "@gourmanddev/hub-api",
-  "npmVersion": "0.0.1",
   "withInterfaces": true,
   "nullSafeAdditionalProps": true,
   "typescriptThreePlus": true,

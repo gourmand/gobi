@@ -6,14 +6,15 @@
   "types": "dist/src/index.d.ts",
   "type": "module",
   "scripts": {
-    "build": "bash ./build.sh",
+    "build": "tsc",
     "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
     "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
   },
   "author": "Gourmand Dev Inc.",
   "license": "Apache-2.0",
   "dependencies": {
-    "openai": "^4.96.2"
+    "openai": "^4.96.2",
+    "@gourmanddev/config-yaml": "workspace:^"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
@@ -24,5 +25,8 @@
   },
   "files": [
     "dist"
-  ]
+  ],
+  "engine": {
+    "node": ">=24.11.0"
+  }
 }

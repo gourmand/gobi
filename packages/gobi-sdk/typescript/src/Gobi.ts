@@ -1,6 +1,6 @@
-import { decodePackageSlug } from "@gourmanddev/config-yaml";
+import { decodePackageSlug } from "@gourmanddev/config-yaml/src/index";
 import type { OpenAI } from "openai";
-import { Configuration, DefaultApi } from "../api/dist/index.js";
+import { Configuration, DefaultApi } from "./generated/index.js";
 import { Assistant } from "./Assistant.js";
 import { createOpenAIClient } from "./createOpenAIClient.js";
 

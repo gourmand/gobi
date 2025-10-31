@@ -11,11 +11,10 @@
   },
   "author": "Gourmand.dev",
   "license": "Apache-2.0",
-  "devDependencies": {
-    "@types/node": "^20.11.19",
-    "typescript": "^5.5.2"
-  },
   "dependencies": {
     "zod": "^3.24.2"
+  },
+  "engine": {
+    "node": ">=24.11.0"
   }
 }

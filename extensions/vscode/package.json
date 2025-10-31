@@ -1,5 +1,5 @@
 {
-  "name": "gobi",
+  "name": "@gourmanddev/gobi-vscode-extension",
   "icon": "media/icon128x128.png",
   "author": "gourmand.dev",
   "version": "1.3.20",
@@ -698,13 +698,11 @@
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
     "@nestjs/common": "^11.0.16",
-    "@openapitools/openapi-generator-cli": "^2.23.1",
     "@types/chai": "^5.0.1",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "@types/follow-redirects": "^1.14.4",
     "@types/mocha": "^10.0.10",
-    "@types/node": "16.x",
     "@types/node-fetch": "^2.6.12",
     "@types/react-dom": "^18.2.4",
     "@types/request": "^2.48.8",
@@ -717,22 +715,20 @@
     "chai": "^4.5.0",
     "esbuild": "^0.17.19",
     "esbuild-visualizer": "^0.6.0",
-    "eslint": "^8.28.0",
     "json-schema-to-typescript": "^12.0.0",
     "ovsx": "^0.8.3",
     "rimraf": "^5.0.5",
-    "typescript": "^5.6.3",
     "vite": "^4.5.14",
     "vscode-extension-tester": "^8.14.1"
   },
   "dependencies": {
     "@electron/rebuild": "^3.2.10",
-    "@gourmanddev/config-types": "file:../../packages/config-types",
-    "@gourmanddev/fetch": "file:../../packages/fetch",
+    "@gourmanddev/config-types": "workspace:^",
+    "@gourmanddev/fetch": "workspace:^",
     "@reduxjs/toolkit": "^1.9.3",
     "@vscode/ripgrep": "^1.15.9",
     "axios": "^1.2.5",
-    "core": "file:../../core",
+    "@gourmanddev/core": "workspace:^",
     "cors": "^2.8.5",
     "dbinfoz": "^0.14.0",
     "diff": "^7.0.0",
@@ -771,14 +767,10 @@
     "uuid": "^9.0.1",
     "uuidv4": "^6.2.13",
     "vectordb": "^0.4.20",
-    "vitest": "^3.1.4",
     "vscode-languageclient": "^8.0.2",
-    "ws": "^8.13.0",
-    "yarn": "^1.22.21"
+    "ws": "^8.13.0"
   },
-  "overrides": {
-    "vitest": {
-      "@types/node": "^16.18.119"
-    }
+  "engine": {
+    "node": ">=24.11.0"
   }
 }

@@ -1,10 +1,10 @@
 #!/bin/bash
 # Build the hub-api first
-cd api && npm run build
+cd api && pnpm run build
 cd ..
 
 # Build the SDK
-npx tsc
+tsc
 
 # Create the necessary directory structure in dist
 mkdir -p dist/api/dist

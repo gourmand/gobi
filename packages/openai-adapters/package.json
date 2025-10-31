@@ -15,9 +15,9 @@
     "@anthropic-ai/sdk": "^0.62.0",
     "@aws-sdk/client-bedrock-runtime": "^3.842.0",
     "@aws-sdk/credential-providers": "^3.840.0",
-    "@gourmanddev/config-types": "^1.0.15",
-    "@gourmanddev/config-yaml": "^1.24.0",
-    "@gourmanddev/fetch": "^1.1.1",
+    "@gourmanddev/config-types": "workspace:^",
+    "@gourmanddev/config-yaml": "workspace:^",
+    "@gourmanddev/fetch": "workspace:^",
     "dotenv": "^16.5.0",
     "google-auth-library": "^10.1.0",
     "json-schema": "^0.4.0",
@@ -27,20 +27,16 @@
     "zod": "^3.24.2"
   },
   "devDependencies": {
-    "@semantic-release/changelog": "^6.0.3",
-    "@semantic-release/commit-analyzer": "^13.0.1",
-    "@semantic-release/git": "^10.0.1",
-    "@semantic-release/github": "^11.0.3",
-    "@semantic-release/npm": "^12.0.2",
-    "@semantic-release/release-notes-generator": "^14.0.3",
     "@types/follow-redirects": "^1.14.4",
     "@types/jest": "^29.5.14",
     "@types/json-schema": "^7.0.15",
     "@types/node": "^24.3.0",
     "cross-env": "^7.0.3",
-    "semantic-release": "^24.2.7",
     "ts-jest": "^29.2.3",
     "ts-node": "^10.9.2",
     "vitest": "^3.2.4"
+  },
+  "engine": {
+    "node": ">=24.11.0"
   }
 }
