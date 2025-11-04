@@ -1,7 +1,7 @@
 import { exec, spawn } from "child_process";
 import { promisify } from "util";
 
-import { GlobalContext } from "core/util/GlobalContext.js";
+import { GlobalContext } from "@gourmanddev/core/util/GlobalContext.js";
 
 import { logger } from "src/util/logger.js";
 

@@ -1,5 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { copyOf } from "core/util";
+import { copyOf } from "@gourmanddev/core/util";
 import { vi } from "vitest";
 import { MockIdeMessenger } from "../../context/MockIdeMessenger";
 import configReducer, {

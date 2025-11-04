@@ -2,15 +2,18 @@ import * as child_process from "node:child_process";
 import { exec } from "node:child_process";
 
 import { Range } from "core";
-import { EXTENSION_NAME } from "core/control-plane/env";
-import { DEFAULT_IGNORES, defaultIgnoresGlob } from "core/indexing/ignore";
+import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
+import {
+  DEFAULT_IGNORES,
+  defaultIgnoresGlob,
+} from "@gourmanddev/core/indexing/ignore";
 import * as URI from "uri-js";
 import * as vscode from "vscode";
 
 import {
-    executeGotoProvider,
-    executeSignatureHelpProvider,
-    executeSymbolProvider,
+  executeGotoProvider,
+  executeSignatureHelpProvider,
+  executeSymbolProvider,
 } from "./autocomplete/lsp";
 import { Repository } from "./otherExtensions/git";
 import { SecretStorage } from "./stubs/SecretStorage";
@@ -19,19 +22,19 @@ import { getExtensionUri, openEditorAndRevealRange } from "./util/vscode";
 import { VsCodeWebviewProtocol } from "./webviewProtocol";
 
 import type {
-    DocumentSymbol,
-    FileStatsMap,
-    FileType,
-    IDE,
-    IdeInfo,
-    IdeSettings,
-    IndexTag,
-    Location,
-    Problem,
-    RangeInFile,
-    SignatureHelp,
-    TerminalOptions,
-    Thread,
+  DocumentSymbol,
+  FileStatsMap,
+  FileType,
+  IDE,
+  IdeInfo,
+  IdeSettings,
+  IndexTag,
+  Location,
+  Problem,
+  RangeInFile,
+  SignatureHelp,
+  TerminalOptions,
+  Thread,
 } from "core";
 import { getExtensionVersion, isExtensionPrerelease } from "./util/util";
 

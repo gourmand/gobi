@@ -1,4 +1,4 @@
-import { OnboardingModes } from "core/protocol/core";
+import { OnboardingModes } from "@gourmanddev/core/protocol/core";
 import { useNavigate } from "react-router-dom";
 import { OnboardingCardState } from "../index";
 import { useAppDispatch, useAppSelector } from "../../../redux/hooks";

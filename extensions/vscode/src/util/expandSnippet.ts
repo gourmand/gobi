@@ -1,8 +1,8 @@
 import { Chunk, IDE } from "core";
-import { languageForFilepath } from "core/autocomplete/constants/AutocompleteLanguageInfo";
-import { DEFAULT_IGNORE_DIRS } from "core/indexing/ignore";
-import { deduplicateArray } from "core/util";
-import { getParserForFile } from "core/util/treeSitter";
+import { languageForFilepath } from "@gourmanddev/core/autocomplete/constants/AutocompleteLanguageInfo";
+import { DEFAULT_IGNORE_DIRS } from "@gourmanddev/core/indexing/ignore";
+import { deduplicateArray } from "@gourmanddev/core/util";
+import { getParserForFile } from "@gourmanddev/core/util/treeSitter";
 import * as vscode from "vscode";
 
 import { getDefinitionsForNode } from "../autocomplete/lsp";

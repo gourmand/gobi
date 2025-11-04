@@ -1,4 +1,4 @@
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
 import { ChatHistoryService } from "./ChatHistoryService.js";

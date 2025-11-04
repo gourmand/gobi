@@ -1,6 +1,6 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
 import { BaseLlmApi } from "@gourmanddev/openai-adapters";
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import React from "react";
 
 import { compactChatHistory } from "../compaction.js";

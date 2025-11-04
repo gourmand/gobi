@@ -1,5 +1,5 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import { encode } from "gpt-tokenizer";
 
 import { logger } from "./logger.js";

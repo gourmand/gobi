@@ -1,10 +1,10 @@
-const fs = require("fs");
-const path = require("path");
-const { rimrafSync } = require("rimraf");
-const tar = require("tar");
-const { RIPGREP_VERSION, TARGET_TO_RIPGREP_RELEASE } = require("./targets");
-const AdmZip = require("adm-zip");
-const { ProxyAgent } = require("undici");
+import fs from "node:fs";
+import path from "node:path";
+import { rimrafSync } from "rimraf";
+import * as tar from "tar";
+import { RIPGREP_VERSION, TARGET_TO_RIPGREP_RELEASE } from "./targets.js";
+import AdmZip from "adm-zip";
+import { ProxyAgent } from "undici";
 
 const RIPGREP_BASE_URL = `https://github.com/BurntSushi/ripgrep/releases/download/${RIPGREP_VERSION}`;
 
@@ -43,7 +43,7 @@ async function downloadFile(url, destPath) {
  * @param {string} platform - Platform identifier (e.g., 'darwin', 'linux', 'win32')
  * @returns {Promise<void>}
  */
-async function extractArchive(archivePath, targetDir, platform) {
+export async function extractArchive(archivePath, targetDir, platform) {
   if (platform === "win32" || archivePath.endsWith(".zip")) {
     // Simple zip extraction for Windows - extract rg.exe
     const zip = new AdmZip(archivePath);
@@ -75,7 +75,7 @@ async function extractArchive(archivePath, targetDir, platform) {
  * @param {string} targetDir - Directory to install ripgrep to
  * @returns {Promise<string>} - Path to the installed ripgrep binary
  */
-async function downloadRipgrep(target, targetDir) {
+export async function downloadRipgrep(target, targetDir) {
   // Get the ripgrep release file name for the target
   const releaseFile = TARGET_TO_RIPGREP_RELEASE[target];
   if (!releaseFile) {
@@ -119,8 +119,3 @@ async function downloadRipgrep(target, targetDir) {
     throw error;
   }
 }
-
-module.exports = {
-  downloadRipgrep,
-  RIPGREP_VERSION,
-};

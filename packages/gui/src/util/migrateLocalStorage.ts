@@ -1,5 +1,5 @@
 import { ToolPolicy } from "@gourmanddev/terminal-security";
-import { BuiltInToolNames } from "core/tools/builtIn";
+import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
 import { clearToolPolicy, setToolPolicy } from "../redux/slices/uiSlice";
 import { AppDispatch } from "../redux/store";
 

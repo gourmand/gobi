@@ -3,17 +3,17 @@ import os from "os";
 import path from "path";
 
 import type {
-    BaseSessionMetadata,
-    ChatHistoryItem,
-    Session,
-} from "core/index.js";
-import historyManager from "core/util/history.js";
+  BaseSessionMetadata,
+  ChatHistoryItem,
+  Session,
+} from "@gourmanddev/core/index.js";
+import historyManager from "@gourmanddev/core/util/history.js";
 import { v4 as uuidv4 } from "uuid";
 
 import {
-    getAccessToken,
-    isAuthenticatedConfig,
-    loadAuthConfig,
+  getAccessToken,
+  isAuthenticatedConfig,
+  loadAuthConfig,
 } from "./auth/workos.js";
 import { DEFAULT_SESSION_TITLE } from "./constants/session.js";
 import { env } from "./env.js";

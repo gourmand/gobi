@@ -1,10 +1,13 @@
 process.env.IS_BINARY = "true";
 import { Command } from "commander";
-import { Core } from "core/core";
-import { LLMLogFormatter } from "core/llm/logFormatter";
-import { FromCoreProtocol, ToCoreProtocol } from "core/protocol";
-import { IMessenger } from "core/protocol/messenger";
-import { getCoreLogsPath, getPromptLogsPath } from "core/util/paths";
+import { Core } from "@gourmanddev/core/core";
+import { LLMLogFormatter } from "@gourmanddev/core/llm/logFormatter";
+import { FromCoreProtocol, ToCoreProtocol } from "@gourmanddev/core/protocol";
+import { IMessenger } from "@gourmanddev/core/protocol/messenger";
+import {
+  getCoreLogsPath,
+  getPromptLogsPath,
+} from "@gourmanddev/core/util/paths";
 import fs from "node:fs";
 import { IpcIde } from "./IpcIde";
 import { IpcMessenger } from "./IpcMessenger";

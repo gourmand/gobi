@@ -1,6 +1,6 @@
 import { ToolCallDelta } from "core";
-import { createRuleBlock } from "core/tools/definitions/createRuleBlock";
-import { CreateRuleBlockArgs } from "core/tools/implementations/createRuleBlock";
+import { createRuleBlock } from "@gourmanddev/core/tools/definitions/createRuleBlock";
+import { CreateRuleBlockArgs } from "@gourmanddev/core/tools/implementations/createRuleBlock";
 import { useCallback, useContext, useState } from "react";
 import { IdeMessengerContext } from "../../context/IdeMessenger";
 import { useAppSelector } from "../../redux/hooks";

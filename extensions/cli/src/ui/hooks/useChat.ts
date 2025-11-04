@@ -1,6 +1,6 @@
 /* eslint-disable max-lines */
 /* eslint-disable max-statements   */
-import type { ChatHistoryItem, Session } from "core/index.js";
+import type { ChatHistoryItem, Session } from "@gourmanddev/core/index.js";
 import { useApp } from "ink";
 import { useEffect, useRef, useState } from "react";
 
@@ -8,9 +8,9 @@ import { findCompactionIndex } from "../../compaction.js";
 import { toolPermissionManager } from "../../permissions/permissionManager.js";
 import { services } from "../../services/index.js";
 import {
-    createSession,
-    loadSession,
-    updateSessionHistory,
+  createSession,
+  loadSession,
+  updateSessionHistory,
 } from "../../session.js";
 import { handleSlashCommands } from "../../slashCommands.js";
 import { messageQueue, QueuedMessage } from "../../stream/messageQueue.js";
@@ -19,29 +19,29 @@ import { formatError } from "../../util/formatError.js";
 import { logger } from "../../util/logger.js";
 
 import {
-    handleAutoCompaction,
-    handleCompactCommand,
+  handleAutoCompaction,
+  handleCompactCommand,
 } from "./useChat.compaction.js";
 import {
-    formatMessageWithFiles,
-    handleSpecialCommands,
-    initChatHistory,
-    processSlashCommandResult,
-    trackUserMessage,
+  formatMessageWithFiles,
+  handleSpecialCommands,
+  initChatHistory,
+  processSlashCommandResult,
+  trackUserMessage,
 } from "./useChat.helpers.js";
 import {
-    handleRemoteMessage,
-    setupRemotePolling,
+  handleRemoteMessage,
+  setupRemotePolling,
 } from "./useChat.remote.helpers.js";
 import { handleBashModeProcessing } from "./useChat.shellMode.js";
 import {
-    createStreamCallbacks,
-    executeStreaming,
+  createStreamCallbacks,
+  executeStreaming,
 } from "./useChat.stream.helpers.js";
 import {
-    ActivePermissionRequest,
-    AttachedFile,
-    UseChatProps,
+  ActivePermissionRequest,
+  AttachedFile,
+  UseChatProps,
 } from "./useChat.types.js";
 
 export function useChat({

@@ -1,5 +1,5 @@
-import type { ChatHistoryItem } from "core/index.js";
-import { convertToUnifiedHistory } from "core/util/messageConversion.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
+import { convertToUnifiedHistory } from "@gourmanddev/core/util/messageConversion.js";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { handleAutoCompaction } from "./streamChatResponse.autoCompaction.js";

@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { JSONContent } from "@tiptap/core";
 import { ApplyState, MessageModes, SetCodeToEditPayload } from "core";
-import { EDIT_MODE_STREAM_ID } from "core/edit/constants";
+import { EDIT_MODE_STREAM_ID } from "@gourmanddev/core/edit/constants";
 
 export interface EditState {
   // Array because of previous multi-file edit functionality

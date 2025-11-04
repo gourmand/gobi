@@ -1,4 +1,4 @@
-import type { ToWebviewProtocol } from "core/protocol";
+import type { ToWebviewProtocol } from "@gourmanddev/core/protocol";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { useWebviewListener } from "./useWebviewListener";

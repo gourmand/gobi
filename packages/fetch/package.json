@@ -19,9 +19,7 @@
     "node-fetch": "^3.3.2"
   },
   "devDependencies": {
-    "@types/follow-redirects": "^1.14.4",
-    "typescript": "^5.0.0",
-    "vitest": "^3.2.0"
+    "@types/follow-redirects": "^1.14.4"
   },
   "engine": {
     "node": ">=24.11.0"

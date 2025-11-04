@@ -2,7 +2,7 @@ import {
   Cog6ToothIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
-import { ProfileDescription } from "core/config/ProfileLifecycleManager";
+import { ProfileDescription } from "@gourmanddev/core/config/ProfileLifecycleManager";
 import { useContext, useMemo } from "react";
 import { useNavigate } from "react-router-dom";
 import { IdeMessengerContext } from "../../context/IdeMessenger";

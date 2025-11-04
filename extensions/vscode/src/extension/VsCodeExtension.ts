@@ -2,17 +2,20 @@ import fs from "fs";
 import path from "path";
 
 import { IContextProvider } from "core";
-import { ConfigHandler } from "core/config/ConfigHandler";
-import { EXTENSION_NAME, getControlPlaneEnv } from "core/control-plane/env";
-import { Core } from "core/core";
-import { FromCoreProtocol, ToCoreProtocol } from "core/protocol";
-import { InProcessMessenger } from "core/protocol/messenger";
+import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";
+import {
+  EXTENSION_NAME,
+  getControlPlaneEnv,
+} from "@gourmanddev/core/control-plane/env";
+import { Core } from "@gourmanddev/core/core";
+import { FromCoreProtocol, ToCoreProtocol } from "@gourmanddev/core/protocol";
+import { InProcessMessenger } from "@gourmanddev/core/protocol/messenger";
 import {
   getConfigJsonPath,
   getConfigTsPath,
   getConfigYamlPath,
   getGobiGlobalPath,
-} from "core/util/paths";
+} from "@gourmanddev/core/util/paths";
 import { v4 as uuidv4 } from "uuid";
 import * as vscode from "vscode";
 
@@ -44,13 +47,13 @@ import { VsCodeIde } from "../VsCodeIde";
 import { ConfigYamlDocumentLinkProvider } from "./ConfigYamlDocumentLinkProvider";
 import { VsCodeMessenger } from "./VsCodeMessenger";
 
-import { getAst } from "core/autocomplete/util/ast";
-import { modelSupportsNextEdit } from "core/llm/autodetect";
-import { NEXT_EDIT_MODELS } from "core/llm/constants";
-import { DocumentHistoryTracker } from "core/nextEdit/DocumentHistoryTracker";
-import { NextEditProvider } from "core/nextEdit/NextEditProvider";
-import { isNextEditTest } from "core/nextEdit/utils";
-import { localPathOrUriToPath } from "core/util/pathToUri";
+import { getAst } from "@gourmanddev/core/autocomplete/util/ast";
+import { modelSupportsNextEdit } from "@gourmanddev/core/llm/autodetect";
+import { NEXT_EDIT_MODELS } from "@gourmanddev/core/llm/constants";
+import { DocumentHistoryTracker } from "@gourmanddev/core/nextEdit/DocumentHistoryTracker";
+import { NextEditProvider } from "@gourmanddev/core/nextEdit/NextEditProvider";
+import { isNextEditTest } from "@gourmanddev/core/nextEdit/utils";
+import { localPathOrUriToPath } from "@gourmanddev/core/util/pathToUri";
 import { JumpManager } from "../activation/JumpManager";
 import setupNextEditWindowManager, {
   NextEditWindowManager,

@@ -1,14 +1,14 @@
 // @ts-ignore
-import { GobiError, GobiErrorReason } from "core/util/errors.js";
+import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors.js";
 
 import { posthogService } from "src/telemetry/posthogService.js";
 
 import {
-    getServiceSync,
-    MCPServiceState,
-    SERVICE_NAMES,
-    serviceContainer,
-    services,
+  getServiceSync,
+  MCPServiceState,
+  SERVICE_NAMES,
+  serviceContainer,
+  services,
 } from "../services/index.js";
 import type { ModelServiceState } from "../services/types.js";
 import { telemetryService } from "../telemetry/telemetryService.js";
@@ -25,11 +25,11 @@ import { runTerminalCommandTool } from "./runTerminalCommand.js";
 import { searchCodeTool } from "./searchCode.js";
 import { statusTool } from "./status.js";
 import {
-    type Tool,
-    type ToolCall,
-    type ToolParametersSchema,
-    ParameterSchema,
-    PreprocessedToolCall,
+  type Tool,
+  type ToolCall,
+  type ToolParametersSchema,
+  ParameterSchema,
+  PreprocessedToolCall,
 } from "./types.js";
 import { writeChecklistTool } from "./writeChecklist.js";
 import { writeFileTool } from "./writeFile.js";
@@ -221,9 +221,7 @@ export async function executeToolCall(
     const duration = Date.now() - startTime;
     const errorMessage = error instanceof Error ? error.message : String(error);
     const errorReason =
-      error instanceof GobiError
-        ? error.reason
-        : GobiErrorReason.Unknown;
+      error instanceof GobiError ? error.reason : GobiErrorReason.Unknown;
 
     telemetryService.logToolResult({
       toolName: toolCall.name,

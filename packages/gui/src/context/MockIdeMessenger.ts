@@ -1,17 +1,17 @@
 import { ChatMessage, IDE, PromptLog } from "core";
-import { AuthType } from "core/control-plane/AuthTypes";
+import { AuthType } from "@gourmanddev/core/control-plane/AuthTypes";
 import {
   FromWebviewProtocol,
   ToCoreProtocol,
   ToWebviewProtocol,
-} from "core/protocol";
-import { Message } from "core/protocol/messenger";
-import { MessageIde } from "core/protocol/messenger/messageIde";
+} from "@gourmanddev/core/protocol";
+import { Message } from "@gourmanddev/core/protocol/messenger";
+import { MessageIde } from "@gourmanddev/core/protocol/messenger/messageIde";
 import {
   GeneratorReturnType,
   GeneratorYieldType,
   WebviewSingleProtocolMessage,
-} from "core/protocol/util";
+} from "@gourmanddev/core/protocol/util";
 import { IIdeMessenger } from "./IdeMessenger";
 
 type MockResponses = Partial<{

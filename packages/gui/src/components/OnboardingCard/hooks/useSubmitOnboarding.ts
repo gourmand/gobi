@@ -1,4 +1,4 @@
-import { OnboardingModes } from "core/protocol/core";
+import { OnboardingModes } from "@gourmanddev/core/protocol/core";
 import { usePostHog } from "posthog-js/react";
 import { useContext } from "react";
 import { IdeMessengerContext } from "../../../context/IdeMessenger";

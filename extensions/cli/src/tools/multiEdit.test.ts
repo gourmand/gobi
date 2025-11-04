@@ -1,12 +1,12 @@
 import * as fs from "fs";
 import * as path from "path";
 
-import { GobiError, GobiErrorReason } from "core/util/errors.js";
+import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors.js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
-    calculateLinesOfCodeDiff,
-    getLanguageFromFilePath,
+  calculateLinesOfCodeDiff,
+  getLanguageFromFilePath,
 } from "../telemetry/utils.js";
 
 import { multiEditTool } from "./multiEdit.js";
@@ -109,9 +109,7 @@ describe("multiEditTool CLI specific", () => {
 
       const error = await multiEditTool.preprocess!(args).catch((e) => e);
       expect(error).toBeInstanceOf(GobiError);
-      expect(error.reason).toBe(
-        GobiErrorReason.FindAndReplaceMissingFilepath,
-      );
+      expect(error.reason).toBe(GobiErrorReason.FindAndReplaceMissingFilepath);
     });
   });
 

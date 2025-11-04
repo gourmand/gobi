@@ -2,12 +2,12 @@
  * This is the entry point for the extension.
  */
 
-import { setupCa } from "core/util/ca";
-import { extractMinimalStackTraceInfo } from "core/util/extractMinimalStackTraceInfo";
-import { Telemetry } from "core/util/posthog";
+import { setupCa } from "@gourmanddev/core/util/ca";
+import { extractMinimalStackTraceInfo } from "@gourmanddev/core/util/extractMinimalStackTraceInfo";
+import { Telemetry } from "@gourmanddev/core/util/posthog";
 import * as vscode from "vscode";
 
-import { SentryLogger } from "core/util/sentry/SentryLogger";
+import { SentryLogger } from "@gourmanddev/core/util/sentry/SentryLogger";
 import { getExtensionVersion } from "./util/util";
 export { default as buildTimestamp } from "./.buildTimestamp";
 

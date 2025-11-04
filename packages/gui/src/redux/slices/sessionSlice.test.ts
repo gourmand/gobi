@@ -1,5 +1,5 @@
 import { ChatMessage } from "core";
-import { renderChatMessage } from "core/util/messageContent";
+import { renderChatMessage } from "@gourmanddev/core/util/messageContent";
 import { v4 as uuidv4 } from "uuid";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { addToolCallDeltaToState } from "../../util/toolCallState";

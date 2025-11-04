@@ -24,13 +24,13 @@ import {
   ToolCallDelta,
   ToolCallState,
 } from "core";
-import type { RemoteSessionMetadata } from "core/control-plane/client";
-import { NEW_SESSION_TITLE } from "core/util/constants";
+import type { RemoteSessionMetadata } from "@gourmanddev/core/control-plane/client";
+import { NEW_SESSION_TITLE } from "@gourmanddev/core/util/constants";
 import {
   renderChatMessage,
   renderContextItems,
-} from "core/util/messageContent";
-import { findUriInDirs, getUriPathBasename } from "core/util/uri";
+} from "@gourmanddev/core/util/messageContent";
+import { findUriInDirs, getUriPathBasename } from "@gourmanddev/core/util/uri";
 import { findLastIndex } from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import { type InlineErrorMessageType } from "../../components/mainInput/InlineErrorMessage";

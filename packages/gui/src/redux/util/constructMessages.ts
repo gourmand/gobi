@@ -7,23 +7,23 @@ import {
   ToolResultChatMessage,
   UserChatMessage,
 } from "core";
-import { chatMessageIsEmpty } from "core/llm/messages";
-import { getSystemMessageWithRules } from "core/llm/rules/getSystemMessageWithRules";
-import { RulePolicies } from "core/llm/rules/types";
-import { BuiltInToolNames } from "core/tools/builtIn";
+import { chatMessageIsEmpty } from "@gourmanddev/core/llm/messages";
+import { getSystemMessageWithRules } from "@gourmanddev/core/llm/rules/getSystemMessageWithRules";
+import { RulePolicies } from "@gourmanddev/core/llm/rules/types";
+import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
 import {
   CANCELLED_TOOL_CALL_MESSAGE,
   ERRORED_TOOL_CALL_OUTPUT_MESSAGE,
   NO_TOOL_CALL_OUTPUT_MESSAGE,
-} from "core/tools/constants";
-import { convertToolCallStatesToSystemCallsAndOutput } from "core/tools/systemMessageTools/convertSystemTools";
-import { SystemMessageToolsFramework } from "core/tools/systemMessageTools/types";
-import { findLast, findLastIndex } from "core/util/findLast";
+} from "@gourmanddev/core/tools/constants";
+import { convertToolCallStatesToSystemCallsAndOutput } from "@gourmanddev/core/tools/systemMessageTools/convertSystemTools";
+import { SystemMessageToolsFramework } from "@gourmanddev/core/tools/systemMessageTools/types";
+import { findLast, findLastIndex } from "@gourmanddev/core/util/findLast";
 import {
   normalizeToMessageParts,
   renderContextItems,
   renderContextItemsWithStatus,
-} from "core/util/messageContent";
+} from "@gourmanddev/core/util/messageContent";
 import { toolCallStateToContextItems } from "../../pages/gui/ToolCallDiv/utils";
 
 // Helper function to render context items and append status information

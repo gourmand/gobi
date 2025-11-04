@@ -4,7 +4,7 @@ import {
   UserCircleIcon as UserCircleIconOutline,
 } from "@heroicons/react/24/outline";
 import { UserCircleIcon as UserCircleIconSolid } from "@heroicons/react/24/solid";
-import { isOnPremSession } from "core/control-plane/AuthTypes";
+import { isOnPremSession } from "@gourmanddev/core/control-plane/AuthTypes";
 import { useContext } from "react";
 import { ToolTip } from "../../../../components/gui/Tooltip";
 import {

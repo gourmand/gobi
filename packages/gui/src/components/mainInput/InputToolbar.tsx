@@ -8,7 +8,7 @@ import { InputModifiers } from "core";
 import {
   modelSupportsImages,
   modelSupportsReasoning,
-} from "core/llm/autodetect";
+} from "@gourmanddev/core/llm/autodetect";
 import { memo, useContext, useRef } from "react";
 import { IdeMessengerContext } from "../../context/IdeMessenger";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";

@@ -1,6 +1,6 @@
 import { SlashCommandDescWithSource } from "core";
-import { SUPPORTED_PROMPT_CONTEXT_PROVIDERS } from "core/promptFiles";
-import { resolveRelativePathInDir } from "core/util/ideUtils";
+import { SUPPORTED_PROMPT_CONTEXT_PROVIDERS } from "@gourmanddev/core/promptFiles";
+import { resolveRelativePathInDir } from "@gourmanddev/core/util/ideUtils";
 import { IIdeMessenger } from "../../../../context/IdeMessenger";
 import { GetContextRequest } from "./types";
 

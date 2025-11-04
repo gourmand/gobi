@@ -1,5 +1,5 @@
-import { IProtocol } from "core/protocol";
-import { IMessenger, Message } from "core/protocol/messenger";
+import { IProtocol } from "@gourmanddev/core/protocol";
+import { IMessenger, Message } from "@gourmanddev/core/protocol/messenger";
 import net from "net";
 import { v4 as uuidv4 } from "uuid";
 

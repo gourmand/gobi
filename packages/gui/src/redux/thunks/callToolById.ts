@@ -1,7 +1,7 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { ContextItem } from "core";
-import { CLIENT_TOOLS_IMPLS } from "core/tools/builtIn";
-import { GobiError, GobiErrorReason } from "core/util/errors";
+import { CLIENT_TOOLS_IMPLS } from "@gourmanddev/core/tools/builtIn";
+import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors";
 import posthog from "posthog-js";
 import { callClientTool } from "../../util/clientTools/callClientTool";
 import { selectSelectedChatModel } from "../slices/configSlice";

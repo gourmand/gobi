@@ -1,6 +1,6 @@
-import { validateSingleEdit } from "core/edit/searchAndReplace/findAndReplaceUtils";
-import { executeFindAndReplace } from "core/edit/searchAndReplace/performReplace";
-import { validateSearchAndReplaceFilepath } from "core/edit/searchAndReplace/validateArgs";
+import { validateSingleEdit } from "@gourmanddev/core/edit/searchAndReplace/findAndReplaceUtils";
+import { executeFindAndReplace } from "@gourmanddev/core/edit/searchAndReplace/performReplace";
+import { validateSearchAndReplaceFilepath } from "@gourmanddev/core/edit/searchAndReplace/validateArgs";
 import { v4 as uuid } from "uuid";
 import { applyForEditTool } from "../../redux/thunks/handleApplyStateUpdate";
 import { ClientToolImpl } from "./callClientTool";

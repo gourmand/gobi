@@ -42,8 +42,8 @@ vi.mock(
 );
 
 import { ModelDescription } from "core";
-import { serializeTool } from "core/tools";
-import { grepSearchTool } from "core/tools/definitions";
+import { serializeTool } from "@gourmanddev/core/tools";
+import { grepSearchTool } from "@gourmanddev/core/tools/definitions";
 import posthog from "posthog-js";
 import { resolveEditorContent } from "../../components/mainInput/TipTapEditor/utils/resolveEditorContent";
 import { RootState } from "../store";

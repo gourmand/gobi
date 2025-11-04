@@ -4,7 +4,7 @@ import {
   Cog6ToothIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
-import { isOnPremSession } from "core/control-plane/AuthTypes";
+import { isOnPremSession } from "@gourmanddev/core/control-plane/AuthTypes";
 import { useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/Auth";

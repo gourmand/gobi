@@ -1,6 +1,6 @@
 import { Editor, EditorContent, JSONContent } from "@tiptap/react";
 import { ContextProviderDescription, InputModifiers } from "core";
-import { modelSupportsImages } from "core/llm/autodetect";
+import { modelSupportsImages } from "@gourmanddev/core/llm/autodetect";
 import {
   memo,
   useCallback,

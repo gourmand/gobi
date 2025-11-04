@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { ApplyState } from "core";
-import { EditOperation } from "core/tools/definitions/multiEdit";
+import { EditOperation } from "@gourmanddev/core/tools/definitions/multiEdit";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FindAndReplaceDisplay } from "./FindAndReplace";
 
@@ -36,7 +36,7 @@ vi.mock("react", async () => {
 });
 
 // Import mocked modules
-import { executeFindAndReplace } from "core/edit/searchAndReplace/performReplace";
+import { executeFindAndReplace } from "@gourmanddev/core/edit/searchAndReplace/performReplace";
 import { useAppSelector } from "../../../redux/hooks";
 
 const mockPost = vi.fn();

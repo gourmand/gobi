@@ -1,10 +1,10 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import { useMemo } from "react";
 
 import {
-    calculateContextUsagePercentage,
-    countChatHistoryTokens,
+  calculateContextUsagePercentage,
+  countChatHistoryTokens,
 } from "../../util/tokenizer.js";
 
 interface UseContextPercentageProps {

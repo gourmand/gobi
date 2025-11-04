@@ -1,13 +1,13 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
 import { BaseLlmApi } from "@gourmanddev/openai-adapters";
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 
 import { streamChatResponse } from "./stream/streamChatResponse.js";
 import { StreamCallbacks } from "./stream/streamChatResponse.types.js";
 import { logger } from "./util/logger.js";
 import {
-    countChatHistoryTokens,
-    getModelContextLimit,
+  countChatHistoryTokens,
+  getModelContextLimit,
 } from "./util/tokenizer.js";
 
 export interface CompactionResult {

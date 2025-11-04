@@ -1,4 +1,4 @@
-import { BuiltInToolNames } from "core/tools/builtIn";
+import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
 import { generateToolCallButtonTestId } from "../../../components/mainInput/Lump/LumpToolbar/PendingToolCallToolbar";
 import { triggerConfigUpdate } from "../../../util/test/config";
 import { updateConfig } from "../../../redux/slices/configSlice";

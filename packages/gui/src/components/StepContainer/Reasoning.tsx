@@ -1,6 +1,6 @@
 import { ChevronDownIcon, ChevronUpIcon } from "@heroicons/react/24/solid";
 import { ChatHistoryItem } from "core";
-import { stripImages } from "core/util/messageContent";
+import { stripImages } from "@gourmanddev/core/util/messageContent";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import {

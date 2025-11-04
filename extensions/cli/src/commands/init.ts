@@ -1,5 +1,5 @@
 import { type AssistantConfig } from "@gourmanddev/sdk";
-import { createRelativeRuleFilePath } from "core/config/markdown/utils.js";
+import { createRelativeRuleFilePath } from "@gourmanddev/core/config/markdown/utils.js";
 
 import { SlashCommandResult } from "../ui/hooks/useChat.types.js";
 

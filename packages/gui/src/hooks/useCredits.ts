@@ -1,6 +1,6 @@
-import { usesCreditsBasedApiKey } from "core/config/usesFreeTrialApiKey";
-import { CreditStatus } from "core/control-plane/client";
-import { isOutOfStarterCredits } from "core/llm/utils/starterCredits";
+import { usesCreditsBasedApiKey } from "@gourmanddev/core/config/usesFreeTrialApiKey";
+import { CreditStatus } from "@gourmanddev/core/control-plane/client";
+import { isOutOfStarterCredits } from "@gourmanddev/core/llm/utils/starterCredits";
 import { useCallback, useContext, useEffect, useState } from "react";
 import { IdeMessengerContext } from "../context/IdeMessenger";
 import { useAppSelector } from "../redux/hooks";

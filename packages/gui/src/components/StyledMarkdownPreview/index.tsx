@@ -1,4 +1,4 @@
-import { ctxItemToRifWithContents } from "core/commands/util";
+import { ctxItemToRifWithContents } from "@gourmanddev/core/commands/util";
 import { memo, useEffect, useMemo, useRef } from "react";
 import { useRemark } from "react-remark";
 import rehypeKatex from "rehype-katex";

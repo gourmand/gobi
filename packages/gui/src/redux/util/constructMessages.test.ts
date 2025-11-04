@@ -9,12 +9,12 @@ import {
   ToolResultChatMessage,
   UserChatMessage,
 } from "core";
-import { BuiltInToolNames } from "core/tools/builtIn";
+import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
 import {
   CANCELLED_TOOL_CALL_MESSAGE,
   NO_TOOL_CALL_OUTPUT_MESSAGE,
-} from "core/tools/constants";
-import { renderChatMessage } from "core/util/messageContent";
+} from "@gourmanddev/core/tools/constants";
+import { renderChatMessage } from "@gourmanddev/core/util/messageContent";
 import { beforeEach, describe, expect, test, vi } from "vitest";
 import { constructMessages } from "./constructMessages";
 

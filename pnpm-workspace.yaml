@@ -3,3 +3,21 @@ packages:
   - packages/gobi-sdk/typescript
   - extensions/cli
   - extensions/vscode
+
+onlyBuiltDependencies:
+  - '@biomejs/biome'
+  - '@openapitools/openapi-generator-cli'
+  - '@sentry-internal/node-cpu-profiler'
+  - '@sentry/cli'
+  - '@swc/core'
+  - '@vscode/ripgrep'
+  - '@vscode/vsce-sign'
+  - esbuild
+  - keytar
+  - macos-export-certificate-and-key
+  - puppeteer
+  - puppeteer-chromium-resolver
+  - sharp
+  - sqlite3
+  - win-ca
+  - win-export-certificate-and-key

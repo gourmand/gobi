@@ -1,4 +1,4 @@
-import ignore, { Ignore } from "./ignore";
+import ignore, { Ignore } from "ignore";
 
 import type { FileType, IDE } from "../index";
 

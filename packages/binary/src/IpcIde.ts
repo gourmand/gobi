@@ -1,5 +1,5 @@
-import { TODO } from "core/util";
-import { MessageIde } from "core/protocol/messenger/messageIde";
+import { TODO } from "@gourmanddev/core/util";
+import { MessageIde } from "@gourmanddev/core/protocol/messenger/messageIde";
 
 export class IpcIde extends MessageIde {
   constructor(messenger: TODO) {

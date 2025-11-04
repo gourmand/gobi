@@ -4,8 +4,8 @@ import {
   LOCAL_ONBOARDING_EMBEDDINGS_MODEL,
   LOCAL_ONBOARDING_FIM_MODEL,
   LOCAL_ONBOARDING_PROVIDER_TITLE,
-} from "core/config/onboarding";
-import { OnboardingModes } from "core/protocol/core";
+} from "@gourmanddev/core/config/onboarding";
+import { OnboardingModes } from "@gourmanddev/core/protocol/core";
 import { useContext, useEffect, useState } from "react";
 import { Button } from "../../index";
 import { useAuth } from "../../../context/Auth";

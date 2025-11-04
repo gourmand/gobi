@@ -1,5 +1,5 @@
 import { ApplyState, ApplyToFilePayload, ToolCallState } from "core";
-import { EDIT_MODE_STREAM_ID } from "core/edit/constants";
+import { EDIT_MODE_STREAM_ID } from "@gourmanddev/core/edit/constants";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { logAgentModeEditOutcome } from "../../util/editOutcomeLogger";
 import {

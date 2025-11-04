@@ -1,4 +1,4 @@
-import { fileURLToPath, pathToFileURL } from "./url";
+import { fileURLToPath, pathToFileURL } from "url";
 
 import * as URI from "uri-js";
 

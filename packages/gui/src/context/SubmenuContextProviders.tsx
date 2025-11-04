@@ -3,11 +3,14 @@ import {
   ContextProviderName,
   ContextSubmenuItemWithProvider,
 } from "core";
-import { deduplicateArray, splitCamelCaseAndNonAlphaNumeric } from "core/util";
+import {
+  deduplicateArray,
+  splitCamelCaseAndNonAlphaNumeric,
+} from "@gourmanddev/core/util";
 import {
   getShortestUniqueRelativeUriPaths,
   getUriPathBasename,
-} from "core/util/uri";
+} from "@gourmanddev/core/util/uri";
 import MiniSearch, { SearchResult } from "minisearch";
 import {
   createContext,

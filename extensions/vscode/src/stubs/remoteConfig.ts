@@ -1,9 +1,9 @@
 import * as fs from "fs";
 
-import { EXTENSION_NAME } from "core/control-plane/env";
-import { GobiServerClient } from "core/gobiServer/stubs/client";
-import { getConfigJsonPathForRemote } from "core/util/paths";
-import { canParseUrl } from "core/util/url";
+import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
+import { GobiServerClient } from "@gourmanddev/core/gobiServer/stubs/client";
+import { getConfigJsonPathForRemote } from "@gourmanddev/core/util/paths";
+import { canParseUrl } from "@gourmanddev/core/util/url";
 import * as vscode from "vscode";
 
 import { GOBI_WORKSPACE_KEY } from "../util/workspaceConfig";

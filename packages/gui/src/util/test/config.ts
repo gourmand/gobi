@@ -1,7 +1,7 @@
 import { EnhancedStore } from "@reduxjs/toolkit";
 import { BrowserSerializedGobiConfig, ModelDescription } from "core";
-import { SerializedOrgWithProfiles } from "core/config/ProfileLifecycleManager";
-import { copyOf } from "core/util";
+import { SerializedOrgWithProfiles } from "@gourmanddev/core/config/ProfileLifecycleManager";
+import { copyOf } from "@gourmanddev/core/util";
 import { MockIdeMessenger } from "../../context/MockIdeMessenger";
 
 interface TestConfigUpdateParams {

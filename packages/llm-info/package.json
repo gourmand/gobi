@@ -11,10 +11,6 @@
   },
   "author": "Gourmand.dev",
   "license": "Apache-2.0",
-  "devDependencies": {
-    "@types/node": "^22.15.29",
-    "typescript": "^5.5.2"
-  },
   "engine": {
     "node": ">=24.11.0"
   }

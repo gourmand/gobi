@@ -1,4 +1,4 @@
-import ignore from "./ignore";
+import ignore from "ignore";
 import type { FileType, IDE } from "../index";
 import { findUriInDirs, getUriPathBasename } from "../util/uri";
 import { getGlobalGobiIgArray } from "./gobiignore";

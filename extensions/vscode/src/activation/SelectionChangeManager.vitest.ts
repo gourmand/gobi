@@ -1,9 +1,9 @@
 import {
   EditableRegionStrategy,
   getNextEditableRegion,
-} from "core/nextEdit/NextEditEditableRegionCalculator";
-import { PrefetchQueue } from "core/nextEdit/NextEditPrefetchQueue";
-import { NextEditProvider } from "core/nextEdit/NextEditProvider";
+} from "@gourmanddev/core/nextEdit/NextEditEditableRegionCalculator";
+import { PrefetchQueue } from "@gourmanddev/core/nextEdit/NextEditPrefetchQueue";
+import { NextEditProvider } from "@gourmanddev/core/nextEdit/NextEditProvider";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import * as vscode from "vscode";
 import { VsCodeIde } from "../VsCodeIde";

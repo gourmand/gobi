@@ -1,4 +1,4 @@
-import { getMarkdownLanguageTagForFile } from "core/util";
+import { getMarkdownLanguageTagForFile } from "@gourmanddev/core/util";
 import StyledMarkdownPreview from "../../../components/StyledMarkdownPreview";
 
 interface CreateFileToolCallProps {

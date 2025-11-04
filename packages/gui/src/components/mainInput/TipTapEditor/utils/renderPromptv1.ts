@@ -3,9 +3,9 @@ import {
   RangeInFile,
   SlashCommandDescWithSource,
 } from "core";
-import { SUPPORTED_PROMPT_CONTEXT_PROVIDERS } from "core/promptFiles";
-import { renderTemplatedString } from "core/util/handlebars/renderTemplatedString";
-import { resolveRelativePathInDir } from "core/util/ideUtils";
+import { SUPPORTED_PROMPT_CONTEXT_PROVIDERS } from "@gourmanddev/core/promptFiles";
+import { renderTemplatedString } from "@gourmanddev/core/util/handlebars/renderTemplatedString";
+import { resolveRelativePathInDir } from "@gourmanddev/core/util/ideUtils";
 import { IIdeMessenger } from "../../../../context/IdeMessenger";
 
 export async function getRenderedV1Prompt(

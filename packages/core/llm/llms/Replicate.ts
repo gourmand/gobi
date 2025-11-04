@@ -1,4 +1,4 @@
-import ReplicateClient from "./Replicate";
+import ReplicateClient from "replicate";
 
 import { CompletionOptions, LLMOptions } from "../../index.js";
 import { BaseLLM } from "../index.js";

@@ -1,7 +1,7 @@
 import * as fs from "node:fs";
 import * as path from "node:path";
 
-import mergeJson from "core/util/merge";
+import mergeJson from "@gourmanddev/core/util/merge";
 import { convertTheme } from "monaco-vscode-textmate-theme-converter/lib/cjs";
 import * as vscode from "vscode";
 

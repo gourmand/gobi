@@ -1,6 +1,6 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
 import { BaseLlmApi } from "@gourmanddev/openai-adapters";
-import { convertToUnifiedHistory } from "core/util/messageConversion.js";
+import { convertToUnifiedHistory } from "@gourmanddev/core/util/messageConversion.js";
 import { describe, expect, it, vi } from "vitest";
 
 import { compactChatHistory } from "./compaction.js";

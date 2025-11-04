@@ -1,6 +1,6 @@
-import { validateMultiEdit } from "core/edit/searchAndReplace/multiEditValidation";
-import { executeMultiFindAndReplace } from "core/edit/searchAndReplace/performReplace";
-import { validateSearchAndReplaceFilepath } from "core/edit/searchAndReplace/validateArgs";
+import { validateMultiEdit } from "@gourmanddev/core/edit/searchAndReplace/multiEditValidation";
+import { executeMultiFindAndReplace } from "@gourmanddev/core/edit/searchAndReplace/performReplace";
+import { validateSearchAndReplaceFilepath } from "@gourmanddev/core/edit/searchAndReplace/validateArgs";
 import { v4 as uuid } from "uuid";
 import { applyForEditTool } from "../../redux/thunks/handleApplyStateUpdate";
 import { ClientToolImpl } from "./callClientTool";

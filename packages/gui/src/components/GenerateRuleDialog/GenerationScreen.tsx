@@ -5,8 +5,8 @@ import {
   RuleTypeDescriptions,
 } from "@gourmanddev/config-yaml";
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { createRuleFilePath } from "core/config/markdown/utils";
-import { CreateRuleBlockArgs } from "core/tools/implementations/createRuleBlock";
+import { createRuleFilePath } from "@gourmanddev/core/config/markdown/utils";
+import { CreateRuleBlockArgs } from "@gourmanddev/core/tools/implementations/createRuleBlock";
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { IdeMessengerContext } from "../../context/IdeMessenger";

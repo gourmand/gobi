@@ -1,5 +1,5 @@
 import { RangeInFile } from "core";
-import { findUriInDirs, getUriPathBasename } from "core/util/uri";
+import { findUriInDirs, getUriPathBasename } from "@gourmanddev/core/util/uri";
 import { useContext } from "react";
 import { IdeMessengerContext } from "../../context/IdeMessenger";
 import FileIcon from "../FileIcon";

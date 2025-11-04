@@ -1,5 +1,5 @@
-import type { FromWebviewProtocol } from "core/protocol";
-import type { SuccessWebviewSingleMessage } from "core/protocol/util";
+import type { FromWebviewProtocol } from "@gourmanddev/core/protocol";
+import type { SuccessWebviewSingleMessage } from "@gourmanddev/core/protocol/util";
 import { useContext, useEffect, useState } from "react";
 import { IdeMessengerContext } from "../context/IdeMessenger";
 

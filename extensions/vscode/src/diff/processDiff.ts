@@ -1,6 +1,6 @@
-import { Core } from "core/core";
-import { DataLogger } from "core/data/log";
-import { myersDiff } from "core/diff/myers";
+import { Core } from "@gourmanddev/core/core";
+import { DataLogger } from "@gourmanddev/core/data/log";
+import { myersDiff } from "@gourmanddev/core/diff/myers";
 
 import { editOutcomeTracker } from "../extension/EditOutcomeTracker";
 import { GobiGUIWebviewViewProvider } from "../GobiGUIWebviewViewProvider";

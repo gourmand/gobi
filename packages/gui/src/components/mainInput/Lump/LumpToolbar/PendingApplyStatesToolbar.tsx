@@ -1,5 +1,5 @@
 import { ApplyState } from "core";
-import { getUriPathBasename } from "core/util/uri";
+import { getUriPathBasename } from "@gourmanddev/core/util/uri";
 import AcceptRejectDiffButtons from "../../../AcceptRejectDiffButtons";
 import FileIcon from "../../../FileIcon";
 

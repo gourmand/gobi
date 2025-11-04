@@ -29,12 +29,12 @@ vi.mock(
 );
 
 import { ModelDescription } from "core";
-import { serializeTool } from "core/tools";
+import { serializeTool } from "@gourmanddev/core/tools";
 import {
   editFileTool,
   grepSearchTool,
   runTerminalCommandTool,
-} from "core/tools/definitions";
+} from "@gourmanddev/core/tools/definitions";
 import posthog from "posthog-js";
 import { resolveEditorContent } from "../../components/mainInput/TipTapEditor/utils/resolveEditorContent";
 import { MockIdeMessenger } from "../../context/MockIdeMessenger";

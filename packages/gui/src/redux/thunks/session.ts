@@ -1,8 +1,8 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { BaseSessionMetadata, ChatMessage, Session } from "core";
-import { RemoteSessionMetadata } from "core/control-plane/client";
-import { NEW_SESSION_TITLE } from "core/util/constants";
-import { renderChatMessage } from "core/util/messageContent";
+import { RemoteSessionMetadata } from "@gourmanddev/core/control-plane/client";
+import { NEW_SESSION_TITLE } from "@gourmanddev/core/util/constants";
+import { renderChatMessage } from "@gourmanddev/core/util/messageContent";
 import { IIdeMessenger } from "../../context/IdeMessenger";
 import { selectSelectedChatModel } from "../slices/configSlice";
 import {

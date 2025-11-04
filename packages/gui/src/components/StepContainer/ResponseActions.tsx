@@ -5,8 +5,8 @@ import {
   TrashIcon,
 } from "@heroicons/react/24/outline";
 import { ChatHistoryItem } from "core";
-import { modelSupportsNativeTools } from "core/llm/toolSupport";
-import { renderChatMessage } from "core/util/messageContent";
+import { modelSupportsNativeTools } from "@gourmanddev/core/llm/toolSupport";
+import { renderChatMessage } from "@gourmanddev/core/util/messageContent";
 import { useMemo } from "react";
 import { useAppDispatch, useAppSelector } from "../../redux/hooks";
 import { selectSelectedChatModel } from "../../redux/slices/configSlice";

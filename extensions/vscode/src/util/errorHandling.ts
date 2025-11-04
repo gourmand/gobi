@@ -1,5 +1,5 @@
 import { ILLM } from "core";
-import { isModelInstaller } from "core/llm";
+import { isModelInstaller } from "@gourmanddev/core/llm";
 import * as vscode from "vscode";
 
 /**
@@ -71,11 +71,7 @@ export async function handleLLMError(error: unknown): Promise<boolean> {
       vscode.commands.executeCommand("gobi.startLocalOllama");
     } else if (val === "Install Model" && "llm" in error) {
       //Eventually, we might be able to support installing models for other LLM providers than Ollama
-      vscode.commands.executeCommand(
-        "gobi.installModel",
-        modelName,
-        error.llm,
-      );
+      vscode.commands.executeCommand("gobi.installModel", modelName, error.llm);
     }
   });
   return true;

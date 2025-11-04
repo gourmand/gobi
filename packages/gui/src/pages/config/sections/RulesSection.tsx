@@ -17,8 +17,8 @@ import {
   DEFAULT_CHAT_SYSTEM_MESSAGE,
   DEFAULT_PLAN_SYSTEM_MESSAGE,
   DEFAULT_SYSTEM_MESSAGES_URL,
-} from "core/llm/defaultSystemMessages";
-import { getRuleDisplayName } from "core/llm/rules/rules-utils";
+} from "@gourmanddev/core/llm/defaultSystemMessages";
+import { getRuleDisplayName } from "@gourmanddev/core/llm/rules/rules-utils";
 import { useContext, useMemo, useState } from "react";
 import { DropdownButton } from "../../../components/DropdownButton";
 import HeaderButtonWithToolTip from "../../../components/gui/HeaderButtonWithToolTip";

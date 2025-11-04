@@ -15,6 +15,7 @@
     "@anthropic-ai/sdk": "^0.62.0",
     "@aws-sdk/client-bedrock-runtime": "^3.842.0",
     "@aws-sdk/credential-providers": "^3.840.0",
+    "@aws-sdk/token-providers": "^3.921.0",
     "@gourmanddev/config-types": "workspace:^",
     "@gourmanddev/config-yaml": "workspace:^",
     "@gourmanddev/fetch": "workspace:^",
@@ -28,13 +29,9 @@
   },
   "devDependencies": {
     "@types/follow-redirects": "^1.14.4",
-    "@types/jest": "^29.5.14",
     "@types/json-schema": "^7.0.15",
-    "@types/node": "^24.3.0",
-    "cross-env": "^7.0.3",
-    "ts-jest": "^29.2.3",
-    "ts-node": "^10.9.2",
-    "vitest": "^3.2.4"
+    "@aws-sdk/types": "^3.921.0",
+    "cross-env": "^7.0.3"
   },
   "engine": {
     "node": ">=24.11.0"

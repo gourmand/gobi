@@ -1,5 +1,5 @@
 import { SlashCommandDescWithSource } from "core";
-import {} from "core/config/default";
+import {} from "@gourmanddev/core/config/default";
 
 /**
  * Sorts commands with bookmarked ones first

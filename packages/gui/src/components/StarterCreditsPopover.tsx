@@ -3,7 +3,7 @@ import {
   GiftIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { CreditStatus } from "core/control-plane/client";
+import { CreditStatus } from "@gourmanddev/core/control-plane/client";
 import { useContext, useState } from "react";
 import { Button, SecondaryButton, vscButtonBackground } from "./index";
 import { useAuth } from "../context/Auth";

@@ -1,6 +1,6 @@
 import { ModelRole } from "@gourmanddev/config-yaml";
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ProfileDescription } from "core/config/ProfileLifecycleManager";
+import { ProfileDescription } from "@gourmanddev/core/config/ProfileLifecycleManager";
 import { updateConfig } from "../slices/configSlice";
 import { ThunkApiType } from "../store";
 

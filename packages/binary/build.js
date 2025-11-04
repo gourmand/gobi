@@ -1,16 +1,15 @@
-const esbuild = require("esbuild");
-const fs = require("fs");
-const path = require("path");
-const ncp = require("ncp").ncp;
-const { rimrafSync } = require("rimraf");
-const { validateFilesPresent } = require("../../scripts/util");
-const { ALL_TARGETS, TARGET_TO_LANCEDB } = require("./utils/targets");
-const { fork } = require("child_process");
-const {
-  installAndCopyNodeModules,
-} = require("../../extensions/vscode/scripts/install-copy-nodemodule");
-const { bundleBinary } = require("./utils/bundle-binary");
+import * as esbuild from "esbuild";
+import fs from "node:fs";
+import path from "node:path";
+import ncp from "ncp";
+import { rimrafSync } from "rimraf";
+import { ALL_TARGETS, TARGET_TO_LANCEDB } from "./utils/targets.js";
+import { bundleBinary } from "./utils/bundle-binary.js";
+import { fork } from "child_process";
+import { validateFilesPresent } from "./utils/system.js";
+import { tsconfigPathsPlugin } from "esbuild-plugin-tsconfig-paths";
 
+const __dirname = import.meta.dirname;
 const bin = path.join(__dirname, "bin");
 const out = path.join(__dirname, "out");
 const build = path.join(__dirname, "build");
@@ -59,8 +58,12 @@ async function buildWithEsbuild() {
       "tiktokenWorkerPool.mjs",
       "vscode",
       "./index.node",
+      "@huggingface/jinja",
+      "data-uri-to-buffer",
+      "fetch-blob/from.js",
+      "formdata-polyfill/esm.min.js",
     ],
-    format: "cjs",
+    format: "esm",
     platform: "node",
     sourcemap: true,
     minify: !esbuildOnly,
@@ -69,7 +72,8 @@ async function buildWithEsbuild() {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       ".node": "file",
     },
-
+    resolveExtensions: [".ts", ".js", ".mjs", ".cjs"],
+    // plugins: [tsconfigPathsPlugin()],
     // To allow import.meta.path for transformers.js
     // https://github.com/evanw/esbuild/issues/1492#issuecomment-893144483
     inject: ["./importMetaUrl.js"],
@@ -101,21 +105,21 @@ async function buildWithEsbuild() {
     ),
   );
 
-  const copyLanceDBPromises = [];
-  for (const target of targets) {
-    if (!TARGET_TO_LANCEDB[target]) {
-      continue;
-    }
-    console.log(`[info] Downloading for ${target}...`);
-    copyLanceDBPromises.push(
-      installAndCopyNodeModules(TARGET_TO_LANCEDB[target], "@lancedb"),
-    );
-  }
-  await Promise.all(copyLanceDBPromises).catch(() => {
-    console.error("[error] Failed to copy LanceDB");
-    process.exit(1);
-  });
-  console.log("[info] Copied all LanceDB");
+  // const copyLanceDBPromises = [];
+  // for (const target of targets) {
+  //   if (!TARGET_TO_LANCEDB[target]) {
+  //     continue;
+  //   }
+  //   console.log(`[info] Downloading for ${target}...`);
+  //   copyLanceDBPromises.push(
+  //     installAndCopyNodeModules(TARGET_TO_LANCEDB[target], "@lancedb"),
+  //   );
+  // }
+  // await Promise.all(copyLanceDBPromises).catch(() => {
+  //   console.error("[error] Failed to copy LanceDB");
+  //   process.exit(1);
+  // });
+  // console.log("[info] Copied all LanceDB");
 
   // tree-sitter-wasm
   const treeSitterWasmsDir = path.join(out, "tree-sitter-wasms");
@@ -148,7 +152,7 @@ async function buildWithEsbuild() {
   fs.mkdirSync(treeSitterDir);
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(__dirname, "..", "extensions", "vscode", "tree-sitter"),
+      path.join(__dirname, "..", "..", "extensions", "vscode", "tree-sitter"),
       treeSitterDir,
       { dereference: true },
       (error) => {
@@ -184,7 +188,7 @@ async function buildWithEsbuild() {
   }
 
   await buildWithEsbuild();
-
+  console.log("[info] esbuild complete");
   // Copy over any worker files
   fs.cpSync(
     "../core/node_modules/jsdom/lib/jsdom/living/xhr/xhr-sync-worker.js",
@@ -201,7 +205,8 @@ async function buildWithEsbuild() {
   for (const target of targets) {
     buildBinaryPromises.push(bundleBinary(target));
   }
-  await Promise.all(buildBinaryPromises).catch(() => {
+  await Promise.all(buildBinaryPromises).catch((err) => {
+    console.error(err.message);
     console.error("[error] Failed to build binaries");
     process.exit(1);
   });

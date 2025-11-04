@@ -2,18 +2,13 @@
  * @file Builds the binary for the specified target. It is also intended to run as a child process.
  */
 
-const {
-  execCmdSync,
-  autodetectPlatformAndArch,
-} = require("../../../scripts/util");
-const { downloadRipgrep } = require("./ripgrep");
-const { TARGET_TO_LANCEDB } = require("./targets");
-const fs = require("fs");
-const {
-  downloadSqlite,
-} = require("../../../extensions/vscode/scripts/download-copy-sqlite");
-const { fork } = require("child_process");
+import { execCmdSync, autodetectPlatformAndArch } from "./system.js";
+import { downloadRipgrep } from "./ripgrep.js";
+import { TARGET_TO_LANCEDB } from "./targets.js";
+import fs from "node:fs";
+import { fork } from "node:child_process";
 
+const __filename = import.meta.filename;
 async function downloadNodeSqlite(target, targetDir) {
   const [currentPlatform, currentArch] = autodetectPlatformAndArch();
 
@@ -80,7 +75,7 @@ process.on("message", (msg) => {
 /**
  * @param {string} target the platform to bundle for
  */
-async function bundleBinary(target) {
+export async function bundleBinary(target) {
   const child = fork(__filename, { stdio: "inherit" });
   child.send({
     payload: {
@@ -98,6 +93,13 @@ async function bundleBinary(target) {
   });
 }
 
-module.exports = {
-  bundleBinary,
-};
+async function downloadSqlite(target, targetDir) {
+  const downloadUrl =
+    // node-sqlite3 doesn't have a pre-built binary for win32-arm64
+    target === "win32-arm64"
+      ? "https://gobi-server-binaries.s3.us-west-1.amazonaws.com/win32-arm64/node_sqlite3.tar.gz"
+      : `https://github.com/TryGhost/node-sqlite3/releases/download/v5.1.7/sqlite3-v5.1.7-napi-v6-${
+          target
+        }.tar.gz`;
+  await downloadFile(downloadUrl, targetDir);
+}

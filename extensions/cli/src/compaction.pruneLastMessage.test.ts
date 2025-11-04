@@ -1,4 +1,4 @@
-import { convertToUnifiedHistory } from "core/util/messageConversion.js";
+import { convertToUnifiedHistory } from "@gourmanddev/core/util/messageConversion.js";
 import { describe, expect, it } from "vitest";
 
 import { pruneLastMessage } from "./compaction.js";

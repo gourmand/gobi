@@ -1,6 +1,6 @@
-import { decodePackageSlug } from "@gourmanddev/config-yaml/src/index";
+import { decodePackageSlug } from "@gourmanddev/config-yaml";
 import type { OpenAI } from "openai";
-import { Configuration, DefaultApi } from "./generated/index.js";
+import { Configuration, DefaultApi, ListAssistants200ResponseInner } from "./generated";
 import { Assistant } from "./Assistant.js";
 import { createOpenAIClient } from "./createOpenAIClient.js";
 
@@ -122,7 +122,7 @@ export class Gobi {
     });
 
     const assistantRes = assistants.find(
-      (a) => a.ownerSlug === ownerSlug && a.packageSlug === packageSlug,
+      (a: ListAssistants200ResponseInner) => a.ownerSlug === ownerSlug && a.packageSlug === packageSlug,
     );
 
     if (!assistantRes) {

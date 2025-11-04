@@ -9,7 +9,7 @@ import {
   RangeInFile,
   SlashCommandDescWithSource,
 } from "core";
-import { stripImages } from "core/util/messageContent";
+import { stripImages } from "@gourmanddev/core/util/messageContent";
 import { IIdeMessenger } from "../../../../context/IdeMessenger";
 import { setIsGatheringContext } from "../../../../redux/slices/sessionSlice";
 import { RootState } from "../../../../redux/store";

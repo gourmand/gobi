@@ -1,6 +1,6 @@
-import type { ChatHistoryItem, ToolStatus } from "core/index.js";
-import { stripImages } from "core/util/messageContent.js";
-import { createHistoryItem } from "core/util/messageConversion.js";
+import type { ChatHistoryItem, ToolStatus } from "@gourmanddev/core/index.js";
+import { stripImages } from "@gourmanddev/core/util/messageContent.js";
+import { createHistoryItem } from "@gourmanddev/core/util/messageConversion.js";
 import type { ChatCompletionTool } from "openai/resources.mjs";
 
 import { filterExcludedTools } from "../permissions/index.js";

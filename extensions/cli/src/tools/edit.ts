@@ -1,15 +1,15 @@
 import * as fs from "fs";
 import path from "path";
 
-import { validateSingleEdit } from "core/edit/searchAndReplace/findAndReplaceUtils.js";
-import { executeFindAndReplace } from "core/edit/searchAndReplace/performReplace.js";
-import { throwIfFileIsSecurityConcern } from "core/indexing/ignore.js";
-import { GobiError, GobiErrorReason } from "core/util/errors.js";
+import { validateSingleEdit } from "@gourmanddev/core/edit/searchAndReplace/findAndReplaceUtils.js";
+import { executeFindAndReplace } from "@gourmanddev/core/edit/searchAndReplace/performReplace.js";
+import { throwIfFileIsSecurityConcern } from "@gourmanddev/core/indexing/ignore.js";
+import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors.js";
 
 import { telemetryService } from "../telemetry/telemetryService.js";
 import {
-    calculateLinesOfCodeDiff,
-    getLanguageFromFilePath,
+  calculateLinesOfCodeDiff,
+  getLanguageFromFilePath,
 } from "../telemetry/utils.js";
 
 import { EditOperation } from "./multiEdit.js";

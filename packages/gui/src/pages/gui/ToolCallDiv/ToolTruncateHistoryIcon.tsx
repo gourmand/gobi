@@ -1,6 +1,6 @@
 import { BarsArrowUpIcon } from "@heroicons/react/24/outline";
-import { chatMessageIsEmpty } from "core/llm/messages";
-import { findLastIndex } from "core/util/findLast";
+import { chatMessageIsEmpty } from "@gourmanddev/core/llm/messages";
+import { findLastIndex } from "@gourmanddev/core/util/findLast";
 import { useMemo } from "react";
 import { useMainEditor } from "../../../components/mainInput/TipTapEditor";
 import { ToolbarButtonWithTooltip } from "../../../components/StyledMarkdownPreview/StepContainerPreToolbar/ToolbarButtonWithTooltip";

@@ -1,5 +1,5 @@
 import { GiftIcon } from "@heroicons/react/24/outline";
-import { CreditStatus } from "core/control-plane/client";
+import { CreditStatus } from "@gourmanddev/core/control-plane/client";
 import StarterCreditsPopover from "./StarterCreditsPopover";
 
 interface FreeTrialButtonProps {

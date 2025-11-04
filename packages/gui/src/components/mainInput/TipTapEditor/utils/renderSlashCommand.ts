@@ -1,5 +1,5 @@
 import { MessagePart, RangeInFile, SlashCommandDescWithSource } from "core";
-import { stripImages } from "core/util/messageContent";
+import { stripImages } from "@gourmanddev/core/util/messageContent";
 import { IIdeMessenger } from "../../../../context/IdeMessenger";
 import { renderMcpPrompt } from "./renderMcpPrompt";
 import { getRenderedV1Prompt } from "./renderPromptv1";

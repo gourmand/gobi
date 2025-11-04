@@ -1,5 +1,5 @@
-import { GobiErrorReason } from "core/util/errors";
-import * as ideUtils from "core/util/ideUtils";
+import { GobiErrorReason } from "@gourmanddev/core/util/errors";
+import * as ideUtils from "@gourmanddev/core/util/ideUtils";
 import { beforeEach, describe, expect, it, Mock, vi } from "vitest";
 import { applyForEditTool } from "../../redux/thunks/handleApplyStateUpdate";
 import { ClientToolExtras } from "./callClientTool";

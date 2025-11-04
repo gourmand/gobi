@@ -1,4 +1,4 @@
-import { calculateRequestCost } from "core/llm/utils/calculateRequestCost";
+import { calculateRequestCost } from "@gourmanddev/core/llm/utils/calculateRequestCost";
 import React, { useMemo, useState } from "react";
 import { LLMLog } from "../../hooks/useLLMLog";
 import useTotalUsage from "../../hooks/useTotalUsage";

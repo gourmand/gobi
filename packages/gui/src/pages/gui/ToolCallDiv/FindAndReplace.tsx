@@ -1,10 +1,13 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ApplyState } from "core";
-import { trimEmptyLines } from "core/edit/searchAndReplace/findAndReplaceUtils";
-import { executeFindAndReplace } from "core/edit/searchAndReplace/performReplace";
-import { EditOperation } from "core/tools/definitions/multiEdit";
-import { renderContextItems } from "core/util/messageContent";
-import { getLastNPathParts, getUriPathBasename } from "core/util/uri";
+import { trimEmptyLines } from "@gourmanddev/core/edit/searchAndReplace/findAndReplaceUtils";
+import { executeFindAndReplace } from "@gourmanddev/core/edit/searchAndReplace/performReplace";
+import { EditOperation } from "@gourmanddev/core/tools/definitions/multiEdit";
+import { renderContextItems } from "@gourmanddev/core/util/messageContent";
+import {
+  getLastNPathParts,
+  getUriPathBasename,
+} from "@gourmanddev/core/util/uri";
 import { diffLines } from "diff";
 import { useContext, useMemo, useState } from "react";
 import { ApplyActions } from "../../../components/StyledMarkdownPreview/StepContainerPreToolbar/ApplyActions";

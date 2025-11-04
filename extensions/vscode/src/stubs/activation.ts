@@ -1,4 +1,4 @@
-import { EXTENSION_NAME } from "core/control-plane/env";
+import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
 import * as vscode from "vscode";
 
 import { getUserToken } from "./auth";

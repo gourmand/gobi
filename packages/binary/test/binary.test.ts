@@ -1,8 +1,11 @@
-import { SerializedGobiConfig } from "core";
-// import Mock from "core/llm/llms/Mock.js";
-import { FromIdeProtocol, ToIdeProtocol } from "core/protocol/index.js";
-import { IMessenger } from "core/protocol/messenger";
-import FileSystemIde from "core/util/filesystem";
+import { SerializedGobiConfig } from "@gourmanddev/core";
+// import Mock from "@gourmanddev/core/llm/llms/Mock.js";
+import {
+  FromIdeProtocol,
+  ToIdeProtocol,
+} from "@gourmanddev/core/protocol/index.js";
+import { IMessenger } from "@gourmanddev/core/protocol/messenger";
+import FileSystemIde from "@gourmanddev/core/util/filesystem";
 import fs from "fs";
 import {
   ChildProcessWithoutNullStreams,

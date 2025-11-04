@@ -1,8 +1,8 @@
 import {
   ProfileDescription,
   SerializedOrgWithProfiles,
-} from "core/config/ProfileLifecycleManager";
-import { ControlPlaneSessionInfo } from "core/control-plane/AuthTypes";
+} from "@gourmanddev/core/config/ProfileLifecycleManager";
+import { ControlPlaneSessionInfo } from "@gourmanddev/core/control-plane/AuthTypes";
 import React, {
   createContext,
   useCallback,

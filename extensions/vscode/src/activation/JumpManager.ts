@@ -1,12 +1,12 @@
-import { NextEditProvider } from "core/nextEdit/NextEditProvider";
-import { NextEditOutcome } from "core/nextEdit/types";
+import { NextEditProvider } from "@gourmanddev/core/nextEdit/NextEditProvider";
+import { NextEditOutcome } from "@gourmanddev/core/nextEdit/types";
 // @ts-ignore
 import svgBuilder from "svg-builder";
 import * as vscode from "vscode";
 import { getTheme } from "../util/getTheme";
 import {
-    HandlerPriority,
-    SelectionChangeManager,
+  HandlerPriority,
+  SelectionChangeManager,
 } from "./SelectionChangeManager";
 
 // Instead of getters that execute immediately, use methods or lazy properties

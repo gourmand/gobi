@@ -1,5 +1,8 @@
 import { ChatHistoryItem } from "core";
-import { renderChatMessage, stripImages } from "core/util/messageContent";
+import {
+  renderChatMessage,
+  stripImages,
+} from "@gourmanddev/core/util/messageContent";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useAppSelector } from "../../redux/hooks";

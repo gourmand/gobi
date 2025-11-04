@@ -1,6 +1,6 @@
 import { LLMInteractionItem } from "core";
-import { EXTENSION_NAME } from "core/control-plane/env";
-import { LLMLogger } from "core/llm/logger";
+import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
+import { LLMLogger } from "@gourmanddev/core/llm/logger";
 import * as vscode from "vscode";
 
 import { getExtensionUri, getNonce } from "./util/vscode";

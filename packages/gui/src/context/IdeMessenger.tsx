@@ -3,16 +3,16 @@ import type {
   FromWebviewProtocol,
   ToCoreProtocol,
   ToWebviewProtocol,
-} from "core/protocol";
-import { Message } from "core/protocol/messenger";
-import { MessageIde } from "core/protocol/messenger/messageIde";
+} from "@gourmanddev/core/protocol";
+import { Message } from "@gourmanddev/core/protocol/messenger";
+import { MessageIde } from "@gourmanddev/core/protocol/messenger/messageIde";
 import {
   GeneratorReturnType,
   GeneratorYieldType,
   WebviewProtocolGeneratorMessage,
   WebviewSingleMessage,
   WebviewSingleProtocolMessage,
-} from "core/protocol/util";
+} from "@gourmanddev/core/protocol/util";
 import { createContext } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { isJetBrains } from "../util";

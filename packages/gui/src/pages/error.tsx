@@ -1,5 +1,5 @@
 import { ArrowPathIcon, FlagIcon } from "@heroicons/react/24/outline";
-import { DISCORD_LINK, GITHUB_LINK } from "core/util/constants";
+import { DISCORD_LINK, GITHUB_LINK } from "@gourmanddev/core/util/constants";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useRouteError } from "react-router-dom";

@@ -15,11 +15,7 @@
     "@gourmanddev/config-yaml": "workspace:^"
   },
   "devDependencies": {
-    "@types/jest": "^29.5.14",
-    "cross-env": "^7.0.3",
-    "jest": "^29.7.0",
-    "ts-jest": "^29.2.3",
-    "ts-node": "^10.9.2"
+    "cross-env": "^7.0.3"
   },
   "engine": {
     "node": ">=24.11.0"

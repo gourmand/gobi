@@ -1,4 +1,4 @@
-import { ProfileDescription } from "core/config/ProfileLifecycleManager";
+import { ProfileDescription } from "@gourmanddev/core/config/ProfileLifecycleManager";
 import { KeyboardEvent as ReactKeyboardEvent } from "react";
 import { getLocalStorage } from "./localStorage";
 

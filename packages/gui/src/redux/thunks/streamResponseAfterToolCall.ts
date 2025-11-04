@@ -1,6 +1,6 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { ChatMessage } from "core";
-import { renderContextItems } from "core/util/messageContent";
+import { renderContextItems } from "@gourmanddev/core/util/messageContent";
 import { selectCurrentToolCalls } from "../selectors/selectToolCalls";
 import {
   ChatHistoryItemWithMessageId,

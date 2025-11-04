@@ -1,0 +1,76 @@
+{
+  "name": "@gourmanddev/binary",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "author": "gourmand.dev",
+  "description": "",
+  "main": "out/index.js",
+  "bin": "out/index.js",
+  "pkg": {
+    "scripts": [
+      "node_modules/axios/**/*"
+    ],
+    "assets": [
+      "../core/node_modules/sqlite3/**/*",
+      "node_modules/@lancedb/**/*",
+      "out/tree-sitter.wasm",
+      "out/tree-sitter-wasms/*"
+    ],
+    "targets": [
+      "node18-darwin-arm64"
+    ],
+    "outputPath": "bin"
+  },
+  "scripts": {
+    "test": "jest",
+    "build": "node build.js",
+    "rebuild": "node build.js --esbuild-only",
+    "build:darwin-x64": "node build.js --os darwin-x64"
+  },
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@biomejs/biome": "1.6.4",
+    "@types/follow-redirects": "^1.14.4",
+    "@types/uuid": "^9.0.8",
+    "@vercel/ncc": "^0.38.1",
+    "cross-env": "^7.0.3",
+    "esbuild": "0.19.11",
+    "esbuild-plugin-tsconfig-paths": "^1.0.1",
+    "pkg": "^5.8.1",
+    "rimraf": "^5.0.7",
+    "ts-jest": "^29.1.4",
+    "tsup": "^8.5.0"
+  },
+  "dependencies": {
+    "@gourmanddev/core": "workspace:^",
+    "@gourmanddev/fetch": "workspace:^",
+    "@huggingface/jinja": "^0.5.1",
+    "@lancedb/vectordb-darwin-arm64": "^0.21.2",
+    "@lancedb/vectordb-darwin-x64": "^0.21.2",
+    "@lancedb/vectordb-linux-arm64-gnu": "^0.21.2",
+    "@lancedb/vectordb-linux-x64-gnu": "^0.21.2",
+    "@lancedb/vectordb-win32-arm64-msvc": "^0.18.1",
+    "@lancedb/vectordb-win32-x64-msvc": "^0.21.2",
+    "@octokit/rest": "^20.1.1",
+    "adm-zip": "^0.5.16",
+    "commander": "^12.0.0",
+    "data-uri-to-buffer": "^6.0.2",
+    "fetch-blob": "^4.0.0",
+    "follow-redirects": "^1.15.5",
+    "formdata-polyfill": "^4.0.10",
+    "mac-ca": "^2.0.3",
+    "ncp": "^2.0.0",
+    "node-fetch": "^3.3.2",
+    "posthog-node": "^3.6.3",
+    "system-ca": "^1.0.2",
+    "tar": "^7.4.3",
+    "undici": "^7.10.0",
+    "uuid": "^9.0.1",
+    "vectordb": "^0.4.20",
+    "win-ca": "^3.5.1"
+  },
+  "engine": {
+    "node":">=24.11.0"
+  }
+}

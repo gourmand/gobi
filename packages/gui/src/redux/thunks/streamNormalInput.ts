@@ -1,7 +1,7 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { LLMFullCompletionOptions, ModelDescription } from "core";
-import { getRuleId } from "core/llm/rules/getSystemMessageWithRules";
-import { ToCoreProtocol } from "core/protocol";
+import { getRuleId } from "@gourmanddev/core/llm/rules/getSystemMessageWithRules";
+import { ToCoreProtocol } from "@gourmanddev/core/protocol";
 import { selectActiveTools } from "../selectors/selectActiveTools";
 import { selectSelectedChatModel } from "../slices/configSlice";
 import {
@@ -20,10 +20,10 @@ import {
 import { ThunkApiType } from "../store";
 import { constructMessages } from "../util/constructMessages";
 
-import { modelSupportsNativeTools } from "core/llm/toolSupport";
-import { addSystemMessageToolsToSystemMessage } from "core/tools/systemMessageTools/buildToolsSystemMessage";
-import { interceptSystemToolCalls } from "core/tools/systemMessageTools/interceptSystemToolCalls";
-import { SystemMessageToolCodeblocksFramework } from "core/tools/systemMessageTools/toolCodeblocks";
+import { modelSupportsNativeTools } from "@gourmanddev/core/llm/toolSupport";
+import { addSystemMessageToolsToSystemMessage } from "@gourmanddev/core/tools/systemMessageTools/buildToolsSystemMessage";
+import { interceptSystemToolCalls } from "@gourmanddev/core/tools/systemMessageTools/interceptSystemToolCalls";
+import { SystemMessageToolCodeblocksFramework } from "@gourmanddev/core/tools/systemMessageTools/toolCodeblocks";
 import posthog from "posthog-js";
 import {
   selectCurrentToolCalls,

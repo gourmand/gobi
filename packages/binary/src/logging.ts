@@ -1,4 +1,4 @@
-import { getCoreLogsPath } from "core/util/paths";
+import { getCoreLogsPath } from "@gourmanddev/core/util/paths";
 import fs from "node:fs";
 
 export function setupCoreLogging() {

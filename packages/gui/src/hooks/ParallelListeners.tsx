@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { IdeMessengerContext } from "../context/IdeMessenger";
 
-import { FromCoreProtocol } from "core/protocol";
+import { FromCoreProtocol } from "@gourmanddev/core/protocol";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { setConfigLoading, setConfigResult } from "../redux/slices/configSlice";
 import { setLastNonEditSessionEmpty } from "../redux/slices/editState";
@@ -19,7 +19,7 @@ import {
 } from "../redux/slices/sessionSlice";
 import { setTTSActive } from "../redux/slices/uiSlice";
 
-import { modelSupportsReasoning } from "core/llm/autodetect";
+import { modelSupportsReasoning } from "@gourmanddev/core/llm/autodetect";
 import { cancelStream } from "../redux/thunks/cancelStream";
 import { handleApplyStateUpdate } from "../redux/thunks/handleApplyStateUpdate";
 import { loadSession, refreshSessionMetadata } from "../redux/thunks/session";

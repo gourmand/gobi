@@ -1,6 +1,6 @@
 import { ContextItem, ToolCallState } from "core";
-import { BuiltInToolNames } from "core/tools/builtIn";
-import { GobiError, GobiErrorReason } from "core/util/errors";
+import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
+import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors";
 import { IIdeMessenger } from "../../context/IdeMessenger";
 import { AppThunkDispatch, RootState } from "../../redux/store";
 import { editToolImpl } from "./editImpl";

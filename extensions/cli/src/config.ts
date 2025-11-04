@@ -1,18 +1,15 @@
 import { AssistantUnrolled, ModelConfig } from "@gourmanddev/config-yaml";
 import {
-    BaseLlmApi,
-    constructLlmApi,
-    LLMConfig,
+  BaseLlmApi,
+  constructLlmApi,
+  LLMConfig,
 } from "@gourmanddev/openai-adapters";
-import {
-    Configuration,
-    DefaultApi,
-} from "@gourmanddev/sdk/dist/api/dist/index.js";
+import { Configuration, DefaultApi } from "@gourmanddev/sdk";
 
 import {
-    AuthConfig,
-    getAccessToken,
-    getOrganizationId,
+  AuthConfig,
+  getAccessToken,
+  getOrganizationId,
 } from "./auth/workos.js";
 import { env } from "./env.js";
 

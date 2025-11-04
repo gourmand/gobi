@@ -1,4 +1,4 @@
-import ignore from "./ignore";
+import ignore from "ignore";
 
 import path from "path";
 import { fileURLToPath } from "url";

@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 import { Tool } from "core";
-import { BUILT_IN_GROUP_NAME } from "core/tools/builtIn";
+import { BUILT_IN_GROUP_NAME } from "@gourmanddev/core/tools/builtIn";
 import { DEFAULT_TOOL_SETTING } from "../slices/uiSlice";
 import { RootState } from "../store";
 

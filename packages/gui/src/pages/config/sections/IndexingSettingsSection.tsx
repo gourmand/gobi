@@ -1,7 +1,7 @@
 import {
   SharedConfigSchema,
   modifyAnyConfigWithSharedConfig,
-} from "core/config/sharedConfig";
+} from "@gourmanddev/core/config/sharedConfig";
 import { useContext } from "react";
 import Alert from "../../../components/gui/Alert";
 import { Card, Divider } from "../../../components/ui";

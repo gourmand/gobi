@@ -1,7 +1,7 @@
 import {
   calculateRequestCost,
   CostBreakdown,
-} from "core/llm/utils/calculateRequestCost";
+} from "@gourmanddev/core/llm/utils/calculateRequestCost";
 import { useMemo } from "react";
 import { LLMLog } from "./useLLMLog";
 

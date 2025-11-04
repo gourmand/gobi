@@ -1,6 +1,6 @@
 import { ToolCallDelta, ToolCallState } from "core";
-import { BuiltInToolNames } from "core/tools/builtIn";
-import { incrementalParseJson } from "core/util/incrementalParseJson";
+import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
+import { incrementalParseJson } from "@gourmanddev/core/util/incrementalParseJson";
 
 // Merge streamed tool calls
 // See example of data coming in here:

@@ -1,5 +1,5 @@
-import type { ContextItem } from "core/index.js";
-import { fetchUrlContentImpl } from "core/tools/implementations/fetchUrlContent.js";
+import type { ContextItem } from "@gourmanddev/core/index.js";
+import { fetchUrlContentImpl } from "@gourmanddev/core/tools/implementations/fetchUrlContent.js";
 
 import { Tool } from "./types.js";
 

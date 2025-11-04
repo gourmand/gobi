@@ -3,8 +3,8 @@ import {
   ChevronDownIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
-import { inferResolvedUriFromRelativePath } from "core/util/ideUtils";
-import { renderContextItems } from "core/util/messageContent";
+import { inferResolvedUriFromRelativePath } from "@gourmanddev/core/util/ideUtils";
+import { renderContextItems } from "@gourmanddev/core/util/messageContent";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { IdeMessengerContext } from "../../../context/IdeMessenger";
 import { useIdeMessengerRequest } from "../../../hooks/useIdeMessengerRequest";

@@ -5,8 +5,8 @@ import {
   CloudIcon,
 } from "@heroicons/react/24/outline";
 import { BaseSessionMetadata } from "core";
-import type { RemoteSessionMetadata } from "core/control-plane/client";
-import { getUriPathBasename } from "core/util/uri";
+import type { RemoteSessionMetadata } from "@gourmanddev/core/control-plane/client";
+import { getUriPathBasename } from "@gourmanddev/core/util/uri";
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../index";

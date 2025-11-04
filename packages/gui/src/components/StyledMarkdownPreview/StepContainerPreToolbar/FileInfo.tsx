@@ -1,4 +1,4 @@
-import { getLastNPathParts } from "core/util/uri";
+import { getLastNPathParts } from "@gourmanddev/core/util/uri";
 import { MouseEventHandler } from "react";
 import FileIcon from "../../FileIcon";
 import { ToolTip } from "../../gui/Tooltip";

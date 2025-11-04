@@ -1,7 +1,7 @@
 import fs from "fs";
 import os from "os";
 
-import type { ChatHistoryItem, Session } from "core/index.js";
+import type { ChatHistoryItem, Session } from "@gourmanddev/core/index.js";
 import { v4 as uuidv4 } from "uuid";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 

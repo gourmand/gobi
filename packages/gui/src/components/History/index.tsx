@@ -1,5 +1,5 @@
 import { BaseSessionMetadata } from "core";
-import type { RemoteSessionMetadata } from "core/control-plane/client";
+import type { RemoteSessionMetadata } from "@gourmanddev/core/control-plane/client";
 import MiniSearch from "minisearch";
 import React, {
   Fragment,

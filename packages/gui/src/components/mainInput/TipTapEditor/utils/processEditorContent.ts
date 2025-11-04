@@ -8,8 +8,8 @@ import {
   RangeInFile,
   TextMessagePart,
 } from "core";
-import { ctxItemToRifWithContents } from "core/commands/util";
-import { getUriDescription } from "core/util/uri";
+import { ctxItemToRifWithContents } from "@gourmanddev/core/commands/util";
+import { getUriDescription } from "@gourmanddev/core/util/uri";
 import { CodeBlock, Mention, PromptBlock } from "../extensions";
 import { GetContextRequest } from "./types";
 

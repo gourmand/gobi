@@ -3,7 +3,7 @@ import {
   DEFAULT_AGENT_SYSTEM_MESSAGE,
   DEFAULT_CHAT_SYSTEM_MESSAGE,
   DEFAULT_PLAN_SYSTEM_MESSAGE,
-} from "core/llm/defaultSystemMessages";
+} from "@gourmanddev/core/llm/defaultSystemMessages";
 import { getBaseSystemMessage, NO_TOOL_WARNING } from "./getBaseSystemMessage";
 
 test("getBaseSystemMessage should return the correct system message based on mode", () => {

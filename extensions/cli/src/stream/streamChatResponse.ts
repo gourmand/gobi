@@ -1,11 +1,11 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
 import { BaseLlmApi } from "@gourmanddev/openai-adapters";
-import type { ChatHistoryItem } from "core/index.js";
-import { convertFromUnifiedHistoryWithSystemMessage } from "core/util/messageConversion.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
+import { convertFromUnifiedHistoryWithSystemMessage } from "@gourmanddev/core/util/messageConversion.js";
 import * as dotenv from "dotenv";
 import type {
-    ChatCompletionMessageParam,
-    ChatCompletionTool,
+  ChatCompletionMessageParam,
+  ChatCompletionTool,
 } from "openai/resources.mjs";
 
 import { services } from "../services/index.js";
@@ -13,9 +13,9 @@ import { posthogService } from "../telemetry/posthogService.js";
 import { telemetryService } from "../telemetry/telemetryService.js";
 import { ToolCall } from "../tools/index.js";
 import {
-    chatCompletionStreamWithBackoff,
-    isContextLengthError,
-    withExponentialBackoff,
+  chatCompletionStreamWithBackoff,
+  isContextLengthError,
+  withExponentialBackoff,
 } from "../util/exponentialBackoff.js";
 import { logger } from "../util/logger.js";
 import { validateContextLength } from "../util/tokenizer.js";
@@ -23,14 +23,14 @@ import { validateContextLength } from "../util/tokenizer.js";
 import { getAllTools, handleToolCalls } from "./handleToolCalls.js";
 import { handleAutoCompaction } from "./streamChatResponse.autoCompaction.js";
 import {
-    processChunkContent,
-    processToolCallDelta,
-    recordStreamTelemetry,
-    trackFirstTokenTime,
+  processChunkContent,
+  processToolCallDelta,
+  recordStreamTelemetry,
+  trackFirstTokenTime,
 } from "./streamChatResponse.helpers.js";
 import {
-    getDefaultCompletionOptions,
-    StreamCallbacks,
+  getDefaultCompletionOptions,
+  StreamCallbacks,
 } from "./streamChatResponse.types.js";
 
 dotenv.config();
@@ -389,16 +389,15 @@ export async function streamChatResponse(
     });
 
     // Get response from LLM
-    const { content, toolCalls, shouldGobi } =
-      await processStreamingResponse({
-        isHeadless,
-        chatHistory,
-        model,
-        llmApi,
-        abortController,
-        callbacks,
-        tools,
-      });
+    const { content, toolCalls, shouldGobi } = await processStreamingResponse({
+      isHeadless,
+      chatHistory,
+      model,
+      llmApi,
+      abortController,
+      callbacks,
+      tools,
+    });
 
     if (abortController?.signal.aborted) {
       return finalResponse || content || fullResponse;

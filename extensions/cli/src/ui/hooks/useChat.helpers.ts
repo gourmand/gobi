@@ -1,7 +1,7 @@
 import * as path from "node:path";
 
-import type { ChatHistoryItem } from "core/index.js";
-import { getLastNPathParts } from "core/util/uri.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
+import { getLastNPathParts } from "@gourmanddev/core/util/uri.js";
 import { v4 as uuidv4 } from "uuid";
 
 import { logger } from "src/util/logger.js";

@@ -1,9 +1,9 @@
 import {
   SharedConfigSchema,
   modifyAnyConfigWithSharedConfig,
-} from "core/config/sharedConfig";
-import { HubSessionInfo } from "core/control-plane/AuthTypes";
-import { isGobiTeamMember } from "core/util/isGobiTeamMember";
+} from "@gourmanddev/core/config/sharedConfig";
+import { HubSessionInfo } from "@gourmanddev/core/control-plane/AuthTypes";
+import { isGobiTeamMember } from "@gourmanddev/core/util/isGobiTeamMember";
 import { useContext, useEffect, useState } from "react";
 import { Card, Toggle, useFontSize } from "../../../components/ui";
 import { useAuth } from "../../../context/Auth";

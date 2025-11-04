@@ -8,7 +8,7 @@ import Text from "@tiptap/extension-text";
 import { Plugin } from "@tiptap/pm/state";
 import { useEditor } from "@tiptap/react";
 import { InputModifiers } from "core";
-import { modelSupportsImages } from "core/llm/autodetect";
+import { modelSupportsImages } from "@gourmanddev/core/llm/autodetect";
 import { usePostHog } from "posthog-js/react";
 import { useRef } from "react";
 import { IIdeMessenger } from "../../../../context/IdeMessenger";

@@ -1,10 +1,10 @@
-import { CompletionProvider } from "core/autocomplete/CompletionProvider";
-import { processSingleLineCompletion } from "core/autocomplete/util/processSingleLineCompletion";
+import { CompletionProvider } from "@gourmanddev/core/autocomplete/CompletionProvider";
+import { processSingleLineCompletion } from "@gourmanddev/core/autocomplete/util/processSingleLineCompletion";
 import {
-    type AutocompleteInput,
-    type AutocompleteOutcome,
-} from "core/autocomplete/util/types";
-import { ConfigHandler } from "core/config/ConfigHandler";
+  type AutocompleteInput,
+  type AutocompleteOutcome,
+} from "@gourmanddev/core/autocomplete/util/types";
+import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";
 import * as URI from "uri-js";
 import { v4 as uuidv4 } from "uuid";
 import * as vscode from "vscode";
@@ -13,11 +13,11 @@ import { handleLLMError } from "../util/errorHandling";
 import { VsCodeIde } from "../VsCodeIde";
 import { VsCodeWebviewProtocol } from "../webviewProtocol";
 
-import { checkFim } from "core/nextEdit/diff/diff";
-import { NextEditLoggingService } from "core/nextEdit/NextEditLoggingService";
-import { PrefetchQueue } from "core/nextEdit/NextEditPrefetchQueue";
-import { NextEditProvider } from "core/nextEdit/NextEditProvider";
-import { NextEditOutcome } from "core/nextEdit/types";
+import { checkFim } from "@gourmanddev/core/nextEdit/diff/diff";
+import { NextEditLoggingService } from "@gourmanddev/core/nextEdit/NextEditLoggingService";
+import { PrefetchQueue } from "@gourmanddev/core/nextEdit/NextEditPrefetchQueue";
+import { NextEditProvider } from "@gourmanddev/core/nextEdit/NextEditProvider";
+import { NextEditOutcome } from "@gourmanddev/core/nextEdit/types";
 import { JumpManager } from "../activation/JumpManager";
 import { NextEditWindowManager } from "../activation/NextEditWindowManager";
 import { GhostTextAcceptanceTracker } from "./GhostTextAcceptanceTracker";
@@ -25,10 +25,10 @@ import { getDefinitionsFromLsp } from "./lsp";
 import { RecentlyEditedTracker } from "./recentlyEdited";
 import { RecentlyVisitedRangesService } from "./RecentlyVisitedRangesService";
 import {
-    StatusBarStatus,
-    getStatusBarStatus,
-    setupStatusBar,
-    stopStatusBarLoading,
+  StatusBarStatus,
+  getStatusBarStatus,
+  setupStatusBar,
+  stopStatusBarLoading,
 } from "./statusBar";
 
 interface VsCodeCompletionInput {

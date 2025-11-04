@@ -1,5 +1,5 @@
 import { ContextItem, ToolCallState } from "core";
-import { getMarkdownLanguageTagForFile } from "core/util";
+import { getMarkdownLanguageTagForFile } from "@gourmanddev/core/util";
 import StyledMarkdownPreview from "../../../components/StyledMarkdownPreview";
 
 type EditToolCallProps = {

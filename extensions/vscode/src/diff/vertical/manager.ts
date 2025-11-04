@@ -1,7 +1,10 @@
 import { ChatMessage, DiffLine, IDE, ILLM, RuleWithSource } from "core";
-import { streamDiffLines } from "core/edit/streamDiffLines";
-import { pruneLinesFromBottom, pruneLinesFromTop } from "core/llm/countTokens";
-import { getMarkdownLanguageTagForFile } from "core/util";
+import { streamDiffLines } from "@gourmanddev/core/edit/streamDiffLines";
+import {
+  pruneLinesFromBottom,
+  pruneLinesFromTop,
+} from "@gourmanddev/core/llm/countTokens";
+import { getMarkdownLanguageTagForFile } from "@gourmanddev/core/util";
 import * as URI from "uri-js";
 import * as vscode from "vscode";
 
@@ -10,10 +13,10 @@ import EditDecorationManager from "../../quickEdit/EditDecorationManager";
 import { handleLLMError } from "../../util/errorHandling";
 import { VsCodeWebviewProtocol } from "../../webviewProtocol";
 
-import { ApplyAbortManager } from "core/edit/applyAbortManager";
-import { EDIT_MODE_STREAM_ID } from "core/edit/constants";
-import { stripImages } from "core/util/messageContent";
-import { getLastNPathParts } from "core/util/uri";
+import { ApplyAbortManager } from "@gourmanddev/core/edit/applyAbortManager";
+import { EDIT_MODE_STREAM_ID } from "@gourmanddev/core/edit/constants";
+import { stripImages } from "@gourmanddev/core/util/messageContent";
+import { getLastNPathParts } from "@gourmanddev/core/util/uri";
 import { editOutcomeTracker } from "../../extension/EditOutcomeTracker";
 import { VerticalDiffHandler, VerticalDiffHandlerOptions } from "./handler";
 
@@ -148,10 +151,7 @@ export class VerticalDiffManager {
       false,
     );
 
-    void this.webviewProtocol.request(
-      "focusGobiInputWithoutClear",
-      undefined,
-    );
+    void this.webviewProtocol.request("focusGobiInputWithoutClear", undefined);
   }
 
   async acceptRejectVerticalDiffBlock(
@@ -263,11 +263,7 @@ export class VerticalDiffManager {
       );
     }
 
-    vscode.commands.executeCommand(
-      "setContext",
-      "gobi.streamingDiff",
-      true,
-    );
+    vscode.commands.executeCommand("setContext", "gobi.streamingDiff", true);
 
     try {
       this.logDiffs = await diffHandler.run(diffStream);
@@ -285,11 +281,7 @@ export class VerticalDiffManager {
         throw new Error(message);
       }
     } finally {
-      vscode.commands.executeCommand(
-        "setContext",
-        "gobi.streamingDiff",
-        false,
-      );
+      vscode.commands.executeCommand("setContext", "gobi.streamingDiff", false);
     }
   }
 
@@ -314,11 +306,7 @@ export class VerticalDiffManager {
     rulesToInclude: undefined | RuleWithSource[];
     isApply: boolean;
   }): Promise<string | undefined> {
-    void vscode.commands.executeCommand(
-      "setContext",
-      "gobi.diffVisible",
-      true,
-    );
+    void vscode.commands.executeCommand("setContext", "gobi.diffVisible", true);
 
     let editor = vscode.window.activeTextEditor;
 

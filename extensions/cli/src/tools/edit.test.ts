@@ -1,11 +1,11 @@
 import * as fs from "fs";
 
-import { GobiError, GobiErrorReason } from "core/util/errors.js";
+import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors.js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import {
-    calculateLinesOfCodeDiff,
-    getLanguageFromFilePath,
+  calculateLinesOfCodeDiff,
+  getLanguageFromFilePath,
 } from "../telemetry/utils.js";
 
 import { editTool } from "./edit.js";

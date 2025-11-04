@@ -1,4 +1,4 @@
-import { OnboardingModes } from "core/protocol/core";
+import { OnboardingModes } from "@gourmanddev/core/protocol/core";
 import { FormProvider, useForm } from "react-hook-form";
 import { AddModelForm } from "../../../forms/AddModelForm";
 import { providers } from "../../../pages/AddNewModel/configs/providers";

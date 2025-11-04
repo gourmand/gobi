@@ -1,7 +1,7 @@
 import { ConfigResult, ConfigValidationError } from "@gourmanddev/config-yaml";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { BrowserSerializedGobiConfig } from "core";
-import { DEFAULT_MAX_TOKENS } from "core/llm/constants";
+import { DEFAULT_MAX_TOKENS } from "@gourmanddev/core/llm/constants";
 
 export type ConfigState = {
   configError: ConfigValidationError[] | undefined;

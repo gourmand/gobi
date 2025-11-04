@@ -1,4 +1,4 @@
-import { isOnPremSession } from "core/control-plane/AuthTypes";
+import { isOnPremSession } from "@gourmanddev/core/control-plane/AuthTypes";
 import React from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { AssistantAndOrgListbox } from "../../components/AssistantAndOrgListbox";

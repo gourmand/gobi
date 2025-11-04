@@ -1,11 +1,11 @@
-import { getGobiRcPath, getTsConfigPath } from "core/util/paths";
-import { Telemetry } from "core/util/posthog";
+import { getGobiRcPath, getTsConfigPath } from "@gourmanddev/core/util/paths";
+import { Telemetry } from "@gourmanddev/core/util/posthog";
 import * as vscode from "vscode";
 
 import { VsCodeExtension } from "../extension/VsCodeExtension";
 import { getExtensionVersion, isUnsupportedPlatform } from "../util/util";
 
-import { GlobalContext } from "core/util/GlobalContext";
+import { GlobalContext } from "@gourmanddev/core/util/GlobalContext";
 import { VsCodeGobiApi } from "./api";
 import setupInlineTips from "./InlineTipManager";
 

@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { IDE, ILLM, RuleWithSource } from "core";
-import { ConfigHandler } from "core/config/ConfigHandler";
-import { DataLogger } from "core/data/log";
-import { Telemetry } from "core/util/posthog";
+import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";
+import { DataLogger } from "@gourmanddev/core/data/log";
+import { Telemetry } from "@gourmanddev/core/util/posthog";
 import * as vscode from "vscode";
 
 import { VerticalDiffManager } from "../diff/vertical/manager";
