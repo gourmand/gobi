@@ -723,6 +723,7 @@
   },
   "dependencies": {
     "@electron/rebuild": "^3.2.10",
+    "@mswjs/interceptors": "^0.39.8",
     "@gourmanddev/config-types": "workspace:^",
     "@gourmanddev/core": "workspace:^",
     "@gourmanddev/fetch": "workspace:^",

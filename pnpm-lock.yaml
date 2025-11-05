@@ -331,6 +331,9 @@ importers:
       '@lancedb/lancedb':
         specifier: ^0.21.1
         version: 0.21.3(apache-arrow@18.1.0)
+      '@mswjs/interceptors':
+        specifier: ^0.39.8
+        version: 0.39.8
       '@reduxjs/toolkit':
         specifier: ^2.3.0
         version: 2.10.1(react-redux@8.1.3(@types/react-dom@18.3.7(@types/react@19.2.2))(@types/react@19.2.2)(react-dom@18.3.1(react@19.2.0))(react@19.2.0)(redux@5.0.1))(react@19.2.0)
