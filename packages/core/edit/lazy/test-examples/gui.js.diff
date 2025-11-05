@@ -5,7 +5,7 @@ import {
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 import { JSONContent } from "@tiptap/react";
-import { InputModifiers } from "core";
+import { InputModifiers } from "@gourmanddev/core";
 import { usePostHog } from "posthog-js/react";
 import {
   Fragment,
@@ -556,7 +556,7 @@ import {
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 import { JSONContent } from "@tiptap/react";
-import { InputModifiers } from "core";
+import { InputModifiers } from "@gourmanddev/core";
 import { usePostHog } from "posthog-js/react";
 import {
   Fragment,
@@ -628,7 +628,7 @@ import {
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
 import { JSONContent } from "@tiptap/react";
-import { InputModifiers } from "core";
+import { InputModifiers } from "@gourmanddev/core";
 import { usePostHog } from "posthog-js/react";
 import {
   Fragment,

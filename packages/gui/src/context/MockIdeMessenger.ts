@@ -1,4 +1,4 @@
-import { ChatMessage, IDE, PromptLog } from "core";
+import { ChatMessage, IDE, PromptLog } from "@gourmanddev/core";
 import { AuthType } from "@gourmanddev/core/control-plane/AuthTypes";
 import {
   FromWebviewProtocol,

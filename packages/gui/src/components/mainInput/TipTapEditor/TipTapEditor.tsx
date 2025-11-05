@@ -1,5 +1,5 @@
 import { Editor, EditorContent, JSONContent } from "@tiptap/react";
-import { ContextProviderDescription, InputModifiers } from "core";
+import { ContextProviderDescription, InputModifiers } from "@gourmanddev/core";
 import { modelSupportsImages } from "@gourmanddev/core/llm/autodetect";
 import {
   memo,

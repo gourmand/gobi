@@ -1,4 +1,4 @@
-import { SetCodeToEditPayload } from "core";
+import { SetCodeToEditPayload } from "@gourmanddev/core";
 import { getUriPathBasename } from "@gourmanddev/core/util/uri";
 
 export function getEditFilenameAndRangeText(code: SetCodeToEditPayload) {

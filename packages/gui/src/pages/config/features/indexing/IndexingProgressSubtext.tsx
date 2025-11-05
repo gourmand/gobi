@@ -1,4 +1,4 @@
-import { IndexingProgressUpdate } from "core";
+import { IndexingProgressUpdate } from "@gourmanddev/core";
 
 export interface IndexingProgressSubtextProps {
   update: IndexingProgressUpdate;

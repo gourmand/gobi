@@ -1,4 +1,4 @@
-import { IDE } from "core";
+import { IDE } from "@gourmanddev/core";
 import * as vscode from "vscode";
 
 import { getExtensionUri } from "./vscode";

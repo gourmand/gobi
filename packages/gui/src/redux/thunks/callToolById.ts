@@ -1,5 +1,5 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
-import { ContextItem } from "core";
+import { ContextItem } from "@gourmanddev/core";
 import { CLIENT_TOOLS_IMPLS } from "@gourmanddev/core/tools/builtIn";
 import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors";
 import posthog from "posthog-js";

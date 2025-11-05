@@ -2,7 +2,7 @@ import {
   LLMInteractionCancel,
   LLMInteractionError,
   LLMInteractionSuccess,
-} from "core";
+} from "@gourmanddev/core";
 import Expander from "./Expander";
 import Message from "./Message";
 

@@ -8,7 +8,7 @@ import {
   ToolCall,
   ToolResultChatMessage,
   UserChatMessage,
-} from "core";
+} from "@gourmanddev/core";
 import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
 import {
   CANCELLED_TOOL_CALL_MESSAGE,

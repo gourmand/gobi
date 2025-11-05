@@ -1,4 +1,4 @@
-import { LLMInteractionItem } from "core";
+import { LLMInteractionItem } from "@gourmanddev/core";
 import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
 import { LLMLogger } from "@gourmanddev/core/llm/logger";
 import * as vscode from "vscode";

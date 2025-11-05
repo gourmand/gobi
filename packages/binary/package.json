@@ -23,7 +23,6 @@
   "devDependencies": {
     "@biomejs/biome": "1.6.4",
     "@types/follow-redirects": "^1.14.4",
-    "@types/uuid": "^9.0.8",
     "@vercel/ncc": "^0.38.1",
     "cross-env": "^7.0.3",
     "postject": "^1.0.0-alpha.6",
@@ -39,7 +38,7 @@
     "@lancedb/lancedb": "^0.21.1",
     "@octokit/rest": "^20.1.1",
     "adm-zip": "^0.5.16",
-    "apache-arrow": "^21.1.0",
+    "apache-arrow": "^18.1.0",
     "commander": "^12.0.0",
     "data-uri-to-buffer": "^6.0.2",
     "fetch-blob": "^4.0.0",
@@ -54,18 +53,17 @@
     "tar": "^7.4.3",
     "undici": "^7.10.0",
     "uuid": "^9.0.1",
-    "vectordb": "^0.4.20",
     "win-ca": "^3.5.1"
   },
   "engine": {
     "node": ">=24.11.0"
   },
   "optionalDependencies": {
-    "@lancedb/vectordb-linux-x64-gnu": "^0.21.2",
-    "@lancedb/vectordb-linux-arm64-gnu": "^0.21.2",
-    "@lancedb/vectordb-darwin-x64": "^0.21.2",
     "@lancedb/vectordb-darwin-arm64": "^0.21.2",
-    "@lancedb/vectordb-win32-x64-msvc": "^0.21.2",
-    "@lancedb/vectordb-win32-arm64-msvc": "^0.21.2"
+    "@lancedb/vectordb-darwin-x64": "^0.21.2",
+    "@lancedb/vectordb-linux-arm64-gnu": "^0.21.2",
+    "@lancedb/vectordb-linux-x64-gnu": "^0.21.2",
+    "@lancedb/vectordb-win32-arm64-msvc": "^0.21.2",
+    "@lancedb/vectordb-win32-x64-msvc": "^0.21.2"
   }
 }

@@ -1,5 +1,5 @@
 import { ToolPolicy } from "@gourmanddev/terminal-security";
-import { Tool, ToolCallState } from "core";
+import { Tool, ToolCallState } from "@gourmanddev/core";
 import { IIdeMessenger } from "../../context/IdeMessenger";
 import { isEditTool } from "../../util/toolCallState";
 import { errorToolCall, updateToolCallOutput } from "../slices/sessionSlice";

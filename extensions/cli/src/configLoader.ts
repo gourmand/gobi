@@ -3,23 +3,23 @@ import { dirname } from "node:path";
 import * as path from "path";
 
 import {
-    AssistantUnrolled,
-    PackageIdentifier,
-    RegistryClient,
-    unrollAssistant,
+  AssistantUnrolled,
+  PackageIdentifier,
+  RegistryClient,
+  unrollAssistant,
 } from "@gourmanddev/config-yaml";
 import { DefaultApiInterface } from "@gourmanddev/sdk/dist/api/dist/index.js";
 import chalk from "chalk";
 
 import { uriToPath, uriToSlug } from "./auth/uriUtils.js";
 import {
-    AuthConfig,
-    getAccessToken,
-    getConfigUri,
-    getOrganizationId,
-    isEnvironmentAuthConfig,
-    loadAuthConfig,
-    updateConfigUri,
+  AuthConfig,
+  getAccessToken,
+  getConfigUri,
+  getOrganizationId,
+  isEnvironmentAuthConfig,
+  loadAuthConfig,
+  updateConfigUri,
 } from "./auth/workos.js";
 import { CLIPlatformClient } from "./CLIPlatformClient.js";
 import { env } from "./env.js";

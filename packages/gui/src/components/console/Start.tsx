@@ -2,7 +2,7 @@ import {
   LLMInteractionStartChat,
   LLMInteractionStartComplete,
   LLMInteractionStartFim,
-} from "core";
+} from "@gourmanddev/core";
 import Expander from "./Expander";
 import Message from "./Message";
 

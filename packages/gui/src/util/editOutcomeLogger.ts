@@ -1,4 +1,8 @@
-import { ApplyState, BrowserSerializedGobiConfig, ToolCallState } from "core";
+import {
+  ApplyState,
+  BrowserSerializedGobiConfig,
+  ToolCallState,
+} from "@gourmanddev/core";
 import { IIdeMessenger } from "../context/IdeMessenger";
 import { ChatHistoryItemWithMessageId } from "../redux/slices/sessionSlice";
 

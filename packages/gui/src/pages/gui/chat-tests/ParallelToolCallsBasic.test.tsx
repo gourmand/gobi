@@ -1,5 +1,5 @@
 import { act } from "@testing-library/react";
-import { ChatMessage } from "core";
+import { ChatMessage } from "@gourmanddev/core";
 import { renderWithProviders } from "../../../util/test/render";
 import { sendInputWithMockedResponse } from "../../../util/test/utils";
 import { Chat } from "../Chat";

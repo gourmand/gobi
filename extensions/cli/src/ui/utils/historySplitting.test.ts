@@ -1,4 +1,4 @@
-import type { ChatHistoryItem } from "core";
+import type { ChatHistoryItem } from "@gourmanddev/core";
 import { describe, expect, it } from "vitest";
 
 import { splitChatHistory } from "./historySplitting.js";

@@ -1,8 +1,9 @@
 import { ChatBubbleOvalLeftIcon } from "@heroicons/react/24/outline";
-import { ChatHistoryItem } from "core";
+import { ChatHistoryItem } from "@gourmanddev/core";
 import styled from "styled-components";
 import { lightGray, vscBackground } from "../index";
 import { getFontSize } from "../../util";
+import { ReactNode } from "react";
 
 const CollapseButton = styled.div`
   background-color: ${vscBackground};
@@ -30,8 +31,8 @@ interface TimelineItemProps {
   item: ChatHistoryItem;
   open: boolean;
   onToggle: () => void;
-  children: JSX.Element;
-  iconElement?: JSX.Element;
+  children: ReactNode;
+  iconElement?: ReactNode;
 }
 
 function TimelineItem(props: TimelineItemProps) {

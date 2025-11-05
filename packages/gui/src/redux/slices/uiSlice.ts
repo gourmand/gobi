@@ -1,12 +1,13 @@
 import { ToolPolicy } from "@gourmanddev/terminal-security";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { RuleWithSource, Tool } from "core";
+import { RuleWithSource, Tool } from "@gourmanddev/core";
 import { BUILT_IN_GROUP_NAME } from "@gourmanddev/core/tools/builtIn";
 import {
   defaultOnboardingCardState,
   OnboardingCardState,
 } from "../../components/OnboardingCard";
 import { getLocalStorage, LocalStorageKey } from "../../util/localStorage";
+import { ReactNode } from "react";
 
 export type RulePolicy = "on" | "off";
 
@@ -18,7 +19,7 @@ export type ToolGroupPolicies = { [toolGroupName: string]: ToolGroupPolicy };
 
 type UIState = {
   showDialog: boolean;
-  dialogMessage: JSX.Element | undefined;
+  dialogMessage: ReactNode | undefined;
   dialogEntryOn: boolean;
   onboardingCard: OnboardingCardState;
   isExploreDialogOpen: boolean;

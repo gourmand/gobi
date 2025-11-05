@@ -1,7 +1,7 @@
 import fs from "fs";
 import path from "path";
 
-import { IContextProvider } from "core";
+import { IContextProvider } from "@gourmanddev/core";
 import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";
 import {
   EXTENSION_NAME,

@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { ToolStatus } from "core";
+import { ToolStatus } from "@gourmanddev/core";
 import { RootState } from "../store";
 import {
   findAllCurToolCalls,

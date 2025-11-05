@@ -3,7 +3,7 @@ import {
   SparklesIcon,
   SwatchIcon,
 } from "@heroicons/react/24/outline";
-import { MessageModes } from "core";
+import { MessageModes } from "@gourmanddev/core";
 
 interface ModeIconProps {
   mode: MessageModes;

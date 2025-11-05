@@ -1,4 +1,4 @@
-import { IDE } from "core";
+import { IDE } from "@gourmanddev/core";
 import { walkDirs } from "@gourmanddev/core/indexing/walkDir";
 import {
   deduplicateArray,

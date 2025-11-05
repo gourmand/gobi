@@ -1,5 +1,5 @@
 import { CheckIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ApplyState } from "core";
+import { ApplyState } from "@gourmanddev/core";
 import { useContext } from "react";
 import { IdeMessengerContext } from "../context/IdeMessenger";
 import { useAppDispatch } from "../redux/hooks";

@@ -16,7 +16,7 @@ import {
 
 import { getUniqueId, openEditorAndRevealRange } from "./vscode";
 
-import type { Range, Thread } from "core";
+import type { Range, Thread } from "@gourmanddev/core";
 
 const util = require("node:util");
 const asyncExec = util.promisify(require("node:child_process").exec);

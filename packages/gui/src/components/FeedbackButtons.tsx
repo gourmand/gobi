@@ -2,7 +2,7 @@ import {
   HandThumbDownIcon,
   HandThumbUpIcon,
 } from "@heroicons/react/24/outline";
-import { ChatHistoryItem } from "core";
+import { ChatHistoryItem } from "@gourmanddev/core";
 import { useContext, useState } from "react";
 import { IdeMessengerContext } from "../context/IdeMessenger";
 import { useAppSelector } from "../redux/hooks";

@@ -1,5 +1,5 @@
 import { ArrowRightIcon } from "@heroicons/react/24/outline";
-import { ToolCallState } from "core";
+import { ToolCallState } from "@gourmanddev/core";
 import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
 import { useState } from "react";
 import { useAppSelector } from "../../../redux/hooks";

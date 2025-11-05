@@ -1,5 +1,5 @@
 import { parseConfigYaml } from "@gourmanddev/config-yaml";
-import { IndexingStatus } from "core";
+import { IndexingStatus } from "@gourmanddev/core";
 import { useMemo } from "react";
 import { EmptyState } from "../../../../components/ui";
 import { useAuth } from "../../../../context/Auth";

@@ -1,4 +1,4 @@
-import { SlashCommandDescWithSource } from "core";
+import { SlashCommandDescWithSource } from "@gourmanddev/core";
 import { IIdeMessenger } from "../../../../context/IdeMessenger";
 
 export async function renderMcpPrompt(

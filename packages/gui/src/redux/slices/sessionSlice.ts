@@ -23,7 +23,7 @@ import {
   Tool,
   ToolCallDelta,
   ToolCallState,
-} from "core";
+} from "@gourmanddev/core";
 import type { RemoteSessionMetadata } from "@gourmanddev/core/control-plane/client";
 import { NEW_SESSION_TITLE } from "@gourmanddev/core/util/constants";
 import {

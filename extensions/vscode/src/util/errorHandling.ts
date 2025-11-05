@@ -1,4 +1,4 @@
-import { ILLM } from "core";
+import { ILLM } from "@gourmanddev/core";
 import { isModelInstaller } from "@gourmanddev/core/llm";
 import * as vscode from "vscode";
 

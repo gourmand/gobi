@@ -4,7 +4,7 @@ import {
   ContextItemWithId,
   ToolCallState,
   ToolStatus,
-} from "core";
+} from "@gourmanddev/core";
 import { ComponentType, SVGProps } from "react";
 import { vscButtonBackground } from "../../../components";
 import Spinner from "../../../components/gui/Spinner";

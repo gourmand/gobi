@@ -1,4 +1,4 @@
-import { ToolCallState } from "core";
+import { ToolCallState } from "@gourmanddev/core";
 import { UnifiedTerminalCommand } from "../../../components/UnifiedTerminal/UnifiedTerminal";
 
 interface RunTerminalCommandToolCallProps {

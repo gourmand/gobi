@@ -3,7 +3,7 @@ import {
   ChatBubbleOvalLeftIcon,
 } from "@heroicons/react/24/outline";
 import { Editor, JSONContent } from "@tiptap/react";
-import { ChatHistoryItem, InputModifiers } from "core";
+import { ChatHistoryItem, InputModifiers } from "@gourmanddev/core";
 import { renderChatMessage } from "@gourmanddev/core/util/messageContent";
 import {
   useCallback,
@@ -109,9 +109,9 @@ export function Chat() {
   );
   const isStreaming = useAppSelector((state) => state.session.isStreaming);
   const [stepsOpen] = useState<(boolean | undefined)[]>([]);
-  const mainTextInputRef = useRef<HTMLInputElement>(null);
-  const stepsDivRef = useRef<HTMLDivElement>(null);
-  const tabsRef = useRef<HTMLDivElement>(null);
+  const mainTextInputRef = useRef<HTMLInputElement | null>(null);
+  const stepsDivRef = useRef<HTMLDivElement | null>(null);
+  const tabsRef = useRef<HTMLDivElement | null>(null);
   const history = useAppSelector((state) => state.session.history);
   const showChatScrollbar = useAppSelector(
     (state) => state.config.config.ui?.showChatScrollbar,

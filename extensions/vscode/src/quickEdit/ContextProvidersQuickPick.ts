@@ -1,5 +1,5 @@
 import { fetchwithRequestOptions } from "@gourmanddev/fetch";
-import { GobiConfig, IDE } from "core";
+import { GobiConfig, IDE } from "@gourmanddev/core";
 import { QuickPickItem, window } from "vscode";
 
 export async function getContextProviderItems({

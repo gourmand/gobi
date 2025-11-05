@@ -11,7 +11,7 @@ import {
   StopCircleIcon,
   UserCircleIcon,
 } from "@heroicons/react/24/outline";
-import { MCPConnectionStatus, MCPServerStatus } from "core";
+import { MCPConnectionStatus, MCPServerStatus } from "@gourmanddev/core";
 import { BUILT_IN_GROUP_NAME } from "@gourmanddev/core/tools/builtIn";
 import { useContext, useMemo, useState } from "react";
 import Alert from "../../../components/gui/Alert";

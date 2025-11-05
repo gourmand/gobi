@@ -1,4 +1,4 @@
-import { Tool, ToolCallState } from "core";
+import { Tool, ToolCallState } from "@gourmanddev/core";
 import Mustache from "mustache";
 import { getStatusIntro } from "./utils";
 

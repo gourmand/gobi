@@ -3,7 +3,7 @@ import {
   ChevronUpDownIcon,
   CubeIcon,
 } from "@heroicons/react/24/outline";
-import { ModelDescription } from "core";
+import { ModelDescription } from "@gourmanddev/core";
 import { LLMConfigurationStatuses } from "@gourmanddev/core/llm/constants";
 import { MouseEvent, ReactNode, useContext } from "react";
 import { defaultBorderRadius } from "../../../components";

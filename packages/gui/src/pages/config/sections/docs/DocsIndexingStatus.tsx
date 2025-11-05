@@ -4,7 +4,7 @@ import {
   PencilIcon,
   StopIcon,
 } from "@heroicons/react/24/outline";
-import { SiteIndexingConfig } from "core";
+import { SiteIndexingConfig } from "@gourmanddev/core";
 import { useContext, useEffect, useMemo, useState } from "react";
 import ConfirmationDialog from "../../../../components/dialogs/ConfirmationDialog";
 import { ToolTip } from "../../../../components/gui/Tooltip";

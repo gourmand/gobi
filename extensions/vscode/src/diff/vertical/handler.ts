@@ -9,7 +9,7 @@ import {
   indexDecorationType,
 } from "./decorations";
 
-import type { ApplyState, DiffLine } from "core";
+import type { ApplyState, DiffLine } from "@gourmanddev/core";
 import type { VerticalDiffCodeLens } from "./manager";
 
 export interface VerticalDiffHandlerOptions {

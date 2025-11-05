@@ -3,7 +3,7 @@ import {
   ContextProviderDescription,
   ContextSubmenuItem,
   ContextSubmenuItemWithProvider,
-} from "core";
+} from "@gourmanddev/core";
 import { MutableRefObject } from "react";
 import tippy from "tippy.js";
 import { IIdeMessenger } from "../../../../context/IdeMessenger";

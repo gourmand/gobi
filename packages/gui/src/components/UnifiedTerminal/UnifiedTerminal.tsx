@@ -1,8 +1,8 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import Anser, { AnserJsonEntry } from "anser";
-import { ToolCallState } from "core";
+import { ToolCallState } from "@gourmanddev/core";
 import { escapeCarriageReturn } from "escape-carriage";
-import { useMemo, useState } from "react";
+import { ReactNode, useMemo, useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { useAppDispatch } from "../../redux/hooks";
 import { moveTerminalProcessToBackground } from "../../redux/thunks/moveTerminalProcessToBackground";
@@ -154,7 +154,7 @@ function convertBundleIntoReact(
   useClasses: boolean,
   bundle: AnserJsonEntry,
   key: number,
-): JSX.Element {
+): ReactNode {
   const className = useClasses ? createClass(bundle) : null;
   const decorationProp = bundle.decoration
     ? String(bundle.decoration)

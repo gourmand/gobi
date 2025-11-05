@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { SlashCommandDescWithSource } from "core";
+import { SlashCommandDescWithSource } from "@gourmanddev/core";
 import { SerializedOrgWithProfiles } from "@gourmanddev/core/config/ProfileLifecycleManager";
 
 const DEFAULT_SLASH_COMMANDS_BOOKMARKS_COUNT = 5;

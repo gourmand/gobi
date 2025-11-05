@@ -1,5 +1,5 @@
 import { NodeViewProps } from "@tiptap/react";
-import { ContextItemWithId } from "core";
+import { ContextItemWithId } from "@gourmanddev/core";
 import { ctxItemToRifWithContents } from "@gourmanddev/core/commands/util";
 import { dedent, getMarkdownLanguageTagForFile } from "@gourmanddev/core/util";
 import { useContext, useMemo } from "react";

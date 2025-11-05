@@ -1,4 +1,7 @@
-import { ContextProviderDescription, SlashCommandSource } from "core";
+import {
+  ContextProviderDescription,
+  SlashCommandSource,
+} from "@gourmanddev/core";
 
 export type ComboBoxItemType =
   | "contextProvider"

@@ -7,7 +7,7 @@ import {
   MessagePart,
   RangeInFile,
   TextMessagePart,
-} from "core";
+} from "@gourmanddev/core";
 import { ctxItemToRifWithContents } from "@gourmanddev/core/commands/util";
 import { getUriDescription } from "@gourmanddev/core/util/uri";
 import { CodeBlock, Mention, PromptBlock } from "../extensions";

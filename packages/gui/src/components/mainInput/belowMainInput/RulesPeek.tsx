@@ -1,5 +1,5 @@
 import { DocumentTextIcon, GlobeAltIcon } from "@heroicons/react/24/outline";
-import { RuleWithSource } from "core";
+import { RuleWithSource } from "@gourmanddev/core";
 import { getRuleSourceDisplayName } from "@gourmanddev/core/llm/rules/rules-utils";
 import { ComponentType, useMemo, useState } from "react";
 import ToggleDiv from "../../ToggleDiv";

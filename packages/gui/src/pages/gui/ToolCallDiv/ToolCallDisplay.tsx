@@ -1,4 +1,4 @@
-import { Tool, ToolCallState } from "core";
+import { Tool, ToolCallState } from "@gourmanddev/core";
 import { useContext, useMemo } from "react";
 import { openContextItem } from "../../../components/mainInput/belowMainInput/ContextItemsPeek";
 import { IdeMessengerContext } from "../../../context/IdeMessenger";

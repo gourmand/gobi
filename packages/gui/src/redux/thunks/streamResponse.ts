@@ -1,6 +1,6 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
 import { JSONContent } from "@tiptap/core";
-import { InputModifiers } from "core";
+import { InputModifiers } from "@gourmanddev/core";
 import posthog from "posthog-js";
 import { v4 as uuidv4 } from "uuid";
 import { resolveEditorContent } from "../../components/mainInput/TipTapEditor/utils/resolveEditorContent";

@@ -1,5 +1,5 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
-import { BaseSessionMetadata, ChatMessage, Session } from "core";
+import { BaseSessionMetadata, ChatMessage, Session } from "@gourmanddev/core";
 import { RemoteSessionMetadata } from "@gourmanddev/core/control-plane/client";
 import { NEW_SESSION_TITLE } from "@gourmanddev/core/util/constants";
 import { renderChatMessage } from "@gourmanddev/core/util/messageContent";

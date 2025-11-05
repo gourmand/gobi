@@ -1,4 +1,4 @@
-import { SlashCommandDescWithSource } from "core";
+import { SlashCommandDescWithSource } from "@gourmanddev/core";
 import { beforeEach, describe, it, vi } from "vitest";
 import {
   MockIdeMessenger,

@@ -4,17 +4,14 @@ const path = require("path");
 const ncp = require("ncp").ncp;
 const { rimrafSync } = require("rimraf");
 
+const { copySqlite } = require("./download-copy-sqlite");
+const { installAndCopyNodeModules } = require("./install-copy-nodemodule");
 const {
   validateFilesPresent,
-  execCmdSync,
   autodetectPlatformAndArch,
-} = require("../../../scripts/util/index");
-
-const { copySqlite } = require("./download-copy-sqlite");
-const { generateAndCopyConfigYamlSchema } = require("./generate-copy-config");
-const { installAndCopyNodeModules } = require("./install-copy-nodemodule");
-const { npmInstall } = require("./npm-install");
-const { writeBuildTimestamp, gobiDir } = require("./utils");
+  writeBuildTimestamp,
+  gobiDir,
+} = require("./utils");
 
 // Clear folders that will be packaged to ensure clean slate
 rimrafSync(path.join(__dirname, "..", "bin"));
@@ -73,19 +70,19 @@ void (async () => {
   // Make sure we have an initial timestamp file
   writeBuildTimestamp();
 
-  if (!skipInstalls) {
-    const installStart = Date.now();
-    console.log(`[timer] Starting npm installs at ${new Date().toISOString()}`);
-    await Promise.all([generateAndCopyConfigYamlSchema(), npmInstall()]);
-    console.log(
-      `[timer] npm installs completed in ${Date.now() - installStart}ms`,
-    );
-  }
+  const extensionRoot = path.dirname(__dirname);
+  const packagesRoot = path.join(
+    path.dirname(path.dirname(extensionRoot)),
+    "packages",
+  );
 
-  process.chdir(path.join(gobiDir, "gui"));
+  console.log(`extension root: ${extensionRoot}`);
+  console.log(`packages root: ${packagesRoot}`);
+
+  process.chdir(path.join(packagesRoot, "gui"));
 
   // Then copy over the dist folder to the VSCode extension //
-  const vscodeGuiPath = path.join("../extensions/vscode/gui");
+  const vscodeGuiPath = path.join(extensionRoot, "gui");
   rimrafSync(vscodeGuiPath);
   fs.mkdirSync(vscodeGuiPath, { recursive: true });
   const vscodeCopyStart = Date.now();
@@ -116,7 +113,7 @@ void (async () => {
   }
 
   // Copy over native / wasm modules //
-  process.chdir("../extensions/vscode");
+  process.chdir(extensionRoot);
 
   fs.mkdirSync("bin", { recursive: true });
 
@@ -127,8 +124,8 @@ void (async () => {
   );
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(__dirname, "../../../core/node_modules/onnxruntime-node/bin"),
-      path.join(__dirname, "../bin"),
+      path.join(packagesRoot, "core/node_modules/onnxruntime-node/bin"),
+      path.join(extensionRoot, "bin"),
       {
         dereference: true,
       },
@@ -148,13 +145,13 @@ void (async () => {
     // If building for production, only need the binaries for current platform
     try {
       if (!target.startsWith("darwin")) {
-        rimrafSync(path.join(__dirname, "../bin/napi-v3/darwin"));
+        rimrafSync(path.join(extensionRoot, "bin/napi-v3/darwin"));
       }
       if (!target.startsWith("linux")) {
-        rimrafSync(path.join(__dirname, "../bin/napi-v3/linux"));
+        rimrafSync(path.join(extensionRoot, "bin/napi-v3/linux"));
       }
       if (!target.startsWith("win")) {
-        rimrafSync(path.join(__dirname, "../bin/napi-v3/win32"));
+        rimrafSync(path.join(extensionRoot, "bin/napi-v3/win32"));
       }
 
       // Also don't want to include cuda/shared/tensorrt binaries, they are too large
@@ -166,8 +163,8 @@ void (async () => {
         ];
         filesToRemove.forEach((file) => {
           const filepath = path.join(
-            __dirname,
-            "../bin/napi-v3/linux/x64",
+            extensionRoot,
+            "bin/napi-v3/linux/x64",
             file,
           );
           if (fs.existsSync(filepath)) {
@@ -186,8 +183,8 @@ void (async () => {
 
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(__dirname, "../../../core/node_modules/tree-sitter-wasms/out"),
-      path.join(__dirname, "../out/tree-sitter-wasms"),
+      path.join(packagesRoot, "core/node_modules/tree-sitter-wasms/out"),
+      path.join(extensionRoot, "out/tree-sitter-wasms"),
       { dereference: true },
       (error) => {
         if (error) {
@@ -201,17 +198,17 @@ void (async () => {
   });
 
   const filesToCopy = [
-    "../../../core/vendor/tree-sitter.wasm",
-    "../../../core/llm/llamaTokenizerWorkerPool.mjs",
-    "../../../core/llm/llamaTokenizer.mjs",
-    "../../../core/llm/tiktokenWorkerPool.mjs",
-    "../../../core/util/start_ollama.sh",
+    "core/vendor/tree-sitter.wasm",
+    "core/llm/llamaTokenizerWorkerPool.mjs",
+    "core/llm/llamaTokenizer.mjs",
+    "core/llm/tiktokenWorkerPool.mjs",
+    "core/util/start_ollama.sh",
   ];
 
   for (const f of filesToCopy) {
     fs.copyFileSync(
-      path.join(__dirname, f),
-      path.join(__dirname, "..", "out", path.basename(f)),
+      path.join(packagesRoot, f),
+      path.join(extensionRoot, "out", path.basename(f)),
     );
     console.log(`[info] Copied ${path.basename(f)}`);
   }
@@ -232,8 +229,8 @@ void (async () => {
   // textmate-syntaxes
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(__dirname, "../textmate-syntaxes"),
-      path.join(__dirname, "../gui/textmate-syntaxes"),
+      path.join(extensionRoot, "textmate-syntaxes"),
+      path.join(extensionRoot, "gui/textmate-syntaxes"),
       (error) => {
         if (error) {
           console.warn("[error] Error copying textmate-syntaxes", error);
@@ -269,8 +266,8 @@ void (async () => {
   console.log("[info] Copying sqlite node binding from core");
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(__dirname, "../../../core/node_modules/sqlite3/build"),
-      path.join(__dirname, "../out/build"),
+      path.join(packagesRoot, "core/node_modules/sqlite3/build"),
+      path.join(extensionRoot, "out/build"),
       { dereference: true },
       (error) => {
         if (error) {
@@ -286,8 +283,8 @@ void (async () => {
   // Copied here as well for the VS Code test suite
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(__dirname, "../../../core/node_modules/sqlite3/build"),
-      path.join(__dirname, "../out"),
+      path.join(packagesRoot, "core/node_modules/sqlite3/build"),
+      path.join(extensionRoot, "out"),
       { dereference: true },
       (error) => {
         if (error) {

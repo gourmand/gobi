@@ -3,7 +3,7 @@ import { applyCodeBlock } from "@gourmanddev/core/edit/lazy/applyCodeBlock";
 import { getUriPathBasename } from "@gourmanddev/core/util/uri";
 import * as vscode from "vscode";
 
-import { ApplyToFilePayload } from "core";
+import { ApplyToFilePayload } from "@gourmanddev/core";
 import { myersDiff } from "@gourmanddev/core/diff/myers";
 import { generateLines } from "@gourmanddev/core/diff/util";
 import { ApplyAbortManager } from "@gourmanddev/core/edit/applyAbortManager";

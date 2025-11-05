@@ -1,4 +1,4 @@
-import { ToolCallState } from "core";
+import { ToolCallState } from "@gourmanddev/core";
 import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
 import { EditOperation } from "@gourmanddev/core/tools/definitions/multiEdit";
 import { CreateFile } from "./CreateFile";

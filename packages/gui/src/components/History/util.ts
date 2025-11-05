@@ -1,4 +1,4 @@
-import { BaseSessionMetadata } from "core";
+import { BaseSessionMetadata } from "@gourmanddev/core";
 import type { RemoteSessionMetadata } from "@gourmanddev/core/control-plane/client";
 
 export const parseDate = (date: string): Date => {

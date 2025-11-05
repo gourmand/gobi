@@ -1,4 +1,4 @@
-import { ApplyState } from "core";
+import { ApplyState } from "@gourmanddev/core";
 import { getUriPathBasename } from "@gourmanddev/core/util/uri";
 import AcceptRejectDiffButtons from "../../../AcceptRejectDiffButtons";
 import FileIcon from "../../../FileIcon";

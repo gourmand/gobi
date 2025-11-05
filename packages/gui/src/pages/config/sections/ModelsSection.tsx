@@ -1,5 +1,5 @@
 import { ModelRole } from "@gourmanddev/config-yaml";
-import { ModelDescription } from "core";
+import { ModelDescription } from "@gourmanddev/core";
 import { useContext, useState } from "react";
 import Shortcut from "../../../components/gui/Shortcut";
 import { useEditModel } from "../../../components/mainInput/Lump/useEditBlock";

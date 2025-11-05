@@ -1,6 +1,6 @@
 import { screen } from "@testing-library/react";
 import { NodeViewProps } from "@tiptap/react";
-import { ContextItemWithId } from "core";
+import { ContextItemWithId } from "@gourmanddev/core";
 import { beforeEach, describe, it, vi } from "vitest";
 import { renderWithProviders } from "../../../../../util/test/render";
 import { CodeBlockPreview } from "./CodeBlockPreview";

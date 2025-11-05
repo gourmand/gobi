@@ -1,6 +1,5 @@
 import { ctxItemToRifWithContents } from "@gourmanddev/core/commands/util";
-import { memo, useEffect, useMemo, useRef } from "react";
-import { useRemark } from "react-remark";
+import { memo, useMemo, useRef } from "react";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import styled from "styled-components";
@@ -30,7 +29,8 @@ import { SyntaxHighlightedPre } from "./SyntaxHighlightedPre";
 import { isSymbolNotRif, matchCodeToSymbolOrFile } from "./utils";
 import { fixDoubleDollarNewLineLatex } from "./utils/fixDoubleDollarLatex";
 import { patchNestedMarkdown } from "./utils/patchNestedMarkdown";
-import { remarkTables } from "./utils/remarkTables";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
 
 const StyledMarkdown = styled.div<{
   fontSize?: number;
@@ -173,9 +173,8 @@ function getLanguageFromClassName(className: any): string | null {
 }
 
 function getCodeChildrenContent(children: any) {
-  if (typeof children === "string") {
-    return children;
-  } else if (
+  if (typeof children === "string") return children;
+  if (
     Array.isArray(children) &&
     children.length > 0 &&
     typeof children[0] === "string"
@@ -183,6 +182,43 @@ function getCodeChildrenContent(children: any) {
     return children[0];
   }
   return undefined;
+}
+
+function remarkAnnotateCodeNodes(): any {
+  return (tree: any) => {
+    const lastNode = tree.children?.[tree.children.length - 1];
+    const lastCodeNode = lastNode?.type === "code" ? lastNode : null;
+
+    visit(tree, "code", (node: any) => {
+      // normalize lang
+      if (!node.lang) node.lang = "";
+      else if (node.lang.includes("."))
+        node.lang = node.lang.split(".").slice(-1)[0];
+
+      node.data ??= {};
+      node.data.hProperties ??= {};
+      node.data.hProperties["data-islastcodeblock"] = lastCodeNode === node;
+      node.data.hProperties["data-codeblockcontent"] = node.value;
+
+      if (node.meta) {
+        const meta = String(node.meta).split(" ");
+        node.data.hProperties["data-relativefilepath"] = meta[0];
+        node.data.hProperties.range = meta[1];
+      }
+    });
+  };
+}
+
+function rehypeIndexPreBlocks(): any {
+  return (tree: any) => {
+    let codeBlockIndex = 0;
+    visit(tree, { tagName: "pre" }, (node: any) => {
+      node.properties = {
+        ...(node.properties ?? {}),
+        "data-codeblockindex": codeBlockIndex++,
+      };
+    });
+  };
 }
 
 const StyledMarkdownPreview = memo(function StyledMarkdownPreview(
@@ -224,159 +260,121 @@ const StyledMarkdownPreview = memo(function StyledMarkdownPreview(
 
   const codeblockStreamIds = useRef<string[]>([]);
 
-  const [reactContent, setMarkdownSource] = useRemark({
-    remarkPlugins: [
-      remarkTables,
-      [
-        remarkMath,
-        {
-          singleDollarTextMath: false,
-        },
-      ],
-      () => (tree: any) => {
-        const lastNode = tree.children[tree.children.length - 1];
-        const lastCodeNode = lastNode.type === "code" ? lastNode : null;
+  const patchedSource = useMemo(
+    () => fixDoubleDollarNewLineLatex(patchNestedMarkdown(props.source ?? "")),
+    [props.source],
+  );
 
-        visit(tree, "code", (node: any) => {
-          if (!node.lang) {
-            node.lang = "";
-          } else if (node.lang.includes(".")) {
-            node.lang = node.lang.split(".").slice(-1)[0];
-          }
-
-          node.data = node.data || {};
-          node.data.hProperties = node.data.hProperties || {};
-
-          node.data.hProperties["data-islastcodeblock"] = lastCodeNode === node;
-          node.data.hProperties["data-codeblockcontent"] = node.value;
-
-          if (node.meta) {
-            let meta = node.meta.split(" ");
-            node.data.hProperties["data-relativefilepath"] = meta[0];
-            node.data.hProperties.range = meta[1];
-          }
-        });
-      },
+  const remarkPlugins = useMemo(
+    () => [
+      [remarkMath, { singleDollarTextMath: false }],
+      remarkAnnotateCodeNodes,
+      remarkGfm, // replace remarkTables and add additional GitHub flavors
     ],
-    rehypePlugins: [
-      rehypeKatex as any,
-      {},
-      rehypeHighlightPlugin(),
-      // Note: An empty obj is the default behavior, but leaving this here for scaffolding to
-      // add unsupported languages in the future. We will need to install the `lowlight` package
-      // to use the `common` language set in addition to unsupported languages.
-      // https://github.com/highlightjs/highlight.js/blob/main/SUPPORTED_LANGUAGES.md
-      () => {
-        let codeBlockIndex = 0;
-        return (tree) => {
-          visit(tree, { tagName: "pre" }, (node: any) => {
-            // Add an index (0, 1, 2, etc...) to each code block.
-            node.properties = { "data-codeblockindex": codeBlockIndex };
-            codeBlockIndex++;
-          });
-        };
+    [],
+  );
+
+  const rehypePlugins = useMemo(
+    () => [rehypeKatex as any, rehypeHighlightPlugin(), rehypeIndexPreBlocks],
+    [],
+  );
+
+  const components = useMemo(() => {
+    return {
+      a: (aProps: React.ComponentProps<"a">) => (
+        <ToolTip place="top" className="m-0 p-0" content={aProps.href}>
+          <a
+            href={aProps.href}
+            target="_blank"
+            rel="noreferrer"
+            className="hover:underline"
+          >
+            {aProps.children}
+          </a>
+        </ToolTip>
+      ),
+
+      pre: (preProps: any) => {
+        const codeBlockIndex = preProps["data-codeblockindex"];
+        const preChildProps = preProps?.children?.[0]?.props ?? {};
+        const { className, range } = preChildProps;
+
+        const relativeFilePath = preChildProps["data-relativefilepath"];
+        const codeBlockContent = preChildProps["data-codeblockcontent"];
+
+        if (!props.isRenderingInStepContainer) {
+          return <SyntaxHighlightedPre {...preProps} />;
+        }
+
+        const language = getLanguageFromClassName(className);
+        const isLastCodeblock = preChildProps["data-islastcodeblock"];
+
+        if (codeblockStreamIds.current[codeBlockIndex] === undefined) {
+          codeblockStreamIds.current[codeBlockIndex] = uuidv4();
+        }
+
+        return (
+          <StepContainerPreToolbar
+            showToolCallStatusIcon={props.showToolCallStatusIcon}
+            codeBlockContent={codeBlockContent}
+            itemIndex={itemIndexRef.current}
+            codeBlockIndex={codeBlockIndex}
+            language={language}
+            relativeFilepath={relativeFilePath}
+            isLastCodeblock={isLastCodeblock}
+            range={range}
+            codeBlockStreamId={codeblockStreamIds.current[codeBlockIndex]}
+            forceToolCallId={props.toolCallId}
+            expanded={props.expandCodeblocks}
+            disableManualApply={props.disableManualApply}
+            collapsible={props.collapsible}
+          >
+            <SyntaxHighlightedPre {...preProps} />
+          </StepContainerPreToolbar>
+        );
       },
-      {},
-    ],
-    rehypeReactOptions: {
-      components: {
-        a: ({ ...aProps }) => {
-          return (
-            <ToolTip place="top" className="m-0 p-0" content={aProps.href}>
-              <a href={aProps.href} target="_blank" className="hover:underline">
-                {aProps.children}
-              </a>
-            </ToolTip>
-          );
-        },
-        pre: ({ ...preProps }) => {
-          const codeBlockIndex = preProps["data-codeblockindex"];
 
-          const preChildProps = preProps?.children?.[0]?.props ?? {};
-          const { className, range } = preChildProps;
-
-          const relativeFilePath = preChildProps["data-relativefilepath"];
-          const codeBlockContent = preChildProps["data-codeblockcontent"];
-
-          if (!props.isRenderingInStepContainer) {
-            return <SyntaxHighlightedPre {...preProps} />;
-          }
-
-          const language = getLanguageFromClassName(className);
-
-          const isLastCodeblock = preChildProps["data-islastcodeblock"];
-
-          if (codeblockStreamIds.current[codeBlockIndex] === undefined) {
-            codeblockStreamIds.current[codeBlockIndex] = uuidv4();
-          }
-
-          return (
-            <StepContainerPreToolbar
-              showToolCallStatusIcon={props.showToolCallStatusIcon}
-              codeBlockContent={codeBlockContent}
-              itemIndex={itemIndexRef.current}
-              codeBlockIndex={codeBlockIndex}
-              language={language}
-              relativeFilepath={relativeFilePath}
-              isLastCodeblock={isLastCodeblock}
-              range={range}
-              codeBlockStreamId={codeblockStreamIds.current[codeBlockIndex]} // ignored if toolCallId stream state is found
-              forceToolCallId={props.toolCallId}
-              expanded={props.expandCodeblocks}
-              disableManualApply={props.disableManualApply}
-              collapsible={props.collapsible}
-            >
-              <SyntaxHighlightedPre {...preProps} />
-            </StepContainerPreToolbar>
-          );
-        },
-        code: ({ ...codeProps }) => {
-          const content = getCodeChildrenContent(codeProps.children);
-
-          if (content) {
-            const { symbols, rifs } = pastFileInfoRef.current;
-
-            const matchedSymbolOrFile = matchCodeToSymbolOrFile(
-              content,
-              symbols,
-              rifs,
+      code: (codeProps: any) => {
+        const content = getCodeChildrenContent(codeProps.children);
+        if (content) {
+          const { symbols, rifs } = pastFileInfoRef.current;
+          const matched = matchCodeToSymbolOrFile(content, symbols, rifs);
+          if (matched) {
+            return isSymbolNotRif(matched) ? (
+              <SymbolLink content={content} symbol={matched} />
+            ) : (
+              <FilenameLink rif={matched} />
             );
-            if (matchedSymbolOrFile) {
-              if (isSymbolNotRif(matchedSymbolOrFile)) {
-                return (
-                  <SymbolLink content={content} symbol={matchedSymbolOrFile} />
-                );
-              } else {
-                return <FilenameLink rif={matchedSymbolOrFile} />;
-              }
-            }
           }
-          if (codeProps.className?.includes("language-mermaid")) {
-            const codeText = String(codeProps.children || "");
-            return <MermaidBlock code={codeText} />;
-          }
-          return <code {...codeProps}>{codeProps.children}</code>;
-        },
-        img: ({ ...imgProps }) => {
-          return (
-            <SecureImageComponent
-              src={imgProps.src}
-              alt={imgProps.alt}
-              title={imgProps.title}
-              className={imgProps.className}
-            />
-          );
-        },
-      },
-    },
-  });
+        }
 
-  useEffect(() => {
-    setMarkdownSource(
-      // some patches to source markdown are applied here:
-      fixDoubleDollarNewLineLatex(patchNestedMarkdown(props.source ?? "")),
-    );
-  }, [props.source, allSymbols]);
+        if (codeProps.className?.includes("language-mermaid")) {
+          const codeText = String(codeProps.children || "");
+          return <MermaidBlock code={codeText} />;
+        }
+
+        return <code {...codeProps}>{codeProps.children}</code>;
+      },
+
+      img: (imgProps: React.ComponentProps<"img">) => (
+        <SecureImageComponent
+          src={imgProps.src ?? ""}
+          alt={imgProps.alt ?? ""}
+          title={imgProps.title}
+          className={imgProps.className}
+        />
+      ),
+    };
+  }, [
+    props.isRenderingInStepContainer,
+    props.showToolCallStatusIcon,
+    props.toolCallId,
+    props.expandCodeblocks,
+    props.disableManualApply,
+    props.collapsible,
+    itemIndexRef,
+    pastFileInfoRef,
+  ]);
 
   const uiConfig = useAppSelector(selectUIConfig);
   const codeWrapState = uiConfig?.codeWrap ? "pre-wrap" : "pre";
@@ -386,8 +384,15 @@ const StyledMarkdownPreview = memo(function StyledMarkdownPreview(
       fontSize={getFontSize()}
       whiteSpace={codeWrapState}
       bgColor={props.useParentBackgroundColor ? "" : vscBackground}
+      className={props.className}
     >
-      {reactContent}
+      <ReactMarkdown
+        remarkPlugins={remarkPlugins as any}
+        rehypePlugins={rehypePlugins as any}
+        components={components as any}
+      >
+        {patchedSource}
+      </ReactMarkdown>
     </StyledMarkdown>
   );
 });

@@ -5,7 +5,7 @@ import { getExtensionVersion, getvsCodeUriScheme } from "./util/util";
 import { getExtensionUri, getNonce, getUniqueId } from "./util/vscode";
 import { VsCodeWebviewProtocol } from "./webviewProtocol";
 
-import type { FileEdit } from "core";
+import type { FileEdit } from "@gourmanddev/core";
 
 export class GobiGUIWebviewViewProvider implements vscode.WebviewViewProvider {
   public static readonly viewType = "gourmand.gobiGUIView";

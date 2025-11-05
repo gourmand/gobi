@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as fs from "node:fs";
 
-import { ContextMenuConfig, ILLM, ModelInstaller } from "core";
+import { ContextMenuConfig, ILLM, ModelInstaller } from "@gourmanddev/core";
 import { CompletionProvider } from "@gourmanddev/core/autocomplete/CompletionProvider";
 import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";
 import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";

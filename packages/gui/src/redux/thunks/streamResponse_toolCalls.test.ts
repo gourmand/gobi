@@ -1,5 +1,9 @@
 import { JSONContent } from "@tiptap/core";
-import { AssistantChatMessage, InputModifiers, PromptLog } from "core";
+import {
+  AssistantChatMessage,
+  InputModifiers,
+  PromptLog,
+} from "@gourmanddev/core";
 import { describe, expect, it, vi } from "vitest";
 import { createMockStore } from "../../util/test/mockStore";
 import { streamResponseThunk } from "./streamResponse";
@@ -28,7 +32,7 @@ vi.mock(
   }),
 );
 
-import { ModelDescription } from "core";
+import { ModelDescription } from "@gourmanddev/core";
 import { serializeTool } from "@gourmanddev/core/tools";
 import {
   editFileTool,

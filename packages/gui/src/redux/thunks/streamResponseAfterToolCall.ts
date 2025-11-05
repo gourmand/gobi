@@ -1,5 +1,5 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
-import { ChatMessage } from "core";
+import { ChatMessage } from "@gourmanddev/core";
 import { renderContextItems } from "@gourmanddev/core/util/messageContent";
 import { selectCurrentToolCalls } from "../selectors/selectToolCalls";
 import {

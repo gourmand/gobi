@@ -1,8 +1,8 @@
 import { ArrowTopRightOnSquareIcon } from "@heroicons/react/24/outline";
-import { ContextItemWithId } from "core";
+import { ContextItemWithId } from "@gourmanddev/core";
 import { ctxItemToRifWithContents } from "@gourmanddev/core/commands/util";
 import { getUriPathBasename } from "@gourmanddev/core/util/uri";
-import { ComponentType, useContext, useMemo } from "react";
+import { ComponentType, ReactNode, useContext, useMemo } from "react";
 import {
   IdeMessengerContext,
   IIdeMessenger,
@@ -20,7 +20,7 @@ interface ContextItemsPeekProps {
   contextItems?: ContextItemWithId[];
   isCurrentContextPeek: boolean;
   icon?: ComponentType<React.SVGProps<SVGSVGElement>>;
-  title?: JSX.Element | string;
+  title?: ReactNode | string;
 }
 
 interface ContextItemsPeekItemProps {

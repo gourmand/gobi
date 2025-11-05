@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import { execSync } from "node:child_process";
 
-function execCmdSync(cmd) {
+export function execCmdSync(cmd) {
   try {
     execSync(cmd);
   } catch (err) {
@@ -10,7 +10,7 @@ function execCmdSync(cmd) {
   }
 }
 
-function autodetectPlatformAndArch() {
+export function autodetectPlatformAndArch() {
   platform = {
     aix: "linux",
     alpine: "linux",
@@ -39,7 +39,7 @@ function autodetectPlatformAndArch() {
   return [platform, arch];
 }
 
-function validateFilesPresent(pathsToVerify) {
+export function validateFilesPresent(pathsToVerify) {
   // This script verifies after pacakging that necessary files are in the correct locations
   // In many cases just taking a sample file from the folder when they are all roughly the same thing
 
@@ -98,9 +98,3 @@ function validateFilesPresent(pathsToVerify) {
     console.log("All paths exist");
   }
 }
-
-module.exports = {
-  execCmdSync,
-  validateFilesPresent,
-  autodetectPlatformAndArch,
-};

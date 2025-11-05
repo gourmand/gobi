@@ -1,4 +1,4 @@
-import { ToolCallDelta, ToolCallState } from "core";
+import { ToolCallDelta, ToolCallState } from "@gourmanddev/core";
 import { addToolCallDeltaToState } from "./toolCallState";
 
 describe("addToolCallDeltaToState", () => {

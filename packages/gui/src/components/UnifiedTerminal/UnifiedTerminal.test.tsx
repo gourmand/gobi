@@ -1,5 +1,5 @@
 import { screen, waitFor } from "@testing-library/react";
-import { ToolCallState } from "core";
+import { ToolCallState } from "@gourmanddev/core";
 import { renderWithProviders } from "../../util/test/render";
 import { UnifiedTerminalCommand } from "./UnifiedTerminal";
 

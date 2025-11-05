@@ -1,4 +1,4 @@
-import { ToolCallDelta, ToolCallState } from "core";
+import { ToolCallDelta, ToolCallState } from "@gourmanddev/core";
 import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
 import { incrementalParseJson } from "@gourmanddev/core/util/incrementalParseJson";
 

@@ -2,7 +2,7 @@ import {
   ContextProviderName,
   RangeInFile,
   SlashCommandDescWithSource,
-} from "core";
+} from "@gourmanddev/core";
 import { SUPPORTED_PROMPT_CONTEXT_PROVIDERS } from "@gourmanddev/core/promptFiles";
 import { renderTemplatedString } from "@gourmanddev/core/util/handlebars/renderTemplatedString";
 import { resolveRelativePathInDir } from "@gourmanddev/core/util/ideUtils";

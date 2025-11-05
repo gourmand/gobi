@@ -23,7 +23,7 @@ import type {
   RangeInFile,
   RangeInFileWithContents,
   SignatureHelp,
-} from "core";
+} from "@gourmanddev/core";
 import type Parser from "web-tree-sitter";
 
 type GotoProviderName =

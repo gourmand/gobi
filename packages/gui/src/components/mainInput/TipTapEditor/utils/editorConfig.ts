@@ -7,7 +7,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Text from "@tiptap/extension-text";
 import { Plugin } from "@tiptap/pm/state";
 import { useEditor } from "@tiptap/react";
-import { InputModifiers } from "core";
+import { InputModifiers } from "@gourmanddev/core";
 import { modelSupportsImages } from "@gourmanddev/core/llm/autodetect";
 import { usePostHog } from "posthog-js/react";
 import { useRef } from "react";

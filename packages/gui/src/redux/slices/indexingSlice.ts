@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
-import { IndexingStatus } from "core";
+import { IndexingStatus } from "@gourmanddev/core";
 
 export type IndexingState = {
   indexing: {

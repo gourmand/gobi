@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { IDE, ILLM, RuleWithSource } from "core";
+import { IDE, ILLM, RuleWithSource } from "@gourmanddev/core";
 import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";
 import { DataLogger } from "@gourmanddev/core/data/log";
 import { Telemetry } from "@gourmanddev/core/util/posthog";

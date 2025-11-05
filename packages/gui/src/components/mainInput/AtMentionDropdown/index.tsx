@@ -5,9 +5,10 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Editor } from "@tiptap/react";
-import type { RangeInFile } from "core";
+import type { RangeInFile } from "@gourmanddev/core";
 import {
   forwardRef,
+  useCallback,
   useContext,
   useEffect,
   useImperativeHandle,
@@ -383,6 +384,12 @@ const AtMentionDropdown = forwardRef((props: AtMentionDropdownProps, ref) => {
   const totalItems = allItems.length;
 
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
+  const setItemRef = useCallback(
+    (index: number, element: HTMLButtonElement | null) => {
+      itemRefs.current[index] = element;
+    },
+    [],
+  );
 
   const upHandler = () => {
     setSelectedIndex((prevIndex) => {
@@ -537,7 +544,7 @@ const AtMentionDropdown = forwardRef((props: AtMentionDropdownProps, ref) => {
               return (
                 <ItemDiv
                   as="button"
-                  ref={(el) => (itemRefs.current[index] = el)}
+                  ref={(el) => setItemRef(index, el)}
                   className={`item cursor-pointer ${isSelected ? "is-selected" : ""}`}
                   key={index}
                   onClick={(e) => {

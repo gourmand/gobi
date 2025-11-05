@@ -4,7 +4,7 @@ import {
   InputModifiers,
   RuleWithSource,
   SlashCommandSource,
-} from "core";
+} from "@gourmanddev/core";
 import { memo, useMemo } from "react";
 import { defaultBorderRadius, vscBackground } from "../index";
 import { useAppSelector } from "../../redux/hooks";

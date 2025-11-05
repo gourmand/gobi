@@ -1,4 +1,4 @@
-import { SlashCommandDescWithSource } from "core";
+import { SlashCommandDescWithSource } from "@gourmanddev/core";
 import {} from "@gourmanddev/core/config/default";
 
 /**

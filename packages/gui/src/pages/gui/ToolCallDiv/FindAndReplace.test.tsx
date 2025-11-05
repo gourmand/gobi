@@ -1,5 +1,5 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { ApplyState } from "core";
+import { ApplyState } from "@gourmanddev/core";
 import { EditOperation } from "@gourmanddev/core/tools/definitions/multiEdit";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FindAndReplaceDisplay } from "./FindAndReplace";

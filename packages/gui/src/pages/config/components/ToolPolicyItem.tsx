@@ -4,7 +4,7 @@ import {
   ChevronRightIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
-import { Tool } from "core";
+import { Tool } from "@gourmanddev/core";
 import { BUILT_IN_GROUP_NAME } from "@gourmanddev/core/tools/builtIn";
 import { useEffect, useMemo, useState } from "react";
 import { useDispatch } from "react-redux";

@@ -1,4 +1,4 @@
-import { SlashCommandDescWithSource } from "core";
+import { SlashCommandDescWithSource } from "@gourmanddev/core";
 import { usePostHog } from "posthog-js/react";
 
 import { useAppDispatch, useAppSelector } from "../redux/hooks";

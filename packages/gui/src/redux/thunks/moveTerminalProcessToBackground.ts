@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ContextItem } from "core";
+import { ContextItem } from "@gourmanddev/core";
 import {
   abortStream,
   acceptToolCall,

@@ -17,13 +17,15 @@ const TooltipStyles: CSSProperties = {
   textAlign: "center",
 };
 
+type tooltipAttr = { "data-tooltip-id"?: string };
+
 export function ToolTip({
   children,
   content,
   ...props
 }: Omit<ITooltip, "id" | "children" | "content"> & {
   content: ITooltip["children"];
-  children: ReactElement;
+  children: ReactElement<tooltipAttr>;
 }) {
   const tooltipId = useId();
 

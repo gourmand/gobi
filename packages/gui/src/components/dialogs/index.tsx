@@ -1,5 +1,5 @@
 import { XMarkIcon } from "@heroicons/react/24/outline";
-import React, { isValidElement } from "react";
+import React, { isValidElement, ReactNode } from "react";
 import ReactMarkdown from "react-markdown";
 import styled from "styled-components";
 import {
@@ -13,7 +13,7 @@ interface TextDialogProps {
   showDialog: boolean;
   onEnter: () => void;
   onClose: () => void;
-  message?: string | JSX.Element;
+  message?: string | ReactNode;
 }
 
 const ScreenCover = styled.div`

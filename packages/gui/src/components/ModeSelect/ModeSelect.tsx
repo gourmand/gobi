@@ -4,7 +4,7 @@ import {
   ExclamationTriangleIcon,
   InformationCircleIcon,
 } from "@heroicons/react/24/outline";
-import { MessageModes } from "core";
+import { MessageModes } from "@gourmanddev/core";
 import { isRecommendedAgentModel } from "@gourmanddev/core/llm/toolSupport";
 import { capitalize } from "lodash";
 import { useCallback, useEffect, useMemo } from "react";

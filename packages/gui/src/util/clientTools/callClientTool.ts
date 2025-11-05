@@ -1,4 +1,4 @@
-import { ContextItem, ToolCallState } from "core";
+import { ContextItem, ToolCallState } from "@gourmanddev/core";
 import { BuiltInToolNames } from "@gourmanddev/core/tools/builtIn";
 import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors";
 import { IIdeMessenger } from "../../context/IdeMessenger";

@@ -1,4 +1,4 @@
-import { ToolCallDelta } from "core";
+import { ToolCallDelta } from "@gourmanddev/core";
 import { createRuleBlock } from "@gourmanddev/core/tools/definitions/createRuleBlock";
 import { CreateRuleBlockArgs } from "@gourmanddev/core/tools/implementations/createRuleBlock";
 import { useCallback, useContext, useState } from "react";

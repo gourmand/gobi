@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react";
-import { InputModifiers } from "core";
+import { InputModifiers } from "@gourmanddev/core";
 import { rifWithContentsToContextItem } from "@gourmanddev/core/commands/util";
 import { MutableRefObject } from "react";
 import { useWebviewListener } from "../../../hooks/useWebviewListener";

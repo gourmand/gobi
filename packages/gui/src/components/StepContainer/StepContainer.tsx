@@ -1,4 +1,4 @@
-import { ChatHistoryItem } from "core";
+import { ChatHistoryItem } from "@gourmanddev/core";
 import {
   renderChatMessage,
   stripImages,

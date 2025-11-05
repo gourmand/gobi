@@ -3,7 +3,7 @@ import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
 // @ts-ignore
 import * as vscode from "vscode";
 
-import { DiffChar, DiffLine } from "core";
+import { DiffChar, DiffLine } from "@gourmanddev/core";
 import { CodeRenderer } from "@gourmanddev/core/codeRenderer/CodeRenderer";
 import { myersCharDiff } from "@gourmanddev/core/diff/myers";
 import { getOffsetPositionAtLastNewLine } from "@gourmanddev/core/nextEdit/diff/diff";

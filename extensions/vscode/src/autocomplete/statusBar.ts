@@ -1,4 +1,4 @@
-import { ILLM } from "core";
+import { ILLM } from "@gourmanddev/core";
 import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
 import * as vscode from "vscode";
 

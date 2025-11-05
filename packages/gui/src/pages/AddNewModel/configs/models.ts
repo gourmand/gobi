@@ -1,4 +1,4 @@
-import { ILLM } from "core";
+import { ILLM } from "@gourmanddev/core";
 import { ModelProviderTags } from "../../../components/modelSelection/utils";
 import { InputDescriptor } from "./providers";
 

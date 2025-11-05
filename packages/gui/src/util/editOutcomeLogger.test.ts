@@ -1,4 +1,8 @@
-import { ApplyState, BrowserSerializedGobiConfig, ToolCallState } from "core";
+import {
+  ApplyState,
+  BrowserSerializedGobiConfig,
+  ToolCallState,
+} from "@gourmanddev/core";
 import { describe, expect, it, vi } from "vitest";
 import { EMPTY_CONFIG } from "../redux/slices/configSlice";
 import { assembleEditOutcomeData } from "./editOutcomeLogger";

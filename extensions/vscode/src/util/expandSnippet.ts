@@ -1,4 +1,4 @@
-import { Chunk, IDE } from "core";
+import { Chunk, IDE } from "@gourmanddev/core";
 import { languageForFilepath } from "@gourmanddev/core/autocomplete/constants/AutocompleteLanguageInfo";
 import { DEFAULT_IGNORE_DIRS } from "@gourmanddev/core/indexing/ignore";
 import { deduplicateArray } from "@gourmanddev/core/util";

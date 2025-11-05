@@ -4,10 +4,10 @@ import {
   TrashIcon,
   CloudIcon,
 } from "@heroicons/react/24/outline";
-import { BaseSessionMetadata } from "core";
+import { BaseSessionMetadata } from "@gourmanddev/core";
 import type { RemoteSessionMetadata } from "@gourmanddev/core/control-plane/client";
 import { getUriPathBasename } from "@gourmanddev/core/util/uri";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Input } from "../index";
 import { IdeMessengerContext } from "../../context/IdeMessenger";
@@ -42,7 +42,10 @@ export function HistoryTableRow({
     sessionMetadata.title,
   );
   const currentSessionId = useAppSelector((state) => state.session.id);
-
+  const inputRef = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
   useEffect(() => {
     setSessionTitleEditValue(sessionMetadata.title);
   }, [sessionMetadata]);
@@ -127,7 +130,7 @@ export function HistoryTableRow({
             <Input
               type="text"
               className="w-full"
-              ref={(titleInput) => titleInput && titleInput.focus()}
+              ref={inputRef}
               value={sessionTitleEditValue}
               onChange={(e) => setSessionTitleEditValue(e.target.value)}
               onKeyUp={(e) => handleKeyUp(e)}

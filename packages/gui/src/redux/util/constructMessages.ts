@@ -6,7 +6,7 @@ import {
   TextMessagePart,
   ToolResultChatMessage,
   UserChatMessage,
-} from "core";
+} from "@gourmanddev/core";
 import { chatMessageIsEmpty } from "@gourmanddev/core/llm/messages";
 import { getSystemMessageWithRules } from "@gourmanddev/core/llm/rules/getSystemMessageWithRules";
 import { RulePolicies } from "@gourmanddev/core/llm/rules/types";

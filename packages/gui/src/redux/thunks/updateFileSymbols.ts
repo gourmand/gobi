@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { ChatHistoryItem, ContextItemWithId } from "core";
+import { ChatHistoryItem, ContextItemWithId } from "@gourmanddev/core";
 import { CodeBlock } from "../../components/mainInput/TipTapEditor/extensions";
 import { updateFileSymbols } from "../slices/sessionSlice";
 import { ThunkApiType } from "../store";

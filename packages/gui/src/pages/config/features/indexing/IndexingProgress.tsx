@@ -1,4 +1,4 @@
-import { IndexingProgressUpdate } from "core";
+import { IndexingProgressUpdate } from "@gourmanddev/core";
 import { usePostHog } from "posthog-js/react";
 import { useContext, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";

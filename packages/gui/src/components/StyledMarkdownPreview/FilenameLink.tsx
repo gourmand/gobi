@@ -1,4 +1,4 @@
-import { RangeInFile } from "core";
+import { RangeInFile } from "@gourmanddev/core";
 import { findUriInDirs, getUriPathBasename } from "@gourmanddev/core/util/uri";
 import { useContext } from "react";
 import { IdeMessengerContext } from "../../context/IdeMessenger";

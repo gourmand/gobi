@@ -1,7 +1,7 @@
 import * as child_process from "node:child_process";
 import { exec } from "node:child_process";
 
-import { Range } from "core";
+import { Range } from "@gourmanddev/core";
 import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
 import {
   DEFAULT_IGNORES,
@@ -35,7 +35,7 @@ import type {
   SignatureHelp,
   TerminalOptions,
   Thread,
-} from "core";
+} from "@gourmanddev/core";
 import { getExtensionVersion, isExtensionPrerelease } from "./util/util";
 
 class VsCodeIde implements IDE {

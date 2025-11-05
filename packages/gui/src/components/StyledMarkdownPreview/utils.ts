@@ -1,4 +1,4 @@
-import { RangeInFileWithContents, SymbolWithRange } from "core";
+import { RangeInFileWithContents, SymbolWithRange } from "@gourmanddev/core";
 
 const terminalLanguages = ["bash", "sh"];
 const commonTerminalCommands = [

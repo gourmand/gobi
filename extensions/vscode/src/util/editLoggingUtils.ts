@@ -1,4 +1,9 @@
-import { IDE, Position, Range, RangeInFileWithNextEditInfo } from "core";
+import {
+  IDE,
+  Position,
+  Range,
+  RangeInFileWithNextEditInfo,
+} from "@gourmanddev/core";
 import { AutocompleteCodeSnippet } from "@gourmanddev/core/autocomplete/snippets/types";
 import { GetLspDefinitionsFunction } from "@gourmanddev/core/autocomplete/types";
 import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";

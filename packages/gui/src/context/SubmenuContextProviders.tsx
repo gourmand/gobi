@@ -2,7 +2,7 @@ import {
   ContextProviderDescription,
   ContextProviderName,
   ContextSubmenuItemWithProvider,
-} from "core";
+} from "@gourmanddev/core";
 import {
   deduplicateArray,
   splitCamelCaseAndNonAlphaNumeric,

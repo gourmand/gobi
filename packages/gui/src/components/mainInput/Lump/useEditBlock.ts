@@ -1,4 +1,4 @@
-import { ModelDescription } from "core";
+import { ModelDescription } from "@gourmanddev/core";
 import { useContext } from "react";
 import { useAuth } from "../../../context/Auth";
 import { IdeMessengerContext } from "../../../context/IdeMessenger";

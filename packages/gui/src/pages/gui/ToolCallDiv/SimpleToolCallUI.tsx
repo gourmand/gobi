@@ -1,4 +1,4 @@
-import { Tool, ToolCallState } from "core";
+import { Tool, ToolCallState } from "@gourmanddev/core";
 import { ComponentType, useContext, useMemo, useState } from "react";
 import {
   ContextItemsPeekItem,

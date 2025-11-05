@@ -1,4 +1,4 @@
-import { IndexingProgressUpdate } from "core";
+import { IndexingProgressUpdate } from "@gourmanddev/core";
 import { getProgressPercentage } from "./IndexingProgress";
 
 export interface IndexingProgressBarProps {

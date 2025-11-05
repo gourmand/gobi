@@ -3,7 +3,7 @@ import {
   ChatMessage,
   ThinkingChatMessage,
   UserChatMessage,
-} from "core";
+} from "@gourmanddev/core";
 import { memo } from "react";
 
 export interface MessageProps {

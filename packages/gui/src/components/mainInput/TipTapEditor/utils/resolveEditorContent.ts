@@ -8,7 +8,7 @@ import {
   MessagePart,
   RangeInFile,
   SlashCommandDescWithSource,
-} from "core";
+} from "@gourmanddev/core";
 import { stripImages } from "@gourmanddev/core/util/messageContent";
 import { IIdeMessenger } from "../../../../context/IdeMessenger";
 import { setIsGatheringContext } from "../../../../redux/slices/sessionSlice";

@@ -4,7 +4,7 @@ import {
   MessageModes,
   RangeInFileWithContents,
   SetCodeToEditPayload,
-} from "core";
+} from "@gourmanddev/core";
 import { stripImages } from "@gourmanddev/core/util/messageContent";
 import { resolveEditorContent } from "../../components/mainInput/TipTapEditor";
 import {

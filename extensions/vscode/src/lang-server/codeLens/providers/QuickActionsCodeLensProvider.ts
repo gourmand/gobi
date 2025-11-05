@@ -1,4 +1,4 @@
-import { GobiConfig, QuickActionConfig } from "core";
+import { GobiConfig, QuickActionConfig } from "@gourmanddev/core";
 import { Telemetry } from "@gourmanddev/core/util/posthog";
 import * as vscode from "vscode";
 

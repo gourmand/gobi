@@ -1,5 +1,5 @@
 import { InformationCircleIcon } from "@heroicons/react/24/outline";
-import { IndexingStatus, SiteIndexingConfig } from "core";
+import { IndexingStatus, SiteIndexingConfig } from "@gourmanddev/core";
 import { usePostHog } from "posthog-js/react";
 import { useContext, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { useDispatch } from "react-redux";

@@ -1,5 +1,5 @@
 import { FolderIcon } from "@heroicons/react/24/outline";
-import { ToolCallState } from "core";
+import { ToolCallState } from "@gourmanddev/core";
 import { ToggleWithIcon } from "./ToggleWithIcon";
 import { getGroupActionVerb } from "./utils";
 

@@ -8,7 +8,7 @@ import {
   LLMInteractionStartComplete,
   LLMInteractionStartFim,
   LLMInteractionSuccess,
-} from "core";
+} from "@gourmanddev/core";
 import { useEffect, useReducer } from "react";
 import { v4 as uuidv4 } from "uuid";
 

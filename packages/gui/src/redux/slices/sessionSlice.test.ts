@@ -1,4 +1,4 @@
-import { ChatMessage } from "core";
+import { ChatMessage } from "@gourmanddev/core";
 import { renderChatMessage } from "@gourmanddev/core/util/messageContent";
 import { v4 as uuidv4 } from "uuid";
 import { beforeEach, describe, expect, it, vi } from "vitest";

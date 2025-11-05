@@ -11,8 +11,7 @@
     "tsc:watch:binary": "tsc --project binary/tsconfig.json --watch --noEmit --pretty",
     "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\" --ignore-path .gitignore --ignore-path .prettierignore",
     "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\" --ignore-path .gitignore --ignore-path .prettierignore",
-    "prepare": "husky",
-    "ci:simulate": "node scripts/simulate-ci.mjs"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,json,css,md}": "prettier --write"
@@ -46,5 +45,11 @@
   "engine": {
     "node": ">=24.11.0"
   },
-  "packageManager": "pnpm@10.20.0"
+  "packageManager": "pnpm@10.20.0",
+  "overrides": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.11"
+  }
 }

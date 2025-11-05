@@ -1,4 +1,10 @@
-import { ChatMessage, DiffLine, IDE, ILLM, RuleWithSource } from "core";
+import {
+  ChatMessage,
+  DiffLine,
+  IDE,
+  ILLM,
+  RuleWithSource,
+} from "@gourmanddev/core";
 import { streamDiffLines } from "@gourmanddev/core/edit/streamDiffLines";
 import {
   pruneLinesFromBottom,

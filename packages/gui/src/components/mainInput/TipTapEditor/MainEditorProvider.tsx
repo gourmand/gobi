@@ -1,5 +1,5 @@
 import { Editor } from "@tiptap/react";
-import { InputModifiers } from "core";
+import { InputModifiers } from "@gourmanddev/core";
 import React, {
   createContext,
   useContext,

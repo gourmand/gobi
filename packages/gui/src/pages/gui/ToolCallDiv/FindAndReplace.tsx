@@ -1,5 +1,5 @@
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
-import { ApplyState } from "core";
+import { ApplyState } from "@gourmanddev/core";
 import { trimEmptyLines } from "@gourmanddev/core/edit/searchAndReplace/findAndReplaceUtils";
 import { executeFindAndReplace } from "@gourmanddev/core/edit/searchAndReplace/performReplace";
 import { EditOperation } from "@gourmanddev/core/tools/definitions/multiEdit";

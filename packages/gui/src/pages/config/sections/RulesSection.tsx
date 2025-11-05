@@ -11,7 +11,7 @@ import {
   RuleSource,
   RuleWithSource,
   SlashCommandDescWithSource,
-} from "core";
+} from "@gourmanddev/core";
 import {
   DEFAULT_AGENT_SYSTEM_MESSAGE,
   DEFAULT_CHAT_SYSTEM_MESSAGE,

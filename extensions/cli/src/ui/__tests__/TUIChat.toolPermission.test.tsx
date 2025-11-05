@@ -3,8 +3,8 @@ import React from "react";
 import { vi } from "vitest";
 
 import type {
-    ChatHistoryItem,
-    ToolCallState,
+  ChatHistoryItem,
+  ToolCallState,
 } from "../../../../../core/index.js";
 import { ToolPermissionSelector } from "../components/ToolPermissionSelector.js";
 

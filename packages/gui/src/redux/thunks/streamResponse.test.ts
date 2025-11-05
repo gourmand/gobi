@@ -4,7 +4,7 @@ import {
   ChatMessage,
   InputModifiers,
   PromptLog,
-} from "core";
+} from "@gourmanddev/core";
 import { describe, expect, it, vi } from "vitest";
 import { createMockStore, getEmptyRootState } from "../../util/test/mockStore";
 import { streamResponseThunk } from "./streamResponse";
@@ -41,7 +41,7 @@ vi.mock(
   }),
 );
 
-import { ModelDescription } from "core";
+import { ModelDescription } from "@gourmanddev/core";
 import { serializeTool } from "@gourmanddev/core/tools";
 import { grepSearchTool } from "@gourmanddev/core/tools/definitions";
 import posthog from "posthog-js";

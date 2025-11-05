@@ -1,4 +1,4 @@
-import { IndexingProgressUpdate } from "core";
+import { IndexingProgressUpdate } from "@gourmanddev/core";
 import { AnimatedEllipsis } from "../../../../components/AnimatedEllipsis";
 
 export interface IndexingProgressTitleTextProps {

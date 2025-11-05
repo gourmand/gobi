@@ -1,5 +1,5 @@
 import { CheckIcon, PlayIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { ApplyState } from "core";
+import { ApplyState } from "@gourmanddev/core";
 import { getMetaKeyLabel } from "../../../util";
 import Spinner from "../../gui/Spinner";
 import { ToolTip } from "../../gui/Tooltip";

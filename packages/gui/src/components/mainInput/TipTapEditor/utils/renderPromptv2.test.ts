@@ -1,4 +1,4 @@
-import { SlashCommandDescWithSource } from "core";
+import { SlashCommandDescWithSource } from "@gourmanddev/core";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { MockIdeMessenger } from "../../../../context/MockIdeMessenger";
 import { getPromptV2ContextRequests } from "./renderPromptv2";

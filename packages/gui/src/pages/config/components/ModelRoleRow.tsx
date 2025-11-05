@@ -1,6 +1,6 @@
 import { ModelRole } from "@gourmanddev/config-yaml";
 import { Cog6ToothIcon } from "@heroicons/react/24/outline";
-import { ModelDescription } from "core";
+import { ModelDescription } from "@gourmanddev/core";
 import { ReactNode } from "react";
 import { ToolTip } from "../../../components/gui/Tooltip";
 import { Button } from "../../../components/ui";

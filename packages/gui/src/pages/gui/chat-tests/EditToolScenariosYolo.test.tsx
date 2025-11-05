@@ -7,7 +7,7 @@ import { Chat } from "../Chat";
 
 import { waitFor } from "@testing-library/dom";
 import { act } from "@testing-library/react";
-import { ChatMessage } from "core";
+import { ChatMessage } from "@gourmanddev/core";
 import { setToolPolicy } from "../../../redux/slices/uiSlice";
 import { setInactive } from "../../../redux/slices/sessionSlice";
 import {
@@ -56,7 +56,7 @@ beforeEach(async () => {
   await new Promise((resolve) => setTimeout(resolve, 50));
 });
 
-test("Edit run with no policy and yolo mode", { timeout: 15000 }, async () => {
+test("Edit run with no policy and yolo mode", async () => {
   // Additional cleanup before test starts
   localStorage.clear();
   sessionStorage.clear();
@@ -225,4 +225,4 @@ test("Edit run with no policy and yolo mode", { timeout: 15000 }, async () => {
   // await waitFor(() => getElementByText(POST_EDIT_RESPONSE), {
   //   timeout: 8000,
   // });
-});
+}, 15_000);

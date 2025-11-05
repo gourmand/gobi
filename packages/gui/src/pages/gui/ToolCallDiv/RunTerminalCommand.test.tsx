@@ -1,7 +1,7 @@
 import { describe, expect, it, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { RunTerminalCommand } from "./RunTerminalCommand";
-import { ToolCallState } from "core";
+import { ToolCallState } from "@gourmanddev/core";
 
 // Mock the UnifiedTerminalCommand component since it requires Redux
 vi.mock("../../../components/UnifiedTerminal/UnifiedTerminal", () => ({

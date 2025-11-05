@@ -12,7 +12,7 @@ const { rimrafSync } = require("rimraf");
 const {
   validateFilesPresent,
   autodetectPlatformAndArch,
-} = require("../../../scripts/util/index");
+} = require("../../../scripts/util");
 
 const { generateAndCopyConfigYamlSchema } = require("./generate-copy-config");
 const { npmInstall } = require("./npm-install");

@@ -4,7 +4,7 @@ import {
   PencilSquareIcon,
   TrashIcon,
 } from "@heroicons/react/24/outline";
-import { ChatHistoryItem } from "core";
+import { ChatHistoryItem } from "@gourmanddev/core";
 import { modelSupportsNativeTools } from "@gourmanddev/core/llm/toolSupport";
 import { renderChatMessage } from "@gourmanddev/core/util/messageContent";
 import { useMemo } from "react";

@@ -1,5 +1,5 @@
 import { createAsyncThunk, unwrapResult } from "@reduxjs/toolkit";
-import { LLMFullCompletionOptions, ModelDescription } from "core";
+import { LLMFullCompletionOptions, ModelDescription } from "@gourmanddev/core";
 import { getRuleId } from "@gourmanddev/core/llm/rules/getSystemMessageWithRules";
 import { ToCoreProtocol } from "@gourmanddev/core/protocol";
 import { selectActiveTools } from "../selectors/selectActiveTools";

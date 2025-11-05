@@ -1,4 +1,4 @@
-import { ToolCallState } from "core";
+import { ToolCallState } from "@gourmanddev/core";
 import { GobiErrorReason } from "@gourmanddev/core/util/errors";
 import posthog from "posthog-js";
 import { IIdeMessenger } from "../../context/IdeMessenger";

@@ -4,7 +4,7 @@ import {
   ClipboardIcon,
   XCircleIcon,
 } from "@heroicons/react/24/outline";
-import { IndexingProgressUpdate } from "core";
+import { IndexingProgressUpdate } from "@gourmanddev/core";
 import { useContext, useState } from "react";
 import { GhostButton } from "../../../../components";
 import { IdeMessengerContext } from "../../../../context/IdeMessenger";
