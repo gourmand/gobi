@@ -51,5 +51,22 @@
     "react-dom": "19.1.0",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.11"
+  },
+  "pnpm": {
+    "supportedArchitectures": {
+      "os": [
+        "darwin",
+        "linux",
+        "win32"
+      ],
+      "cpu": [
+        "x64",
+        "arm64"
+      ],
+      "libc": [
+        "glibc",
+        "musl"
+      ]
+    }
   }
 }
