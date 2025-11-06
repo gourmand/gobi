@@ -125,56 +125,116 @@ export class GobiGUIWebviewViewProvider implements vscode.WebviewViewProvider {
 
     this.webviewProtocol.webview = panel.webview;
 
-    return `<!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script>const vscode = acquireVsCodeApi();</script>
-        <link href="${styleMainUri}" rel="stylesheet">
+    const htmlParts: string[] = [];
+    htmlParts.push("<!DOCTYPE html>");
+    htmlParts.push('<html lang="en">');
+    htmlParts.push("<head>");
+    htmlParts.push('<meta charset="UTF-8">');
+    htmlParts.push(
+      '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+    );
+    htmlParts.push("<script>const vscode = acquireVsCodeApi();</script>");
+    // Synchronously fetch and patch CSS so fonts and absolute paths resolve inside the webview
+    htmlParts.push('<script nonce="' + nonce + '">(function(){');
+    htmlParts.push("try{");
+    htmlParts.push(
+      "var __gobi_media_root=" + JSON.stringify(vscMediaUrl) + ";",
+    );
+    htmlParts.push(
+      'var xhr=new XMLHttpRequest();xhr.open("GET",' +
+        JSON.stringify(styleMainUri) +
+        ",false);xhr.send(null);",
+    );
+    htmlParts.push(
+      "if(xhr.status===200){var css=xhr.responseText;css=css.replace(/url\\(\\s*([\"\"])?\\//g,'url($1' + __gobi_media_root + '/');var style=document.createElement('style');style.type='text/css';try{style.appendChild(document.createTextNode(css))}catch(e){style.innerHTML=css}document.head.appendChild(style)}",
+    );
+    htmlParts.push(
+      "}catch(e){console.warn('Failed to load patched CSS for webview',e);} })();</script>",
+    );
 
-        <title>Gobi</title>
-      </head>
-      <body>
-        <div id="root"></div>
+    htmlParts.push("<title>Gobi</title>");
+    htmlParts.push("</head>");
+    htmlParts.push("<body>");
+    htmlParts.push('<div id="root"></div>');
 
-        ${
-          inDevelopmentMode
-            ? `<script type="module">
-          import RefreshRuntime from "http://localhost:5173/@react-refresh"
-          RefreshRuntime.injectIntoGlobalHook(window)
-          window.$RefreshReg$ = () => {}
-          window.$RefreshSig$ = () => (type) => type
-          window.__vite_plugin_react_preamble_installed__ = true
-          </script>`
-            : ""
-        }
+    if (inDevelopmentMode) {
+      htmlParts.push('<script type="module">');
+      htmlParts.push(
+        'import RefreshRuntime from "http://localhost:5173/@react-refresh"',
+      );
+      htmlParts.push("RefreshRuntime.injectIntoGlobalHook(window)");
+      htmlParts.push("window.$RefreshReg$ = () => {}");
+      htmlParts.push("window.$RefreshSig$ = () => (type) => type");
+      htmlParts.push("window.__vite_plugin_react_preamble_installed__ = true");
+      htmlParts.push("</script>");
+    }
 
-        <script type="module" nonce="${nonce}" src="${scriptUri}"></script>
+    htmlParts.push(
+      '<script type="module" nonce="' +
+        nonce +
+        '" src="' +
+        scriptUri +
+        '"></script>',
+    );
 
-        <script>localStorage.setItem("ide", '"vscode"')</script>
-        <script>localStorage.setItem("vsCodeUriScheme", '"${getvsCodeUriScheme()}"')</script>
-        <script>localStorage.setItem("extensionVersion", '"${getExtensionVersion()}"')</script>
-        <script>window.windowId = "${this.windowId}"</script>
-        <script>window.vscMachineId = "${getUniqueId()}"</script>
-        <script>window.vscMediaUrl = "${vscMediaUrl}"</script>
-        <script>window.ide = "vscode"</script>
-        <script>window.fullColorTheme = ${JSON.stringify(currentTheme)}</script>
-        <script>window.colorThemeName = "dark-plus"</script>
-        <script>window.workspacePaths = ${JSON.stringify(
+    htmlParts.push(
+      '<script>localStorage.setItem("ide", "\\"vscode\\"")</script>',
+    );
+    htmlParts.push(
+      '<script>localStorage.setItem("vsCodeUriScheme", "' +
+        JSON.stringify(getvsCodeUriScheme()) +
+        '")</script>',
+    );
+    htmlParts.push(
+      '<script>localStorage.setItem("extensionVersion", "' +
+        JSON.stringify(getExtensionVersion()) +
+        '")</script>',
+    );
+    htmlParts.push(
+      '<script>window.windowId = "' + this.windowId + '"</script>',
+    );
+    htmlParts.push(
+      '<script>window.vscMachineId = "' + getUniqueId() + '"</script>',
+    );
+    htmlParts.push(
+      '<script>window.vscMediaUrl = "' + vscMediaUrl + '"</script>',
+    );
+    htmlParts.push('<script>window.ide = "vscode"</script>');
+    htmlParts.push(
+      "<script>window.fullColorTheme = " +
+        JSON.stringify(currentTheme) +
+        "</script>",
+    );
+    htmlParts.push('<script>window.colorThemeName = "dark-plus"</script>');
+    htmlParts.push(
+      "<script>window.workspacePaths = " +
+        JSON.stringify(
           vscode.workspace.workspaceFolders?.map((folder) =>
             folder.uri.toString(),
           ) || [],
-        )}</script>
-        <script>window.isFullScreen = ${isFullScreen}</script>
+        ) +
+        "</script>",
+    );
+    htmlParts.push(
+      "<script>window.isFullScreen = " +
+        (isFullScreen ? "true" : "false") +
+        "</script>",
+    );
 
-        ${
-          edits
-            ? `<script>window.edits = ${JSON.stringify(edits)}</script>`
-            : ""
-        }
-        ${page ? `<script>window.location.pathname = "${page}"</script>` : ""}
-      </body>
-    </html>`;
+    if (edits) {
+      htmlParts.push(
+        "<script>window.edits = " + JSON.stringify(edits) + "</script>",
+      );
+    }
+    if (page) {
+      htmlParts.push(
+        '<script>window.location.pathname = "' + page + '"</script>',
+      );
+    }
+
+    htmlParts.push("</body>");
+    htmlParts.push("</html>");
+
+    return htmlParts.join("\n");
   }
 }
