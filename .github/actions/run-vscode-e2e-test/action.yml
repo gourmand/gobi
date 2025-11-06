@@ -58,7 +58,7 @@ runs:
     - name: Build packages and download e2e dependencies
       shell: bash
       run: |
-        pnpm install --frozen-lockfile
+        pnpm install --no-frozen-lockfile
         pnpm -r build
         if [ "${{ steps.storage-cache.outputs.cache-hit }}" != "true" ]; then
           cd extensions/vscode

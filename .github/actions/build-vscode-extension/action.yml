@@ -46,7 +46,7 @@ runs:
     - name: Install workspace dependencies and build packages
       shell: bash
       run: |
-        pnpm install --frozen-lockfile
+        pnpm install --no-frozen-lockfile
         pnpm -r build
       env:
         # https://github.com/microsoft/vscode-ripgrep/issues/9#issuecomment-643965333

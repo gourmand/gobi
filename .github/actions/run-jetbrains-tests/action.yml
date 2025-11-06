@@ -28,7 +28,7 @@ runs:
     - name: Build packages and install core dependencies
       shell: bash
       run: |
-        pnpm install --frozen-lockfile
+        pnpm install --no-frozen-lockfile
         pnpm -r build
 
     - name: Build GUI

@@ -182,7 +182,7 @@ jobs:
       - name: Build packages
         run: |
           cd ../..
-          pnpm install --frozen-lockfile
+          pnpm install --no-frozen-lockfile
           pnpm -r build
 
       # npm install core
