@@ -1,0 +1,783 @@
+{
+  "name": "gobi-vscode-extension",
+  "icon": "media/icon128x128.png",
+  "author": "gourmand.dev",
+  "version": "1.3.20",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gourmand/gobi"
+  },
+  "extensionKind": [
+    "ui",
+    "workspace"
+  ],
+  "bugs": {
+    "url": "https://github.com/gourmand/gobi/issues",
+    "email": "bugs@gourmand.dev"
+  },
+  "homepage": "https://gourmand.dev",
+  "qna": "https://github.com/gourmand/gobi/issues/new/choose",
+  "license": "Apache-2.0",
+  "displayName": "Gobi - tasty AI agents for secure environments",
+  "pricing": "Free",
+  "description": "Tasty AI agents for secure environments",
+  "publisher": "gourmand",
+  "engines": {
+    "vscode": "^1.70.0"
+  },
+  "engine-strict": true,
+  "galleryBanner": {
+    "color": "#1E1E1E",
+    "theme": "dark"
+  },
+  "categories": [
+    "AI",
+    "Chat",
+    "Programming Languages",
+    "Education",
+    "Machine Learning",
+    "Snippets"
+  ],
+  "keywords": [
+    "chatgpt",
+    "cline",
+    "roo",
+    "github",
+    "copilot",
+    "claude",
+    "mistral",
+    "codestral",
+    "ai"
+  ],
+  "activationEvents": [
+    "onUri",
+    "onStartupFinished",
+    "onView:gourmand.gobiGUIView"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "languages": [
+      {
+        "filenames": [
+          "config.json",
+          ".gobirc.json"
+        ],
+        "id": "jsonc"
+      },
+      {
+        "id": "promptLanguage",
+        "extensions": [
+          ".prompt"
+        ],
+        "aliases": [
+          "Prompt Language"
+        ],
+        "configuration": "./prompt-file-language-configuration.json"
+      }
+    ],
+    "grammars": [
+      {
+        "language": "promptLanguage",
+        "scopeName": "source.prompt",
+        "path": "./media/prompt.tmLanguage.json"
+      }
+    ],
+    "configuration": {
+      "title": "Gobi",
+      "properties": {
+        "gobi.telemetryEnabled": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Gobi collects anonymous usage data, cleaned of PII, to help us improve the product for our users. Read more  at [gourmand.dev › Telemetry](https://docs.gourmand.dev/telemetry)."
+        },
+        "gobi.showInlineTip": {
+          "type": "boolean",
+          "default": true,
+          "description": "Show inline suggestion to use the Gobi keyboard shortcuts (e.g. \"Cmd/Ctrl L to select code, Cmd/Ctrl I to edit\")."
+        },
+        "gobi.disableQuickFix": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disable the quick fix feature."
+        },
+        "gobi.enableQuickActions": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable the experimental Quick Actions feature. Read our walkthrough to learn about configuration and how to share feedback: [gourmand.dev › Walkthrough: Quick Actions (experimental)](https://docs.gourmand.dev/customize/deep-dives/vscode-actions#quick-actions)"
+        },
+        "gobi.enableTabAutocomplete": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable Gobi's tab autocomplete feature. Read our walkthrough to learn about configuration and how to share feedback: [gourmand.dev › Walkthrough: Tab Autocomplete (beta)](https://docs.gourmand.dev/features/tab-autocomplete)"
+        },
+        "gobi.enableNextEdit": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Enable Gobi's next edit feature. Read our docs to learn about configuration and how to share feedback: [gourmand.dev › Features › Autocomplete › Next Edit (experimental)](https://docs.gourmand.dev/features/autocomplete/next-edit)"
+        },
+        "gobi.pauseTabAutocompleteOnBattery": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Pause Gobi's tab autocomplete feature when your battery is low."
+        },
+        "gobi.pauseCodebaseIndexOnStart": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Pause Gobi's codebase index on start."
+        },
+        "gobi.enableConsole": {
+          "type": "boolean",
+          "default": false,
+          "markdownDescription": "Enable a console to log and explore model inputs and outputs. It can be found in the bottom panel."
+        },
+        "gobi.remoteConfigServerUrl": {
+          "type": "string",
+          "default": null,
+          "markdownDescription": "If your team is set up to use shared configuration, enter the server URL here and your user token below to enable automatic syncing."
+        },
+        "gobi.userToken": {
+          "type": "string",
+          "default": null,
+          "markdownDescription": "If your team is set up to use shared configuration, enter your user token here and your server URL above to enable automatic syncing."
+        },
+        "gobi.remoteConfigSyncPeriod": {
+          "type": "number",
+          "default": 60,
+          "description": "The period of time in minutes between automatic syncs."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "gobi.applyCodeFromChat",
+        "category": "Gobi",
+        "title": "Apply code from chat",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.acceptDiff",
+        "category": "Gobi",
+        "title": "Accept Diff",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.rejectDiff",
+        "category": "Gobi",
+        "title": "Reject Diff",
+        "group": "Gobi",
+        "icon": "$(stop)"
+      },
+      {
+        "command": "gobi.acceptVerticalDiffBlock",
+        "category": "Gobi",
+        "title": "Accept Vertical Diff Block",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.rejectVerticalDiffBlock",
+        "category": "Gobi",
+        "title": "Reject Vertical Diff Block",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.focusEdit",
+        "category": "Gobi",
+        "title": "Add to Edit",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.focusGobiInput",
+        "category": "Gobi",
+        "title": "Add Highlighted Code to Context and Clear Chat",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.focusGobiInputWithoutClear",
+        "category": "Gobi",
+        "title": "Add to Chat",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.debugTerminal",
+        "category": "Gobi",
+        "title": "Debug Terminal",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.exitEditMode",
+        "category": "Gobi",
+        "title": "Exit Edit Mode",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.openConfigPage",
+        "category": "Gobi",
+        "title": "Open Settings",
+        "icon": "$(gear)",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.toggleTabAutocompleteEnabled",
+        "category": "Gobi",
+        "title": "Toggle Autocomplete Enabled",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.forceAutocomplete",
+        "title": "Gobi: Force Autocomplete",
+        "category": "Gobi"
+      },
+      {
+        "command": "gobi.selectFilesAsContext",
+        "category": "Gobi",
+        "title": "Select Files as Context",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.newSession",
+        "category": "Gobi",
+        "title": "New Session",
+        "icon": "$(add)",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.shareSession",
+        "category": "Gobi",
+        "title": "Share Current Chat Session as Markdown",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.viewHistory",
+        "category": "Gobi",
+        "title": "View History",
+        "icon": "$(history)",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.viewLogs",
+        "category": "Gobi",
+        "title": "View History",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.clearConsole",
+        "category": "Gobi",
+        "title": "Clear Console",
+        "icon": "$(clear-all)",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.navigateTo",
+        "category": "Gobi",
+        "title": "Navigate to a path",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.writeCommentsForCode",
+        "category": "Gobi",
+        "title": "Write Comments for this Code",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.writeDocstringForCode",
+        "category": "Gobi",
+        "title": "Write a Docstring for this Code",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.fixCode",
+        "category": "Gobi",
+        "title": "Fix this Code",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.optimizeCode",
+        "category": "Gobi",
+        "title": "Optimize this Code",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.fixGrammar",
+        "category": "Gobi",
+        "title": "Fix Grammar / Spelling",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.codebaseForceReIndex",
+        "category": "Gobi",
+        "title": "Codebase Force Re-Index",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.rebuildCodebaseIndex",
+        "category": "Gobi",
+        "title": "Rebuild codebase index",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.docsIndex",
+        "category": "Gobi",
+        "title": "Docs Index",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.docsReIndex",
+        "category": "Gobi",
+        "title": "Docs Force Re-Index",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.focusGobiInput",
+        "category": "Gobi",
+        "title": "Focus Gobi Chat",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.enterEnterpriseLicenseKey",
+        "category": "Gobi",
+        "title": "Enter Enterprise License Key",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.toggleNextEditEnabled",
+        "title": "Gobi: Toggle Next Edit"
+      },
+      {
+        "command": "gobi.nextEditWindow.hideNextEditSuggestion",
+        "category": "Gobi",
+        "title": "Hide Next Edit Suggestion"
+      },
+      {
+        "command": "gobi.nextEditWindow.acceptNextEditSuggestion",
+        "category": "Gobi",
+        "title": "Accept Next Edit Suggestion"
+      },
+      {
+        "command": "gobi.forceNextEdit",
+        "category": "Gobi",
+        "title": "Gobi: Force Next Edit"
+      },
+      {
+        "command": "gobi.acceptJump",
+        "category": "Gobi",
+        "title": "Gobi: Accept Jump Suggestion"
+      },
+      {
+        "command": "gobi.rejectJump",
+        "category": "Gobi",
+        "title": "Gobi: Reject Jump Suggestion"
+      },
+      {
+        "command": "gobi.generateRule",
+        "category": "Gobi",
+        "title": "Generate Rule",
+        "group": "Gobi"
+      },
+      {
+        "command": "gobi.openInNewWindow",
+        "category": "Gobi",
+        "title": "Open in new window",
+        "group": "Gobi"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "gobi.focusGobiInput",
+        "mac": "cmd+l",
+        "key": "ctrl+l"
+      },
+      {
+        "command": "gobi.focusGobiInputWithoutClear",
+        "mac": "cmd+shift+l",
+        "key": "ctrl+shift+l"
+      },
+      {
+        "command": "gobi.acceptDiff",
+        "mac": "shift+cmd+enter",
+        "key": "shift+ctrl+enter",
+        "when": "gobi.diffVisible"
+      },
+      {
+        "command": "gobi.rejectDiff",
+        "mac": "shift+cmd+backspace",
+        "key": "shift+ctrl+backspace",
+        "when": "gobi.diffVisible"
+      },
+      {
+        "command": "gobi.rejectDiff",
+        "mac": "cmd+z",
+        "key": "ctrl+z",
+        "when": "gobi.diffVisible"
+      },
+      {
+        "command": "gobi.quickEditHistoryUp",
+        "mac": "up",
+        "key": "up",
+        "when": "false && gobi.quickEditHistoryFocused"
+      },
+      {
+        "command": "gobi.quickEditHistoryDown",
+        "mac": "down",
+        "key": "down",
+        "when": "false && gobi.quickEditHistoryFocused"
+      },
+      {
+        "command": "gobi.acceptVerticalDiffBlock",
+        "mac": "alt+cmd+y",
+        "key": "alt+ctrl+y"
+      },
+      {
+        "command": "gobi.rejectVerticalDiffBlock",
+        "mac": "alt+cmd+n",
+        "key": "alt+ctrl+n"
+      },
+      {
+        "command": "gobi.focusEdit",
+        "title": "Edit code with natural language",
+        "mac": "cmd+i",
+        "key": "ctrl+i"
+      },
+      {
+        "command": "gobi.exitEditMode",
+        "mac": "escape",
+        "key": "escape",
+        "when": "gobi.inEditMode && editorFocus"
+      },
+      {
+        "command": "gobi.debugTerminal",
+        "mac": "cmd+shift+r",
+        "key": "ctrl+shift+r"
+      },
+      {
+        "command": "gobi.openInNewWindow",
+        "mac": "cmd+k cmd+m",
+        "key": "ctrl+k ctrl+m",
+        "when": "!terminalFocus"
+      },
+      {
+        "command": "gobi.toggleTabAutocompleteEnabled",
+        "mac": "cmd+k cmd+a",
+        "key": "ctrl+k ctrl+a",
+        "when": "!terminalFocus"
+      },
+      {
+        "command": "gobi.forceAutocomplete",
+        "key": "ctrl+alt+space",
+        "mac": "cmd+alt+space",
+        "when": "editorTextFocus && !editorHasSelection && !editorReadOnly && !inSnippetMode"
+      },
+      {
+        "command": "gobi.applyCodeFromChat",
+        "mac": "alt+a",
+        "key": "alt+a"
+      },
+      {
+        "command": "gobi.toggleNextEditEnabled",
+        "key": "ctrl+k ctrl+n",
+        "mac": "cmd+k cmd+n",
+        "when": "editorTextFocus"
+      },
+      {
+        "command": "gobi.nextEditWindow.hideNextEditSuggestion",
+        "key": "escape",
+        "when": "editorTextFocus && nextEditWindowActive && !gobi.jumpDecorationVisible"
+      },
+      {
+        "command": "gobi.nextEditWindow.acceptNextEditSuggestion",
+        "key": "tab",
+        "when": "editorTextFocus && nextEditWindowActive && !gobi.jumpDecorationVisible"
+      },
+      {
+        "command": "gobi.acceptJump",
+        "key": "tab",
+        "when": "editorTextFocus && gobi.jumpDecorationVisible"
+      },
+      {
+        "command": "gobi.rejectJump",
+        "key": "escape",
+        "when": "editorTextFocus && gobi.jumpDecorationVisible"
+      }
+    ],
+    "submenus": [
+      {
+        "id": "gourmand.gobiSubMenu",
+        "label": "Gobi"
+      }
+    ],
+    "menus": {
+      "commandPalette": [
+        {
+          "command": "gobi.focusGobiInput"
+        },
+        {
+          "command": "gobi.focusGobiInputWithoutClear"
+        },
+        {
+          "command": "gobi.debugTerminal"
+        },
+        {
+          "command": "gobi.newSession"
+        },
+        {
+          "command": "gobi.enterEnterpriseLicenseKey"
+        },
+        {
+          "command": "gobi.generateRule"
+        },
+        {
+          "command": "gobi.openInNewWindow"
+        }
+      ],
+      "editor/context": [
+        {
+          "submenu": "gourmand.gobiSubMenu",
+          "group": "0_agobi"
+        }
+      ],
+      "editor/title/run": [
+        {
+          "command": "gobi.rejectDiff",
+          "group": "Gobi",
+          "when": "gobi.streamingDiff"
+        }
+      ],
+      "gourmand.gobiSubMenu": [
+        {
+          "command": "gobi.focusGobiInputWithoutClear",
+          "group": "Gobi"
+        },
+        {
+          "command": "gobi.focusEdit",
+          "group": "Gobi",
+          "when": "!editorReadonly"
+        }
+      ],
+      "explorer/context": [
+        {
+          "command": "gobi.selectFilesAsContext",
+          "group": "1_debug@1"
+        }
+      ],
+      "view/title": [
+        {
+          "command": "gobi.newSession",
+          "group": "navigation@1",
+          "when": "view == gourmand.gobiGUIView"
+        },
+        {
+          "command": "gobi.viewHistory",
+          "group": "navigation@2",
+          "when": "view == gourmand.gobiGUIView"
+        },
+        {
+          "command": "gobi.openConfigPage",
+          "group": "navigation@4",
+          "when": "view == gourmand.gobiGUIView"
+        },
+        {
+          "command": "gobi.clearConsole",
+          "group": "navigation@1",
+          "when": "view == gourmand.gobiConsoleView"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "gobi.newSession",
+          "group": "navigation@1",
+          "when": "activeWebviewPanelId == gourmand.gobiGUIView"
+        },
+        {
+          "command": "gobi.viewHistory",
+          "group": "navigation@2",
+          "when": "activeWebviewPanelId == gourmand.gobiGUIView"
+        }
+      ],
+      "terminal/context": [
+        {
+          "command": "gobi.debugTerminal",
+          "group": "navigation@top"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "gobi",
+          "title": "Gobi",
+          "icon": "media/icon-sidebar.svg"
+        }
+      ],
+      "panel": [
+        {
+          "id": "gobiConsole",
+          "title": "Gobi Console",
+          "icon": "$(window)"
+        }
+      ]
+    },
+    "views": {
+      "gobi": [
+        {
+          "type": "webview",
+          "id": "gourmand.gobiGUIView",
+          "name": "Gobi",
+          "icon": "media/icon-sidebar.svg",
+          "visibility": "visible"
+        }
+      ],
+      "gobiConsole": [
+        {
+          "type": "webview",
+          "id": "gourmand.gobiConsoleView",
+          "name": "Gobi Console",
+          "icon": "$(window)",
+          "visibility": "visible",
+          "when": "config.gobi.enableConsole"
+        }
+      ]
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": "**/.gobi*/config.json",
+        "url": "./config_schema.json"
+      },
+      {
+        "fileMatch": ".gobirc.json",
+        "url": "./gobi_rc_schema.json"
+      },
+      {
+        "fileMatch": "**/config.yaml",
+        "url": "./config-yaml-schema.json"
+      }
+    ]
+  },
+  "scripts": {
+    "esbuild-base": "node scripts/esbuild.js",
+    "vscode:prepublish": "pnpm run esbuild-base -- --minify",
+    "esbuild": "pnpm run esbuild-base -- --sourcemap",
+    "esbuild-watch": "pnpm run esbuild-base -- --sourcemap --watch",
+    "esbuild-notify": "pnpm run esbuild-base -- --sourcemap --notify",
+    "esbuild:visualize": "pnpm exec esbuild-visualizer --metadata ./build/meta.json --filename ./build/stats.html --open",
+    "tsc": "pnpm exec tsc -p ./",
+    "tsc:check": "pnpm exec tsc -p ./ --noEmit",
+    "tsc-watch": "pnpm exec tsc -watch -p ./",
+    "rebuild": "pnpm exec electron-rebuild -v 19.1.8 node-pty",
+    "lint": "pnpm exec eslint src --ext ts",
+    "lint:fix": "pnpm exec eslint . --ext ts --fix",
+    "test": "pnpm exec vitest run",
+    "vitest": "pnpm exec vitest run",
+    "write-build-timestamp": "node scripts/write-build-timestamp.js",
+    "prepackage": "node scripts/prepackage.js",
+    "package": "node scripts/package.js",
+    "package-a  \"dependencies\": {\n    \"data-uri-to-buffer\": \"^4.0.1\",\n ll": "node scripts/package-all.js",
+    "package:pre-release": "node scripts/package.js --pre-release",
+    "vsix": "pnpm run vscode:prepublish && pnpm run package",
+    "openvsx": "pnpm run vsode:prepublish && pnpm exec ovsx package -o gobi.vsix",
+    "build:rust": "cargo-cp-artifact -ac sync sync.node -- cargo build --manifest-path ../../sync/Cargo.toml --message-format=json-render-diagnostics",
+    "build-debug:rust": "pnpm run build:rust --",
+    "build-release:rust": "pnpm run build:rust -- --release",
+    "e2e:compile": "pnpm exec tsc -p ./tsconfig.e2e.json",
+    "e2e:build": "npm --prefix ../../gui run build && npm run package",
+    "e2e:create-storage": "mkdir -p ./e2e/storage",
+    "e2e:get-chromedriver": "extest get-chromedriver --storage ./e2e/storage --code_version 1.95.0",
+    "e2e:get-vscode": "extest get-vscode --storage ./e2e/storage --code_version 1.95.0",
+    "e2e:sign-vscode": "codesign --entitlements entitlements.plist --deep --force -s - './e2e/storage/Visual Studio Code.app'",
+    "e2e:copy-vsix": "chmod +x ./e2e/get-latest-vsix.sh && bash ./e2e/get-latest-vsix.sh",
+    "e2e:install-vsix": "extest install-vsix -f ./e2e/vsix/gobi.vsix --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage",
+    "e2e:install-extensions": "extest install-from-marketplace ms-vscode-remote.remote-ssh --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage && extest install-from-marketplace ms-vscode-remote.remote-containers --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage && extest install-from-marketplace ms-vscode-remote.remote-wsl --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage",
+    "e2e:test": "NODE_ENV=e2e extest run-tests ${TEST_FILE:-'./e2e/_output/tests/*.test.js'} --code_settings settings.json --extensions_dir ./e2e/.test-extensions --storage ./e2e/storage",
+    "e2e:clean": "rm -rf ./e2e/_output ./e2e/storage",
+    "e2e:all": "npm run e2e:build && npm run e2e:compile && npm run e2e:create-storage && npm run e2e:get-chromedriver && npm run e2e:get-vscode && npm run e2e:sign-vscode && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && GOBI_GLOBAL_DIR=e2e/test-gobi npm run e2e:test && npm run e2e:clean",
+    "e2e:all-non-mac": "npm run e2e:build && npm run e2e:compile && npm run e2e:create-storage && npm run e2e:get-chromedriver && npm run e2e:get-vscode && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && GOBI_GLOBAL_DIR=e2e/test-gobi npm run e2e:test && npm run e2e:clean",
+    "e2e:recompile-extension": "npm run package && npm run e2e:compile && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && GOBI_GLOBAL_DIR=e2e/test-gobi npm run e2e:test && npm run e2e:clean",
+    "e2e:rebuild-gui": "rm -rf gui && cp -r ../../gui/dist gui && npm run package && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && GOBI_GLOBAL_DIR=e2e/test-gobi npm run e2e:test && npm run e2e:clean",
+    "e2e:quick": "npm run e2e:compile && GOBI_GLOBAL_DIR=e2e/test-gobi npm run e2e:test && npm run e2e:clean",
+    "e2e:ci:download": "npm run e2e:create-storage && npm run e2e:get-chromedriver && npm run e2e:get-vscode",
+    "e2e:ci:run": "npm run e2e:compile && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && GOBI_GLOBAL_DIR=e2e/test-gobi npm run e2e:test",
+    "e2e:ci:run-yaml": "npm run e2e:compile && npm run e2e:copy-vsix && npm run e2e:install-vsix && npm run e2e:install-extensions && GOBI_GLOBAL_DIR=e2e/test-gobi-yaml npm run e2e:test"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "2.3.4",
+    "@nestjs/common": "^11.1.8",
+    "@types/chai": "^5.2.3",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.5",
+    "@types/follow-redirects": "^1.14.4",
+    "@types/mocha": "^10.0.10",
+    "@types/react-dom": "^19.2.2",
+    "@types/vscode": "~1.70.0",
+    "@types/ws": "^8.18.1",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@vscode/vsce": "^3.6.2",
+    "cargo-cp-artifact": "^0.1.9",
+    "chai": "^6.2.0",
+    "esbuild": "^0.25.12",
+    "esbuild-visualizer": "^0.7.0",
+    "json-schema-to-typescript": "^15.0.4",
+    "ovsx": "^0.10.6",
+    "rimraf": "^6.1.0",
+    "vite": "^7.2.1",
+    "vscode-extension-tester": "^8.19.0"
+  },
+  "dependencies": {
+    "@electron/rebuild": "^4.0.1",
+    "@gourmanddev/config-types": "workspace:^",
+    "@gourmanddev/core": "workspace:^",
+    "@gourmanddev/fetch": "workspace:^",
+    "@lancedb/lancedb": "^0.22.2",
+    "@mswjs/interceptors": "^0.40.0",
+    "@reduxjs/toolkit": "^2.10.1",
+    "@vscode/ripgrep": "^1.17.0",
+    "apache-arrow": "^21.1.0",
+    "axios": "^1.13.2",
+    "cors": "^2.8.5",
+    "dbinfoz": "^0.14.0",
+    "diff": "^8.0.2",
+    "downshift": "^9.0.10",
+    "express": "^5.1.0",
+    "fkill": "^9.0.0",
+    "follow-redirects": "^1.15.11",
+    "handlebars": "^4.7.8",
+    "highlight.js": "^11.11.1",
+    "highlightable": "1.3.0-beta.0",
+    "http-proxy": "^1.18.1",
+    "http-proxy-agent": "^7.0.2",
+    "http-proxy-middleware": "^3.0.5",
+    "https-proxy-agent": "^7.0.6",
+    "ignore": "^7.0.5",
+    "jsdom": "^27.1.0",
+    "lodash": "^4.17.21",
+    "lru-cache": "^11.2.2",
+    "minisearch": "^7.2.0",
+    "mocha": "^11.7.5",
+    "monaco-editor": "^0.54.0",
+    "monaco-vscode-textmate-theme-converter": "^0.1.7",
+    "ncp": "^2.0.0",
+    "node-fetch": "^3.3.2",
+    "node-machine-id": "^1.1.12",
+    "posthog-node": "^5.11.1",
+    "react-markdown": "^10.1.0",
+    "react-redux": "^9.2.0",
+    "read-last-lines": "^1.8.0",
+    "socket.io-client": "^4.8.1",
+    "strip-ansi": "^7.1.2",
+    "svg-builder": "^3.0.4",
+    "systeminformation": "^5.27.11",
+    "tailwindcss": "^4.1.16",
+    "undici": "^7.16.0",
+    "uri-js": "^4.4.1",
+    "uuid": "^13.0.0",
+    "vscode-languageclient": "^9.0.1",
+    "workerpool": "^10.0.0",
+    "ws": "^8.18.3",
+    "yaml": "^2.8.1"
+  },
+  "optionalDependencies": {
+    "@lancedb/vectordb-darwin-arm64": "^0.21.2",
+    "@lancedb/vectordb-darwin-x64": "^0.21.2",
+    "@lancedb/vectordb-linux-arm64-gnu": "^0.21.2",
+    "@lancedb/vectordb-linux-x64-gnu": "^0.21.2",
+    "@lancedb/vectordb-win32-arm64-msvc": "^0.18.1",
+    "@lancedb/vectordb-win32-x64-msvc": "^0.21.2"
+  }
+}

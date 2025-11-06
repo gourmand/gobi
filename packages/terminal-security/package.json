@@ -1,0 +1,25 @@
+{
+  "name": "@gourmanddev/terminal-security",
+  "version": "1.0.0",
+  "description": "Terminal command security evaluation for Gobi",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest watch",
+    "build": "tsc",
+    "clean": "rm -rf dist"
+  },
+  "author": "gourmand.dev",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/shell-quote": "^1.7.5"
+  },
+  "dependencies": {
+    "shell-quote": "^1.8.3"
+  },
+  "engine": {
+    "node": ">=24.11.0"
+  }
+}

@@ -1,0 +1,92 @@
+name: 'Build VS Code Extension'
+description: 'Build VS Code extension for a specific platform'
+inputs:
+  platform:
+    description: 'Target platform (win32, linux, alpine, darwin)'
+    required: true
+  arch:
+    description: 'Target architecture (x64, arm64, armhf)'
+    required: true
+  npm_config_arch:
+    description: 'npm config arch (x64, arm64, arm)'
+    required: true
+  pre-release:
+    description: 'Whether to build as pre-release'
+    required: false
+    default: 'false'
+  github-token:
+    description: 'GitHub token for downloading ripgrep'
+    required: true
+outputs:
+  target:
+    description: 'The target string used for the build'
+    value: ${{ steps.set-target.outputs.target }}
+  vsix-path:
+    description: 'Path to the generated VSIX file'
+    value: 'extensions/vscode/*.vsix'
+  build-path:
+    description: 'Path to the build artifacts'
+    value: 'extensions/vscode/build'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: ".nvmrc"
+        cache: pnpm
+
+    # - name: Add platform-specific dependencies
+    #   run: |
+    #     if [[ "$RUNNER_OS" == "Linux" ]]; then
+    #       pnpm add @lancedb/vectordb-linux-x64-gnu
+    #     elif [[ "$RUNNER_OS" == "Windows" ]]; then
+    #       pnpm add @lancedb/vectordb-win32-arm64-msvc
+    #     elif [[ "$RUNNER_OS" == "macOS" ]]; then
+    #       pnpm add @lancedb/vectordb-darwin-arm64
+    #     fi
+    #   shell: bash
+    - name: Set target variable
+      id: set-target
+      shell: bash
+      run: echo "target=${{ inputs.platform }}-${{ inputs.arch }}" >> $GITHUB_OUTPUT
+    
+    - name: Install workspace dependencies and build packages
+      shell: bash
+      run: |
+        pnpm install --no-frozen-lockfile
+        pnpm -r build
+      env:
+        # https://github.com/microsoft/vscode-ripgrep/issues/9#issuecomment-643965333
+        GITHUB_TOKEN: ${{ inputs.github-token }}
+        NODE_OPTIONS: "--max-old-space-size=4096"
+
+    - name: Prepackage the extension
+      shell: bash
+      run: |
+        cd extensions/vscode
+        pnpm run prepackage -- --target ${{ steps.set-target.outputs.target }}
+
+    - name: Re-install esbuild
+      shell: bash
+      run: |
+        cd extensions/vscode
+        pnpm add -D -w esbuild --force
+ 
+    - name: Run prepublish script
+      shell: bash
+      run: |
+        cd extensions/vscode
+        pnpm run vscode:prepublish
+
+    - name: Package extension (.vsix files)
+      shell: bash
+      run: |
+        cd extensions/vscode
+        if [ "${{ inputs.pre-release }}" = "true" ]; then
+          pnpm dlx vsce package --pre-release --no-dependencies --no-yarn --target ${{ steps.set-target.outputs.target }}
+        else
+          pnpm dlx vsce package --no-dependencies --no-yarn --target ${{ steps.set-target.outputs.target }}
+        fi

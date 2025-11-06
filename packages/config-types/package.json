@@ -1,0 +1,20 @@
+{
+  "name": "@gourmanddev/config-types",
+  "version": "1.0.15",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo 'No tests to run'",
+    "build": "tsc"
+  },
+  "author": "Gourmand.dev",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "zod": "^4.1.12"
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  }
+}

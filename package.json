@@ -1,0 +1,79 @@
+{
+  "name": "@gourmanddev/gobi",
+  "type": "module",
+  "scripts": {
+    "build": "pnpm -r build",
+    "audit": "tsx scripts/audit-dependencies.ts",
+    "tsc:watch": "concurrently -n gui,vscode,core,binary -c cyan,magenta,yellow,green \"npm run tsc:watch:gui\" \"npm run tsc:watch:vscode\" \"npm run tsc:watch:core\" \"npm run tsc:watch:binary\"",
+    "tsc:watch:gui": "tsc --project gui/tsconfig.json --watch --noEmit --pretty",
+    "tsc:watch:vscode": "tsc --project extensions/vscode/tsconfig.json --watch --noEmit --pretty",
+    "tsc:watch:core": "tsc --project core/tsconfig.json --watch --noEmit --pretty",
+    "tsc:watch:binary": "tsc --project binary/tsconfig.json --watch --noEmit --pretty",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,css,md}\" --ignore-path .gitignore --ignore-path .prettierignore",
+    "format:check": "prettier --check \"**/*.{js,jsx,ts,tsx,json,css,md}\" --ignore-path .gitignore --ignore-path .prettierignore",
+    "prepare": "husky"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,json,css,md}": "prettier --write"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.29.7",
+    "@jest/globals": "^30.2.0",
+    "@openapitools/openapi-generator-cli": "^2.25.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.46.3",
+    "@typescript-eslint/parser": "^8.46.3",
+    "@vitest/coverage-v8": "^4.0.7",
+    "concurrently": "^9.2.1",
+    "eslint": "^9.39.1",
+    "eslint-import-resolver-typescript": "^4.4.4",
+    "eslint-plugin-import": "^2.32.0",
+    "husky": "^9.1.7",
+    "jest": "^30.2.0",
+    "lint-staged": "^16.2.6",
+    "prettier": "^3.6.2",
+    "prettier-plugin-tailwindcss": "^0.7.1",
+    "ts-jest": "^29.4.5",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3",
+    "vitest": "^4.0.7",
+    "xlsx": "^0.18.5"
+  },
+  "engine": {
+    "node": ">=24.11.0"
+  },
+  "packageManager": "pnpm@10.20.0",
+  "overrides": {
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "@types/react": "19.1.8",
+    "@types/react-dom": "19.1.11",
+    "apache-arrow": "18.1.0",
+    "parse5": "7.1.2"
+  },
+  "pnpm": {
+    "supportedArchitectures": {
+      "os": [
+        "darwin",
+        "linux",
+        "win32"
+      ],
+      "cpu": [
+        "x64",
+        "arm64"
+      ],
+      "libc": [
+        "glibc",
+        "musl"
+      ]
+    }
+  },
+  "dependencies": {
+    "@types/react": "19.2.2",
+    "@types/react-dom": "19.2.2",
+    "react": "19.2.0",
+    "react-dom": "19.2.0"
+  }
+}

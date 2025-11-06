@@ -1,0 +1,37 @@
+{
+  "name": "@gourmanddev/config-yaml",
+  "version": "1.24.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "exports": {
+    ".": {
+      "browser": "./dist/browser.js",
+      "node": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "config-yaml": "./dist/cli.js"
+  },
+  "scripts": {
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest",
+    "build": "tsc",
+    "generate-schema": "tsc && node dist/scripts/generateJsonSchema.js"
+  },
+  "author": "Gourmand Dev Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@gourmanddev/config-types": "workspace:^",
+    "yaml": "^2.8.1",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0",
+    "zod-to-json-schema": "^3.24.6"
+  },
+  "engines": {
+    "node": ">=24.11.0"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "@gourmanddev/openai-adapters",
+  "version": "1.15.1",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "vitest",
+    "build": "tsc"
+  },
+  "author": "Gourmand.dev",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.68.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.925.0",
+    "@aws-sdk/credential-providers": "^3.925.0",
+    "@aws-sdk/token-providers": "^3.925.0",
+    "@gourmanddev/config-types": "workspace:^",
+    "@gourmanddev/config-yaml": "workspace:^",
+    "@gourmanddev/fetch": "workspace:^",
+    "dotenv": "^17.2.3",
+    "google-auth-library": "^10.5.0",
+    "json-schema": "^0.4.0",
+    "node-fetch": "^3.3.2",
+    "openai": "^6.8.1",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.12"
+  },
+  "devDependencies": {
+    "@aws-sdk/types": "^3.922.0",
+    "@types/follow-redirects": "^1.14.4",
+    "@types/json-schema": "^7.0.15",
+    "cross-env": "^10.1.0"
+  },
+  "engine": {
+    "node": ">=24.11.0"
+  }
+}

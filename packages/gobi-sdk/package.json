@@ -1,0 +1,23 @@
+{
+  "name": "@gourmanddev/sdk-generator",
+  "version": "0.0.13",
+  "private": true,
+  "description": "SDK Generator for gourmand.dev gobi",
+  "type": "module",
+  "scripts": {
+    "build": "echo 'No build step needed'",
+    "test": "echo 'No tests to run'",
+    "generate-client:typescript": "openapi-generator-cli generate -i ./openapi.yaml -g typescript-fetch -o ./typescript/src/generated -c ./openapi-generator-config.json",
+    "generate-client:python": "openapi-generator-cli generate -i ./openapi.yaml -g python -o ./python/api -c ./openapi-generator-config.json",
+    "generate-client:ALL": "pnpm generate-client:typescript && pnpm generate-client:python",
+    "prepare": "pnpm generate-client:ALL",
+    "swagger-ui": "node swagger-ui-server.js"
+  },
+  "author": "Gourmand Dev Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@gourmanddev/config-yaml": "workspace:^",
+    "express": "^5.1.0",
+    "swagger-ui-express": "^5.0.1"
+  }
+}

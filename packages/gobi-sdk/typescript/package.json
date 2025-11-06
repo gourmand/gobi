@@ -1,0 +1,30 @@
+{
+  "name": "@gourmanddev/sdk",
+  "version": "0.0.13",
+  "description": "SDK for gourmand.dev",
+  "main": "dist/src/index.js",
+  "types": "dist/src/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsup",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js",
+    "test:watch": "node --experimental-vm-modules node_modules/jest/bin/jest.js --watch"
+  },
+  "author": "Gourmand Dev Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@gourmanddev/config-yaml": "workspace:^",
+    "node-fetch": "^3.3.2",
+    "openai": "^6.8.1"
+  },
+  "devDependencies": {
+    "dotenv": "^17.2.3",
+    "tsup": "^8.5.0"
+  },
+  "files": [
+    "dist"
+  ],
+  "engine": {
+    "node": ">=24.11.0"
+  }
+}

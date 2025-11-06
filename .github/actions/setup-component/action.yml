@@ -1,0 +1,27 @@
+name: 'Setup Component'
+description: 'Cache and install dependencies for a specific component (DEPRECATED - use pnpm workspace commands instead)'
+inputs:
+  component:
+    description: 'Component name (core, gui, vscode, binary)'
+    required: true
+  include-packages:
+    description: 'Whether to include packages cache (default: true)'
+    required: false
+    default: 'true'
+  include-root:
+    description: 'Whether to include root cache (default: false)'
+    required: false  
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    - uses: pnpm/action-setup@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: ".nvmrc"
+        cache: pnpm
+
+    - name: Install workspace dependencies
+      shell: bash
+      run: pnpm install --no-frozen-lockfile

@@ -1,0 +1,23 @@
+{
+  "name": "@gourmanddev/hub",
+  "version": "0.0.7",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "cross-env NODE_OPTIONS=--experimental-vm-modules jest --passWithNoTests",
+    "build": "tsc"
+  },
+  "author": "Gourmand Dev Inc.",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@gourmanddev/config-yaml": "workspace:^"
+  },
+  "devDependencies": {
+    "cross-env": "^10.1.0"
+  },
+  "engine": {
+    "node": ">=24.11.0"
+  }
+}

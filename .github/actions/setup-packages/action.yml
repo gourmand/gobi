@@ -1,0 +1,27 @@
+name: "Setup Packages"
+description: "Cache and build packages with npm caching"
+
+runs:
+  using: "composite"
+  steps:
+    - uses: pnpm/action-setup@v4
+    - uses: actions/setup-node@v4
+      with:
+        node-version-file: ".nvmrc"
+        cache: pnpm
+    - uses: actions/cache@v4
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-cache-packages-${{ hashFiles('packages/*/package-lock.json') }}
+
+    - uses: actions/cache@v4
+      with:
+        path: |
+          packages/*/node_modules
+        key: ${{ runner.os }}-packages-node-modules-${{ hashFiles('packages/*/package-lock.json') }}
+
+    - name: Install and build packages
+      shell: bash
+      run: |
+        pnpm install --no-frozen-lockfile
+        pnpm -r build

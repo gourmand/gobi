@@ -1,0 +1,41 @@
+name: Run Gobi Agent
+
+on:
+  workflow_call:
+    inputs:
+      prompt:
+        description: "The prompt to send to the Gobi agent"
+        required: true
+        type: string
+      agent:
+        description: "The agent to use (e.g., gourmand/default-background-agent)"
+        required: false
+        type: string
+        default: "gourmand/default-background-agent"
+      branch_name:
+        description: "The base branch name to work from"
+        required: false
+        type: string
+        default: "main"
+    secrets:
+      GOBI_API_KEY:
+        required: true
+
+jobs:
+  run-agent:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call agents endpoint
+        run: |
+          response=$(curl -f -X POST https://api.gourmand.dev/agents \
+            -H "Content-Type: application/json" \
+            -H "Authorization: Bearer ${{ secrets.GOBI_API_KEY }}" \
+            -d '{
+              "prompt": "${{ inputs.prompt }}",
+              "agent": "${{ inputs.agent }}",
+              "branchName": "${{ inputs.branch_name }}",
+              "repoUrl": "https://github.com/${{ github.repository }}"
+            }')
+          id=$(echo $response | jq -r '.id')
+          echo "https://hub.gourmand.dev/agents/$id"

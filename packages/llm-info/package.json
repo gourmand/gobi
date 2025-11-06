@@ -1,0 +1,17 @@
+{
+  "name": "@gourmanddev/llm-info",
+  "version": "1.0.10",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "test": "echo 'No tests to run'",
+    "build": "tsc"
+  },
+  "author": "Gourmand.dev",
+  "license": "Apache-2.0",
+  "engine": {
+    "node": ">=24.11.0"
+  }
+}
