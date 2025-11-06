@@ -6,8 +6,8 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "bin": {
-    "gobi": "dist/gobi.cjs",
-    "gi": "dist/gi.cjs"
+    "gobi": "dist/gobi.js",
+    "gi": "dist/gi.js"
   },
   "scripts": {
     "test": "vitest run",

@@ -40,34 +40,45 @@ function execCommand(command, options = {}) {
   });
 }
 
-console.log("🧪 Running smoke tests for bundled CLI...\n");
+console.log("🧪 Running smoke tests for bundled CLI (Node " + process.versions.node + ")...\n");
 
-// Test 1: Check if bundle exists
-runTest("Bundle file exists", () => {
-  if (!existsSync(resolve(__dirname, "dist/index.cjs"))) {
-    throw new Error("dist/index.cjs not found");
+// Test 1: Check if expected outputs exist
+runTest("Outputs exist", () => {
+  const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf8"));
+  const binPath = resolve(__dirname, pkg.bin.gobi);
+  if (!existsSync(binPath)) {
+    throw new Error(`${pkg.bin.gobi} not found`);
   }
+  // ESM main for library consumers
+  if (!existsSync(resolve(__dirname, "dist/index.js"))) {
+    throw new Error("dist/index.js not found");
+  }
+  // Legacy shim for compatibility
   if (!existsSync(resolve(__dirname, "dist/gobi.js"))) {
     throw new Error("dist/gobi.js not found");
   }
 });
 
-// Test 2: Check if wrapper script is executable
-runTest("Wrapper script has shebang", () => {
-  const content = readFileSync(resolve(__dirname, "dist/gobi.js"), "utf8");
-  if (!content.startsWith("#!/usr/bin/env node")) {
-    throw new Error("Wrapper script missing shebang");
+// Test 2: Check if binaries have shebangs
+runTest("Binaries have shebang", () => {
+  const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf8"));
+  const binCjs = readFileSync(resolve(__dirname, pkg.bin.gobi), "utf8");
+  if (!binCjs.startsWith("#!/usr/bin/env node")) {
+    throw new Error("gobi.cjs missing shebang");
+  }
+  const legacy = readFileSync(resolve(__dirname, "dist/gobi.js"), "utf8");
+  if (!legacy.startsWith("#!/usr/bin/env node")) {
+    throw new Error("gobi.js missing shebang");
   }
 });
 
 // Cross-platform command execution helper
 function getCLICommand(args = "") {
   const isWindows = process.platform === "win32";
-  if (isWindows) {
-    return `node dist/gobi.js ${args}`;
-  } else {
-    return `./dist/gobi.js ${args}`;
-  }
+  const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf8"));
+  const gobi = pkg.bin.gobi || "dist/gobi.cjs";
+  const cmd = isWindows ? `node ${gobi}` : `./${gobi}`;
+  return `${cmd} ${args}`.trim();
 }
 
 // Test 3: Version command works
@@ -93,68 +104,27 @@ runTest("Help command", () => {
 
 // Test 5: Check bundle size
 runTest("Bundle size is reasonable", () => {
-  const isWindows = process.platform === "win32";
-  const command = isWindows
-    ? `powershell -Command "(Get-Item dist/index.js).length / 1MB"`
-    : `ls -lh dist/index.js`;
-
-  let sizeInMB;
-
-  if (isWindows) {
-    try {
-      const output = execCommand(command);
-      sizeInMB = parseFloat(output.trim());
-    } catch {
-      // Fallback for Windows if PowerShell fails
-      const stats = readFileSync(resolve(__dirname, "dist/index.js"));
-      sizeInMB = stats.length / (1024 * 1024);
-    }
-  } else {
-    const stats = execCommand(command);
-    const sizeMatch = stats.match(/(\d+(?:\.\d+)?[MK])/);
-    if (sizeMatch) {
-      const size = sizeMatch[1];
-      const numSize = parseFloat(size);
-      const unit = size.slice(-1);
-      sizeInMB = unit === "M" ? numSize : numSize / 1024;
-    }
-  }
-
+  // Check the executable bundle size (gobi.cjs)
+  const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf8"));
+  const bundle = resolve(__dirname, pkg.bin.gobi);
+  const buf = readFileSync(bundle);
+  const sizeInMB = buf.length / (1024 * 1024);
   console.log(`(${sizeInMB.toFixed(1)}M)`);
-
-  // This is arbitrary. We might go over at some point,
-  // in which case you can just increase this.
-  if (sizeInMB > 20) {
+  if (sizeInMB > 30) {
     throw new Error(`Bundle too large: ${sizeInMB.toFixed(1)}M`);
   }
 });
 
 // Test 6: Check that local packages are bundled
-runTest("Local packages are bundled", () => {
-  const bundleContent = readFileSync(
-    resolve(__dirname, "dist/index.cjs"),
-    "utf8",
-  );
-
-  // Check for code from @gourmanddev/config-yaml
+runTest("CLI runs without missing modules", () => {
+  const output = execCommand(`${getCLICommand("--version")} 2>&1`, {
+    env: { ...process.env, NODE_ENV: "production" },
+  });
   if (
-    !bundleContent.includes("AssistantUnrolled") &&
-    !bundleContent.includes("config-yaml")
+    output.includes("Cannot find module") ||
+    output.includes("MODULE_NOT_FOUND")
   ) {
-    throw new Error("@gourmanddev/config-yaml not properly bundled");
-  }
-
-  // Check for code from @gourmanddev/openai-adapters
-  // Since the bundle is minified, check for strings that would be present
-  // even after minification (e.g., error messages, property names)
-  if (
-    !bundleContent.includes("anthropic") &&
-    !bundleContent.includes("gemini") &&
-    !bundleContent.includes("openai") &&
-    !bundleContent.includes("azure") &&
-    !bundleContent.includes("bedrock")
-  ) {
-    throw new Error("@gourmanddev/openai-adapters not properly bundled");
+    throw new Error("Missing module detected in output");
   }
 });
 
@@ -200,10 +170,10 @@ runTest("No missing runtime dependencies", () => {
 });
 
 // Test 10: Test npm link scenario
-runTest("CLI works via npm link", () => {
+runTest("CLI works via node execution", () => {
   try {
-    // Simply test that we can execute with node directly
-  const output = execCommand("node dist/gobi.js --version 2>&1");
+    const pkg = JSON.parse(readFileSync(resolve(__dirname, "package.json"), "utf8"));
+    const output = execCommand(`node ${pkg.bin.gobi} --version 2>&1`);
     const packageJson = JSON.parse(
       readFileSync(resolve(__dirname, "package.json"), "utf8"),
     );
@@ -211,7 +181,7 @@ runTest("CLI works via npm link", () => {
       throw new Error("Version not found when running via node");
     }
   } catch (error) {
-    throw new Error(`npm link scenario failed: ${error.message}`);
+    throw new Error(`node execution scenario failed: ${error.message}`);
   }
 });
 

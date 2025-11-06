@@ -1,203 +1,193 @@
 import { RequestOptions } from "@gourmanddev/config-types";
-import * as followRedirects from "follow-redirects";
-import { HttpProxyAgent } from "http-proxy-agent";
-import { HttpsProxyAgent } from "https-proxy-agent";
+import fs from "fs";
 
-import { getAgentOptions } from "./getAgentOptions.js";
-import patchedFetch from "./node-fetch-patch.js";
-import { getProxy, shouldBypassProxy } from "./util.js";
+// Node-24 native fetch wrapper that uses undici when advanced TLS/proxy
+// options are required. We lazy-import undici to avoid adding load-time
+// cost for callers that only need the simple path.
 
-const { http, https } = (followRedirects as any).default;
-
-function logRequest(
-  method: string,
-  url: URL,
-  headers: { [key: string]: string },
-  body: BodyInit | null | undefined,
-  proxy?: string,
-  shouldBypass?: boolean,
-) {
-  console.log("=== FETCH REQUEST ===");
-  console.log(`Method: ${method}`);
-  console.log(`URL: ${url.toString()}`);
-
-  // Log headers in curl format
-  console.log("Headers:");
-  for (const [key, value] of Object.entries(headers)) {
-    console.log(`  -H '${key}: ${value}'`);
-  }
-
-  // Log proxy information
-  if (proxy && !shouldBypass) {
-    console.log(`Proxy: ${proxy}`);
-  }
-
-  // Log body
-  if (body) {
-    console.log(`Body: ${body}`);
-  }
-
-  // Generate equivalent curl command
-  let curlCommand = `curl -X ${method}`;
-  for (const [key, value] of Object.entries(headers)) {
-    curlCommand += ` -H '${key}: ${value}'`;
-  }
-  if (body) {
-    curlCommand += ` -d '${body}'`;
-  }
-  if (proxy && !shouldBypass) {
-    curlCommand += ` --proxy '${proxy}'`;
-  }
-  curlCommand += ` '${url.toString()}'`;
-  console.log(`Equivalent curl: ${curlCommand}`);
-  console.log("=====================");
-}
-
-async function logResponse(resp: Response) {
-  console.log("=== FETCH RESPONSE ===");
-  console.log(`Status: ${resp.status} ${resp.statusText}`);
-  console.log("Response Headers:");
-  resp.headers.forEach((value, key) => {
-    console.log(`  ${key}: ${value}`);
-  });
-
-  // TODO: For streamed responses, this caused the response to be consumed and the connection would just hang open
-  // Clone response to read body without consuming it
-  // const respClone = resp.clone();
-  // try {
-  //   const responseText = await respClone.text();
-  //   console.log(`Response Body: ${responseText}`);
-  // } catch (e) {
-  //   console.log("Could not read response body:", e);
-  // }
-  console.log("======================");
-}
-
-function logError(error: unknown) {
-  console.log("=== FETCH ERROR ===");
-  console.log(`Error: ${error}`);
-  console.log("===================");
-}
-
-export async function fetchwithRequestOptions(
-  url_: URL | string,
-  init?: RequestInit,
-  requestOptions?: RequestOptions,
-): Promise<Response> {
+function normalizeUrl(url_: URL | string) {
   const url = typeof url_ === "string" ? new URL(url_) : url_;
-  if (url.host === "localhost") {
-    url.host = "127.0.0.1";
+  if (url.hostname === "localhost") {
+    url.hostname = "127.0.0.1";
   }
+  return url;
+}
 
-  const agentOptions = await getAgentOptions(requestOptions);
-
-  // Get proxy from options or environment variables
-  const proxy = getProxy(url.protocol, requestOptions);
-
-  // Check if should bypass proxy based on requestOptions or NO_PROXY env var
-  const shouldBypass = shouldBypassProxy(url.hostname, requestOptions);
-
-  // Create agent
-  const protocol = url.protocol === "https:" ? https : http;
-  const agent =
-    proxy && !shouldBypass
-      ? protocol === https
-        ? new HttpsProxyAgent(proxy, agentOptions)
-        : new HttpProxyAgent(proxy, agentOptions)
-      : new protocol.Agent(agentOptions);
-
-  let headers: { [key: string]: string } = {};
-
-  // Handle different header formats
+function mergeHeaders(init?: RequestInit, requestOptions?: RequestOptions) {
+  const headers: Record<string, string> = {};
   if (init?.headers) {
     const headersSource = init.headers as any;
-
-    // Check if it's a Headers-like object (OpenAI v5 HeadersList, standard Headers)
     if (headersSource && typeof headersSource.forEach === "function") {
-      // Use forEach method which works reliably on Headers objects
       headersSource.forEach((value: string, key: string) => {
         headers[key] = value;
       });
     } else if (Array.isArray(headersSource)) {
-      // This is an array of [key, value] tuples
       for (const [key, value] of headersSource) {
         headers[key] = value as string;
       }
     } else if (headersSource && typeof headersSource === "object") {
-      // This is a plain object
       for (const [key, value] of Object.entries(headersSource)) {
         headers[key] = value as string;
       }
     }
   }
-
-  headers = {
-    ...headers,
-    ...requestOptions?.headers,
-  };
-
-  // Replace localhost with 127.0.0.1
-  if (url.hostname === "localhost") {
-    url.hostname = "127.0.0.1";
-  }
-
-  // add extra body properties if provided
-  let updatedBody: string | undefined = undefined;
-  try {
-    if (requestOptions?.extraBodyProperties && typeof init?.body === "string") {
-      const parsedBody = JSON.parse(init.body);
-      updatedBody = JSON.stringify({
-        ...parsedBody,
-        ...requestOptions.extraBodyProperties,
-      });
+  if (requestOptions?.headers) {
+    for (const [key, value] of Object.entries(requestOptions.headers)) {
+      headers[String(key)] = String(value as any);
     }
-  } catch (e) {
-    console.log("Unable to parse HTTP request body: ", e);
+  }
+  return headers;
+}
+
+async function createDispatcherIfNeeded(
+  requestOptions?: RequestOptions,
+): Promise<any | undefined> {
+  if (!requestOptions) return undefined;
+
+  const needsDispatcher =
+    !!requestOptions.proxy ||
+    !!requestOptions.caBundlePath ||
+    !!requestOptions.clientCertificate ||
+    requestOptions.verifySsl === false;
+
+  if (!needsDispatcher) return undefined;
+
+  const undici = await import("undici");
+  const { Agent, ProxyAgent, fetch: undiciFetch } = undici as any;
+
+  const agentOptions: any = {};
+  const connect: any = {};
+  const tls: any = {};
+
+  if (requestOptions.verifySsl === false) {
+    tls.rejectUnauthorized = false;
   }
 
-  const finalBody = updatedBody ?? init?.body;
-  const method = init?.method || "GET";
-
-  // Verbose logging for debugging - log request details
-  if (process.env.VERBOSE_FETCH) {
-    logRequest(method, url, headers, finalBody, proxy, shouldBypass);
-  }
-
-  // fetch the request with the provided options
-  try {
-    const resp = await patchedFetch(url, {
-      ...init,
-      body: finalBody,
-      headers: headers,
-      agent: agent,
-    });
-
-    // Verbose logging for debugging - log response details
-    if (process.env.VERBOSE_FETCH) {
-      await logResponse(resp);
+  if (requestOptions.caBundlePath) {
+    const paths = Array.isArray(requestOptions.caBundlePath)
+      ? requestOptions.caBundlePath
+      : [requestOptions.caBundlePath];
+    try {
+      tls.ca = paths.map((p) => fs.readFileSync(p).toString());
+    } catch (e) {
+      // ignore read errors and let the request fail later
     }
+  }
 
-    if (!resp.ok) {
-      const requestId = resp.headers.get("x-request-id");
-      if (requestId) {
-        console.log(`Request ID: ${requestId}, Status: ${resp.status}`);
+  if (requestOptions.clientCertificate) {
+    try {
+      tls.cert = requestOptions.clientCertificate.cert;
+      tls.key = requestOptions.clientCertificate.key;
+      if (requestOptions.clientCertificate.passphrase) {
+        tls.passphrase = requestOptions.clientCertificate.passphrase;
+      }
+    } catch (e) {
+      // ignore
+    }
+  }
+
+  if (Object.keys(tls).length > 0) {
+    connect.tls = tls;
+  }
+
+  if (Object.keys(connect).length > 0) {
+    agentOptions.connect = connect;
+  }
+
+  if (requestOptions.proxy) {
+    try {
+      const proxyAgent = new (ProxyAgent as any)({ uri: requestOptions.proxy });
+      return { dispatcher: proxyAgent, undiciFetch };
+    } catch (e) {
+      try {
+        const proxyAgent = new (ProxyAgent as any)(requestOptions.proxy);
+        return { dispatcher: proxyAgent, undiciFetch };
+      } catch (e2) {
+        // fall through
       }
     }
+  }
 
-    return resp;
-  } catch (error) {
-    // Verbose logging for errors
-    if (process.env.VERBOSE_FETCH) {
-      logError(error);
+  try {
+    const agent = new (Agent as any)(agentOptions);
+    return { dispatcher: agent, undiciFetch };
+  } catch (e) {
+    return undefined;
+  }
+}
+
+export async function fetchwithRequestOptions(
+  url_: URL | string,
+  init?: RequestInit,
+  _requestOptions?: RequestOptions,
+): Promise<Response> {
+  const url = normalizeUrl(url_);
+
+  const headers = mergeHeaders(init, _requestOptions);
+
+  const finalBody = (() => {
+    try {
+      if (
+        _requestOptions?.extraBodyProperties &&
+        typeof init?.body === "string"
+      ) {
+        const parsedBody = JSON.parse(init!.body as string);
+        return JSON.stringify({
+          ...parsedBody,
+          ..._requestOptions.extraBodyProperties,
+        });
+      }
+    } catch (e) {
+      // ignore parse errors and fall back to original body
+    }
+    return init?.body;
+  })();
+
+  const finalInit: RequestInit = {
+    ...init,
+    body: finalBody ?? init?.body,
+    headers,
+  };
+
+  let timeoutId: NodeJS.Timeout | undefined;
+  const controller = new AbortController();
+  if (finalInit.signal) {
+    const callerSignal = finalInit.signal as AbortSignal;
+    callerSignal.addEventListener("abort", () => controller.abort());
+  }
+
+  if (_requestOptions?.timeout && _requestOptions.timeout > 0) {
+    timeoutId = setTimeout(() => controller.abort(), _requestOptions.timeout);
+  }
+
+  const dispatcherInfo = await createDispatcherIfNeeded(_requestOptions);
+
+  try {
+    if (dispatcherInfo) {
+      const { dispatcher, undiciFetch } = dispatcherInfo as any;
+      const resp = await undiciFetch(url.toString(), {
+        ...finalInit,
+        signal: controller.signal,
+        dispatcher,
+      } as any);
+      return resp as unknown as Response;
     }
 
-    if (error instanceof Error && error.name === "AbortError") {
-      // Return a Response object that streamResponse etc can handle
+    const resp = await fetch(url.toString(), {
+      ...finalInit,
+      signal: controller.signal,
+    } as any);
+    return resp as Response;
+  } catch (error: any) {
+    if (timeoutId) clearTimeout(timeoutId);
+    if (error && error.name === "AbortError") {
       return new Response(null, {
-        status: 499, // Client Closed Request
+        status: 499,
         statusText: "Client Closed Request",
       });
     }
     throw error;
+  } finally {
+    if (timeoutId) clearTimeout(timeoutId);
   }
 }
