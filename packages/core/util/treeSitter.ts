@@ -1,9 +1,32 @@
 import fs from "node:fs";
 import path from "path";
-
-import { Parser } from "web-tree-sitter";
 import { FileSymbolMap, IDE, SymbolWithRange } from "../index";
 import { getUriFileExtension } from "./uri";
+
+// Import the whole module and prefer the default export when present so
+// we handle both ESM and CJS shapes of the package under different
+// test/runtime environments.
+// Use a dynamic import to avoid ESM/CJS interop pitfalls under the
+// different Jest/ts-jest/vm-module environments. This helper returns a
+// Parser constructor and the runtime Language object in a consistent
+// shape for the rest of this module.
+async function getWebTreeSitterRuntime(): Promise<{
+  ParserCtor: any;
+  Language: any;
+  moduleShape: any;
+}> {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const imported = await import("web-tree-sitter");
+  const moduleShape = (imported as any).default ?? imported;
+
+  // ParserCtor may be exported directly (module is constructor) or
+  // as a `Parser` property. Language may be at module.Language or
+  // ParserCtor.Language depending on packaging.
+  const ParserCtor = moduleShape.Parser ?? moduleShape;
+  const Language = moduleShape.Language ?? ParserCtor.Language;
+
+  return { ParserCtor, Language, moduleShape };
+}
 
 export enum LanguageName {
   CPP = "cpp",
@@ -120,8 +143,16 @@ export const IGNORE_PATH_PATTERNS: Partial<Record<LanguageName, RegExp[]>> = {
 
 export async function getParserForFile(filepath: string) {
   try {
-    await (Parser as any).init();
-    const parser = new (Parser as any)();
+    const { ParserCtor, moduleShape } = await getWebTreeSitterRuntime();
+    // init() may live on the module shape or on the constructor depending on
+    // package shape. Call whichever exists.
+    if (typeof moduleShape.init === "function") {
+      await moduleShape.init();
+    } else if (typeof ParserCtor.init === "function") {
+      await ParserCtor.init();
+    }
+
+    const parser = new ParserCtor();
 
     const language = await getLanguageForFile(filepath);
     if (!language) {
@@ -146,7 +177,12 @@ export async function getLanguageForFile(
   filepath: string,
 ): Promise<any | undefined> {
   try {
-    await (Parser as any).init();
+    const { ParserCtor, moduleShape } = await getWebTreeSitterRuntime();
+    if (typeof moduleShape.init === "function") {
+      await moduleShape.init();
+    } else if (typeof ParserCtor.init === "function") {
+      await ParserCtor.init();
+    }
     const extension = getUriFileExtension(filepath);
 
     const languageName = supportedLanguages[extension];
@@ -156,8 +192,83 @@ export async function getLanguageForFile(
     let language = nameToLanguage.get(languageName);
 
     if (!language) {
-      language = await loadLanguageForFileExt(extension);
-      nameToLanguage.set(languageName, language);
+      // Try multiple candidate locations for the wasm files so tests and
+      // different hoisting layouts can find the tree-sitter wasm artifacts.
+      const candidates = [
+        path.join(process.cwd(), "node_modules", "tree-sitter-wasms", "out"),
+        path.join(
+          process.cwd(),
+          "packages",
+          "core",
+          "node_modules",
+          "tree-sitter-wasms",
+          "out",
+        ),
+        path.join(
+          process.cwd(),
+          "core",
+          "node_modules",
+          "tree-sitter-wasms",
+          "out",
+        ),
+        path.join(__dirname, "..", "node_modules", "tree-sitter-wasms", "out"),
+        path.join(
+          __dirname,
+          "..",
+          "..",
+          "node_modules",
+          "tree-sitter-wasms",
+          "out",
+        ),
+      ];
+
+      // Also try to resolve the package via Node resolution which works with
+      // different hoisting layouts created by pnpm. If resolved, push its
+      // "out" directory to candidates so subsequent existence checks will
+      // find the wasm files.
+      try {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const resolved = require.resolve("tree-sitter-wasms/package.json");
+        const pkgDir = path.dirname(resolved);
+        candidates.push(path.join(pkgDir, "out"));
+      } catch (e) {
+        // ignore if not resolvable
+      }
+
+      let loaded = false;
+      let lastErr: any = null;
+      for (const base of candidates) {
+        try {
+          const wasmPath = path.join(
+            base,
+            `tree-sitter-${supportedLanguages[extension]}.wasm`,
+          );
+          if (!fs.existsSync(wasmPath)) {
+            continue;
+          }
+          const { Language } = await getWebTreeSitterRuntime();
+          language = await Language.load(wasmPath);
+          nameToLanguage.set(languageName, language);
+          loaded = true;
+          break;
+        } catch (e) {
+          lastErr = e;
+        }
+      }
+      if (!loaded) {
+        // Fall back to the original loader which may throw a helpful error
+        try {
+          language = await loadLanguageForFileExt(extension);
+          nameToLanguage.set(languageName, language);
+        } catch (e) {
+          console.debug(
+            "Failed to load any tree-sitter wasm for",
+            filepath,
+            e || lastErr,
+          );
+          throw e || lastErr;
+        }
+      }
     }
     return language;
   } catch (e) {
@@ -198,14 +309,19 @@ export async function getQueryForFile(
 }
 
 async function loadLanguageForFileExt(fileExtension: string): Promise<any> {
+  // Keep a conservative default path relative to this file. This is a
+  // best-effort fallback; most callers should use the multi-candidate
+  // loader above which probes several possible locations.
   const wasmPath = path.join(
-    process.env.NODE_ENV === "test" ? process.cwd() : __dirname,
-    ...(process.env.NODE_ENV === "test"
-      ? ["node_modules", "tree-sitter-wasms", "out"]
-      : ["tree-sitter-wasms"]),
+    __dirname,
+    "..",
+    "node_modules",
+    "tree-sitter-wasms",
+    "out",
     `tree-sitter-${supportedLanguages[fileExtension]}.wasm`,
   );
-  return await (Parser as any).Language.load(wasmPath);
+  const { Language } = await getWebTreeSitterRuntime();
+  return await Language.load(wasmPath);
 }
 
 // See https://tree-sitter.github.io/tree-sitter/using-parsers
