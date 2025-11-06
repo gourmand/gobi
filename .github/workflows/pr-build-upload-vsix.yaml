@@ -13,15 +13,15 @@ jobs:
     strategy:
       matrix:
         include:
+          - platform: darwin
+            arch: arm64
+            runner: macos-latest
           - platform: linux
             arch: x64
             runner: ubuntu-latest
           - platform: win32
             arch: x64
             runner: windows-latest
-          - platform: darwin
-            arch: arm64
-            runner: macos-latest
 
     steps:
       - uses: actions/checkout@v5
