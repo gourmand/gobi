@@ -48,6 +48,7 @@ runs:
     - name: Install workspace dependencies and build packages
       shell: bash
       run: |
+        command -v pnpm || npm install -g pnpm@10
         pnpm install --frozen-lockfile
         pnpm -r build
       env:
