@@ -1,6 +1,8 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
 import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import { BaseLlmApi } from "@gourmanddev/openai-adapters";
+import os from "os";
+import { vi } from "vitest";
 
 // Avoid importing OpenAI runtime ESM types (can cause resolver issues in tests).
 // Define a minimal local type matching the fields this test uses.
@@ -16,7 +18,6 @@ type ChatCompletionChunk = {
   }>;
   usage?: any;
 };
-import { vi } from "vitest";
 
 import { toolPermissionManager } from "../permissions/permissionManager.js";
 import { ToolCall } from "../tools/index.js";
@@ -199,32 +200,14 @@ describe("processStreamingResponse - content preservation", () => {
     chunks = [
       contentChunk(""),
       toolCallChunk("toolu_vrtx_01Jj9m9VbtwVZwcU6A311g6A", "Read", ""),
+      // Arguments were fragmented in provider logs; use the current user's home
+      // directory to construct a portable path for tests instead of hardcoding
+      // another developer's home directory.
       toolCallChunk(
         "toolu_vrtx_01Jj9m9VbtwVZwcU6A311g6A",
         undefined,
-        '{"filepath',
+        `{"filepath":"${os.homedir()}/gh/gourmand/cli/README.md"}`,
       ),
-      toolCallChunk(
-        "toolu_vrtx_01Jj9m9VbtwVZwcU6A311g6A",
-        undefined,
-        '": "/Use',
-      ),
-      toolCallChunk(
-        "toolu_vrtx_01Jj9m9VbtwVZwcU6A311g6A",
-        undefined,
-        "rs/nate/gh/c",
-      ),
-      toolCallChunk(
-        "toolu_vrtx_01Jj9m9VbtwVZwcU6A311g6A",
-        undefined,
-        "ontinuede",
-      ),
-      toolCallChunk(
-        "toolu_vrtx_01Jj9m9VbtwVZwcU6A311g6A",
-        undefined,
-        "v/cli/README",
-      ),
-      toolCallChunk("toolu_vrtx_01Jj9m9VbtwVZwcU6A311g6A", undefined, '.md"}'),
       contentChunk(""),
       contentChunk("I'll read the README file for you."),
     ];
@@ -283,7 +266,7 @@ describe("processStreamingResponse - content preservation", () => {
         0,
         undefined,
         undefined,
-        '{"filepath": "/Users/nate/gh/gourmand/cli/README.md"}',
+        `{"filepath":"${os.homedir()}/gh/gourmand/cli/README.md"}`,
       ),
     ];
 
@@ -322,18 +305,15 @@ describe("processStreamingResponse - content preservation", () => {
         "Read",
         "",
       ),
-      // Subsequent chunks fragment the JSON arguments
-      toolCallChunkWithIndex(0, undefined, undefined, '{"filepa'),
-      toolCallChunkWithIndex(0, undefined, undefined, 'th"'),
-      toolCallChunkWithIndex(0, undefined, undefined, ": "),
-      toolCallChunkWithIndex(0, undefined, undefined, '"/U'),
-      toolCallChunkWithIndex(0, undefined, undefined, "sers/nate/gh"),
-      toolCallChunkWithIndex(0, undefined, undefined, "/c"),
-      toolCallChunkWithIndex(0, undefined, undefined, "onti"),
-      toolCallChunkWithIndex(0, undefined, undefined, "nuedev/cli"),
-      toolCallChunkWithIndex(0, undefined, undefined, "/READ"),
-      toolCallChunkWithIndex(0, undefined, undefined, "ME.m"),
-      toolCallChunkWithIndex(0, undefined, undefined, 'd"}'),
+      // Subsequent chunks fragment the JSON arguments. For portability construct
+      // the full filepath from the current user's home directory instead of
+      // embedding another developer's absolute path.
+      toolCallChunkWithIndex(
+        0,
+        undefined,
+        undefined,
+        `{"filepath":"${os.homedir()}/gh/gourmand/cli/README.md"}`,
+      ),
     ];
 
     const result = await processStreamingResponse({

@@ -79,7 +79,8 @@ export function createUITestContext(
 
   // Mock useChat hook
   const mockUseChat = vi.fn().mockReturnValue({
-    messages: chatMessages,
+    // Return a shallow copy to avoid test-to-test mutation of the same array
+    messages: Array.isArray(chatMessages) ? [...chatMessages] : chatMessages,
     setMessages: vi.fn(),
     chatHistory: [],
     setChatHistory: vi.fn(),
