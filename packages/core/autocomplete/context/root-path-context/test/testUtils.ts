@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 import { expect, vi } from "vitest";
 
-import Parser from "web-tree-sitter";
+import { Parser } from "web-tree-sitter";
 import { Position } from "../../../../index";
 import { testIde } from "../../../../test/fixtures";
 import { getAst, getTreePathAtCursor } from "../../../util/ast";

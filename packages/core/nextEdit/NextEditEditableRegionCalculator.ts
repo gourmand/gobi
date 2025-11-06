@@ -1,6 +1,6 @@
-import Parser from "web-tree-sitter";
-import { Chunk, IDE, ILLM, Position, Range, RangeInFile } from "../index";
+import { Parser } from "web-tree-sitter";
 import { getAst } from "../autocomplete/util/ast";
+import { Chunk, IDE, ILLM, Position, Range, RangeInFile } from "../index";
 import { NEXT_EDIT_MODELS } from "../llm/constants";
 import { DocumentHistoryTracker } from "./DocumentHistoryTracker";
 import { MODEL_WINDOW_SIZES } from "./constants";

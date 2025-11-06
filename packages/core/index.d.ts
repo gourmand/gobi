@@ -3,7 +3,7 @@ import {
   ModelRole,
   PromptTemplates,
 } from "@gourmanddev/config-yaml";
-import Parser from "web-tree-sitter";
+import { Parser } from "web-tree-sitter";
 import { CodebaseIndexer } from "./indexing/CodebaseIndexer";
 import { LLMConfigurationStatuses } from "./llm/constants";
 

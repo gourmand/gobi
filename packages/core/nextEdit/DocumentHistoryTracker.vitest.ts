@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import Parser from "web-tree-sitter";
+import { Parser } from "web-tree-sitter";
 import { DocumentHistoryTracker } from "./DocumentHistoryTracker";
 
 // Mock the Parser.Tree class

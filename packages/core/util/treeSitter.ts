@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "path";
 
-import Parser from "web-tree-sitter";
+import { Parser } from "web-tree-sitter";
 import { FileSymbolMap, IDE, SymbolWithRange } from "../index";
 import { getUriFileExtension } from "./uri";
 

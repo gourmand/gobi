@@ -1,4 +1,4 @@
-import Parser from "web-tree-sitter";
+import { Parser } from "web-tree-sitter";
 
 export function findInAst(
   node: Parser.SyntaxNode,

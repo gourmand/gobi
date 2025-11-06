@@ -1,6 +1,6 @@
 const Types = `
 declare global {
-  import Parser from "web-tree-sitter";
+  import { Parser } from "web-tree-sitter";
   import { GetGhTokenArgs } from "./protocol/ide";
   declare global {
     interface Window {

@@ -22,6 +22,8 @@ declare namespace WebTreeSitter {
     nextSibling?: SyntaxNode | null;
     previousSibling?: SyntaxNode | null;
     // utility methods commonly used in repo
+    child(index: number): SyntaxNode | null;
+    namedChild(index: number): SyntaxNode | null;
     descendantForPosition?(point: Point): SyntaxNode | null;
     descendantsOfType?(type: string): SyntaxNode[];
     childForFieldName?(name: string): SyntaxNode | null;

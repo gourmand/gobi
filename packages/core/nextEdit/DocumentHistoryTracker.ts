@@ -1,4 +1,4 @@
-import Parser from "web-tree-sitter";
+import { Parser } from "web-tree-sitter";
 
 /**
  * Singleton class that keeps track of a map of document paths to their history.
