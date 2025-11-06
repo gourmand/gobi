@@ -55,7 +55,7 @@
     "uuid": "^9.0.1",
     "win-ca": "^3.5.1"
   },
-  "engine": {
+  "engines": {
     "node": ">=24.11.0"
   },
   "optionalDependencies": {
