@@ -150,16 +150,16 @@ jobs:
 
           ./gradlew printProductsReleases # prepare list of IDEs for Plugin Verifier
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       # # Setup Node.js
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v4
-        with:
-          version: 9
+          cache: pnpm
 
       - name: Cache core node_modules
         uses: actions/cache@v3

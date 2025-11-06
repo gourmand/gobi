@@ -23,14 +23,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version-file: ".nvmrc"
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
 
       - name: Check code formatting with Prettier
         run: pnpm dlx prettier --check "**/*.{js,jsx,ts,tsx,json,css,md}" --ignore-path .gitignore --ignore-path .prettierignore
@@ -224,14 +224,15 @@ jobs:
       test_file_matrix: ${{ steps.vscode-get-test-file-matrix.outputs.test_file_matrix }}
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version-file: ".nvmrc"
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+
 
       - name: Build packages and get test files
         id: vscode-get-test-file-matrix
@@ -265,15 +266,15 @@ jobs:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0
-
-      - uses: actions/setup-node@v5
-        with:
-          node-version-file: ".nvmrc"
-
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
-          version: 9
+          version: 10
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: ".nvmrc"
+          cache: pnpm
+
 
       - name: Build VS Code extension
         uses: ./.github/actions/build-vscode-extension

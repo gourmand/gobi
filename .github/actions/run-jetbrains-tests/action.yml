@@ -32,15 +32,12 @@ runs:
       run: |
         pnpm install --frozen-lockfile
         pnpm -r build
-        cd core
-        npm ci
 
-    - name: Install gui node_modules and build
+    - name: Build GUI
       shell: bash
       run: |
-        cd gui
-        npm ci
-        npm run build
+        cd packages/gui
+        pnpm run build
 
     - name: Setup Java
       uses: actions/setup-java@v4.5.0
@@ -87,10 +84,7 @@ runs:
       shell: bash
       run: |
         cd extensions/vscode
-        if [ "${{ steps.vscode-extension-cache.outputs.cache-hit }}" != "true" ]; then
-          npm ci
-        fi
-        npm run prepackage
+        pnpm run prepackage
       env:
         # https://github.com/microsoft/vscode-ripgrep/issues/9#issuecomment-643965333
         GITHUB_TOKEN: ${{ inputs.ci-github-token }}
@@ -100,13 +94,6 @@ runs:
       with:
         path: binary/node_modules
         key: ${{ runner.os }}-binary-node-modules-${{ hashFiles('binary/package-lock.json') }}
-
-    - name: Install binary dependencies
-      if: steps.binary-cache.outputs.cache-hit != 'true'
-      shell: bash
-      run: |
-        cd binary
-        npm ci
 
     - name: Build the binaries
       shell: bash

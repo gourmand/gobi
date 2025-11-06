@@ -55,24 +55,11 @@ runs:
         # https://github.com/microsoft/vscode-ripgrep/issues/9#issuecomment-643965333
         GITHUB_TOKEN: ${{ inputs.github-token }}
 
-    - name: Install gui dependencies
-      shell: bash
-      run: |
-        cd gui
-        npm ci
-
-    - name: Install core dependencies
-      shell: bash
-      run: |
-        cd core
-        npm ci
-        npm i vectordb
-
     - name: Build GUI
       shell: bash
       run: |
-        cd gui
-        npm run build --max-old-space-size=4096
+        cd packages/gui
+        pnpm run build --max-old-space-size=4096
       env:
         NODE_OPTIONS: "--max-old-space-size=4096"
 
