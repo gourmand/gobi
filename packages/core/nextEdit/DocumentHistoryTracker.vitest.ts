@@ -1,24 +1,84 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Parser } from "web-tree-sitter";
 import { DocumentHistoryTracker } from "./DocumentHistoryTracker";
 
-// Mock the Parser.Tree class
+// Mock Tree class that implements the Tree interface
+class MockTree {
+  rootNode = {
+    type: "program",
+    text: "mock-root-node",
+    startPosition: { row: 0, column: 0 },
+    endPosition: { row: 0, column: 0 },
+    startIndex: 0,
+    endIndex: 0,
+    childCount: 0,
+    namedChildCount: 0,
+    children: [],
+    namedChildren: [],
+    parent: null,
+    nextSibling: null,
+    previousSibling: null,
+    child: () => null,
+    namedChild: () => null,
+    descendantForPosition: () => null,
+    descendantsOfType: () => [],
+    childForFieldName: () => null,
+    equals: () => false,
+  };
+  copy() {
+    return new MockTree();
+  }
+  delete() {}
+  rootNodeWithOffset() {
+    return this.rootNode;
+  }
+  language = {} as any; // Mock Language object
+  walk() {
+    return {} as any;
+  }
+  edit() {}
+  printDotGraph() {}
+  getEditedRange() {
+    return {} as any;
+  }
+  getChangedRanges() {
+    return [];
+  }
+  getIncludedRanges() {
+    return [];
+  }
+  getLanguage() {
+    return this.language;
+  }
+  [key: string]: any; // Allow any additional properties
+}
+
+// Mock the web-tree-sitter module
 vi.mock("web-tree-sitter", () => {
+  const MockParser = class {
+    parse() {
+      return new MockTree();
+    }
+    setLanguage() {}
+    getLanguage() {
+      return "mock-language";
+    }
+  };
+
+  // Add Tree as a property of MockParser
+  (MockParser as any).Tree = MockTree;
+
   return {
-    default: {
-      Tree: class MockTree {
-        constructor() {
-          // Mock implementation
-        }
-      },
+    default: MockParser,
+    Parser: {
+      Tree: MockTree,
     },
   };
 });
 
 describe("DocumentHistoryTracker", () => {
   let tracker: DocumentHistoryTracker;
-  let mockAst1: Parser.Tree;
-  let mockAst2: Parser.Tree;
+  let mockAst1: MockTree;
+  let mockAst2: MockTree;
   const testDocPath = "/test/document.ts";
   const testContent1 = "const x = 1;";
   const testContent2 = "const x = 2;";
@@ -30,10 +90,8 @@ describe("DocumentHistoryTracker", () => {
     tracker = DocumentHistoryTracker.getInstance();
 
     // Create mock ASTs
-    //@ts-ignore
-    mockAst1 = new Parser.Tree() as Parser.Tree;
-    //@ts-ignore
-    mockAst2 = new Parser.Tree() as Parser.Tree;
+    mockAst1 = new MockTree();
+    mockAst2 = new MockTree();
   });
 
   afterEach(() => {
@@ -51,7 +109,7 @@ describe("DocumentHistoryTracker", () => {
 
   describe("addDocument", () => {
     it("should add a document to the tracker", () => {
-      tracker.addDocument(testDocPath, testContent1, mockAst1);
+      tracker.addDocument(testDocPath, testContent1, mockAst1 as any);
 
       const ast = tracker.getMostRecentAst(testDocPath);
       const content = tracker.getMostRecentDocumentHistory(testDocPath);
@@ -63,8 +121,8 @@ describe("DocumentHistoryTracker", () => {
 
   describe("push", () => {
     it("should push a new AST to an existing document's history stack", () => {
-      tracker.addDocument(testDocPath, testContent1, mockAst1);
-      tracker.push(testDocPath, testContent2, mockAst2);
+      tracker.addDocument(testDocPath, testContent1, mockAst1 as any);
+      tracker.push(testDocPath, testContent2, mockAst2 as any);
 
       const ast = tracker.getMostRecentAst(testDocPath);
       const content = tracker.getMostRecentDocumentHistory(testDocPath);
@@ -74,7 +132,7 @@ describe("DocumentHistoryTracker", () => {
     });
 
     it("should add a document if it doesn't exist when pushing", () => {
-      tracker.push(testDocPath, testContent1, mockAst1);
+      tracker.push(testDocPath, testContent1, mockAst1 as any);
 
       // Check if document was actually added
       const ast = tracker.getMostRecentAst(testDocPath);
@@ -84,8 +142,8 @@ describe("DocumentHistoryTracker", () => {
 
   describe("getMostRecentAst", () => {
     it("should return the most recent AST of a document", () => {
-      tracker.addDocument(testDocPath, testContent1, mockAst1);
-      tracker.push(testDocPath, testContent2, mockAst2);
+      tracker.addDocument(testDocPath, testContent1, mockAst1 as any);
+      tracker.push(testDocPath, testContent2, mockAst2 as any);
 
       const ast = tracker.getMostRecentAst(testDocPath);
 
@@ -111,7 +169,7 @@ describe("DocumentHistoryTracker", () => {
     it("should return null if the document has no ASTs", () => {
       // This test would require modifying private properties
       // So we'll mock an empty array situation
-      tracker.addDocument(testDocPath, testContent1, mockAst1);
+      tracker.addDocument(testDocPath, testContent1, mockAst1 as any);
 
       // @ts-ignore - accessing private property for testing
       tracker.documentAstMap.set(testDocPath, []);
@@ -134,8 +192,8 @@ describe("DocumentHistoryTracker", () => {
 
   describe("getMostRecentDocumentHistory", () => {
     it("should return the most recent document history", () => {
-      tracker.addDocument(testDocPath, testContent1, mockAst1);
-      tracker.push(testDocPath, testContent2, mockAst2);
+      tracker.addDocument(testDocPath, testContent1, mockAst1 as any);
+      tracker.push(testDocPath, testContent2, mockAst2 as any);
 
       const content = tracker.getMostRecentDocumentHistory(testDocPath);
 
@@ -159,7 +217,7 @@ describe("DocumentHistoryTracker", () => {
     });
 
     it("should return null if the document has no history", () => {
-      tracker.addDocument(testDocPath, testContent1, mockAst1);
+      tracker.addDocument(testDocPath, testContent1, mockAst1 as any);
 
       // @ts-ignore - accessing private property for testing
       tracker.documentContentHistoryMap.set(testDocPath, []);
@@ -182,7 +240,7 @@ describe("DocumentHistoryTracker", () => {
 
   describe("deleteDocument", () => {
     it("should delete a document from the tracker", () => {
-      tracker.addDocument(testDocPath, testContent1, mockAst1);
+      tracker.addDocument(testDocPath, testContent1, mockAst1 as any);
       tracker.deleteDocument(testDocPath);
 
       // Spy on console.error
@@ -207,8 +265,8 @@ describe("DocumentHistoryTracker", () => {
     it("should clear all documents from the tracker", () => {
       const anotherDocPath = "/test/another-document.ts";
 
-      tracker.addDocument(testDocPath, testContent1, mockAst1);
-      tracker.addDocument(anotherDocPath, testContent1, mockAst1);
+      tracker.addDocument(testDocPath, testContent1, mockAst1 as any);
+      tracker.addDocument(anotherDocPath, testContent1, mockAst1 as any);
 
       tracker.clearMap();
 
