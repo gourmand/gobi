@@ -107,29 +107,29 @@ describe("ConfigEnhancer", () => {
 
   it("should preserve hub slug as rule name", async () => {
     const options: BaseCommandOptions = {
-      rule: ["nate/spanish"],
+      rule: ["example/spanish"],
     };
 
     const config = await enhancer.enhanceConfig(mockConfig, options);
 
     expect(config.rules).toHaveLength(1);
     expect(config.rules?.[0]).toEqual({
-      name: "nate/spanish",
-      rule: "Content for nate/spanish",
+      name: "example/spanish",
+      rule: "Content for example/spanish",
     });
   });
 
   it("should handle mix of hub slugs and direct content", async () => {
     const options: BaseCommandOptions = {
-      rule: ["nate/spanish", "Always be helpful", "org/another-rule"],
+      rule: ["example/spanish", "Always be helpful", "org/another-rule"],
     };
 
     const config = await enhancer.enhanceConfig(mockConfig, options);
 
     expect(config.rules).toHaveLength(3);
     expect(config.rules?.[0]).toEqual({
-      name: "nate/spanish",
-      rule: "Content for nate/spanish",
+      name: "example/spanish",
+      rule: "Content for example/spanish",
     });
     expect(config.rules?.[1]).toBe("Always be helpful");
     expect(config.rules?.[2]).toEqual({
@@ -146,7 +146,6 @@ describe("ConfigEnhancer", () => {
     const config = await enhancer.enhanceConfig(mockConfig, options);
 
     expect(config.rules).toHaveLength(2);
-    // File paths should be stored as plain strings
     expect(config.rules?.[0]).toBe("./rules/my-rule.md");
     expect(config.rules?.[1]).toBe("/absolute/path/rule.txt");
   });

@@ -477,7 +477,7 @@ mod tests {
         let ti = std::time::Instant::now();
         let tag = Tag {
             dir: Path::new("../"),
-            branch: "nate/pyO3",
+            branch: "example/pyO3",
             provider_id: "default",
         };
         let results = sync(&tag);
@@ -489,7 +489,7 @@ mod tests {
     fn test_on_vscode_extension() {
         let results = sync(&Tag {
             dir: Path::new("../extensions/vscode"),
-            branch: "nate/pyO3",
+            branch: "example/pyO3",
             provider_id: "default",
         });
     }
@@ -499,7 +499,7 @@ mod tests {
         let ti = std::time::Instant::now();
         let results = sync(&Tag {
             dir: Path::new("../"),
-            branch: "nate/pyO3",
+            branch: "example/pyO3",
             provider_id: "default",
         })
         .expect("Sync failed.");
@@ -510,7 +510,7 @@ mod tests {
         let ti = std::time::Instant::now();
         let results = sync(&Tag {
             dir: Path::new("../"),
-            branch: "nate/pyO3",
+            branch: "example/pyO3",
             provider_id: "default",
         })
         .expect("Sync failed");
