@@ -1,5 +1,30 @@
 import crypto from "crypto";
 import { EventEmitter as NodeEventEmitter } from "node:events";
+import {
+  clearInterval as nodeClearInterval,
+  setInterval as nodeSetInterval,
+  setTimeout as nodeSetTimeout,
+} from "timers";
+
+// Prefer global timers in test environments so vitest's fake timers work as
+// expected. In production (packaged extension) use Node timers imported from
+// 'timers' to avoid relying on possibly-missing globals.
+const _useGlobalTimers = process.env.NODE_ENV === "test";
+function setIntervalFn(cb: (...args: any[]) => void, ms: number) {
+  return _useGlobalTimers
+    ? (global.setInterval as any)(cb, ms)
+    : nodeSetInterval(cb, ms);
+}
+function setTimeoutFn(cb: (...args: any[]) => void, ms: number) {
+  return _useGlobalTimers
+    ? (global.setTimeout as any)(cb, ms)
+    : nodeSetTimeout(cb, ms);
+}
+function clearIntervalFn(id: any) {
+  return _useGlobalTimers
+    ? (global.clearInterval as any)(id)
+    : nodeClearInterval(id);
+}
 
 import {
   AuthType,
@@ -9,7 +34,6 @@ import {
 } from "@gourmanddev/core/control-plane/AuthTypes";
 import { getControlPlaneEnvSync } from "@gourmanddev/core/control-plane/env";
 import { Logger } from "@gourmanddev/core/util/Logger";
-import fetch from "node-fetch";
 import { v4 as uuidv4 } from "uuid";
 import {
   authentication,
@@ -110,9 +134,9 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
     void this.refreshSessions();
 
     // Set up a regular interval to refresh tokens
-    this._refreshInterval = setInterval(() => {
+    this._refreshInterval = setIntervalFn(() => {
       void this.refreshSessions();
-    }, WorkOsAuthProvider.REFRESH_INTERVAL_MS);
+    }, WorkOsAuthProvider.REFRESH_INTERVAL_MS) as unknown as NodeJS.Timeout;
   }
 
   private decodeJwt(jwt: string): Record<string, any> | null {
@@ -324,7 +348,7 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
       );
 
       return new Promise((resolve, reject) => {
-        setTimeout(() => {
+        setTimeoutFn(() => {
           this._refreshSessionWithRetry(refreshToken, attempt + 1, baseDelay)
             .then(resolve)
             .catch(reject);
@@ -460,7 +484,9 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
    */
   public async dispose() {
     if (this._refreshInterval) {
-      clearInterval(this._refreshInterval);
+      clearIntervalFn(
+        this._refreshInterval as unknown as ReturnType<typeof nodeSetInterval>,
+      );
       this._refreshInterval = null;
     }
     this._disposable.dispose();
@@ -526,7 +552,7 @@ export class WorkOsAuthProvider implements AuthenticationProvider, Disposable {
             codeExchangePromise.promise,
             new Promise<string>(
               (_, reject) =>
-                setTimeout(() => reject("Cancelled"), 60 * 60 * 1_000), // 60min timeout
+                setTimeoutFn(() => reject("Cancelled"), 60 * 60 * 1_000), // 60min timeout
             ),
             promiseFromEvent<any, any>(
               token.onCancellationRequested,

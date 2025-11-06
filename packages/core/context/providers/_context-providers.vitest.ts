@@ -1,16 +1,14 @@
-import fetch from "node-fetch";
-
 import { afterAll, describe, expect, test } from "vitest";
-import { contextProviderClassFromName } from "./index";
+import { ConfigHandler } from "../../config/ConfigHandler";
 import {
   ContextProviderExtras,
   ContextProviderWithParams,
   IContextProvider,
 } from "../../index";
-import { ConfigHandler } from "../../config/ConfigHandler";
 import { LLMLogger } from "../../llm/logger";
 import { setUpTestDir, tearDownTestDir, TEST_DIR } from "../../test/testDir";
 import FileSystemIde from "../../util/filesystem";
+import { contextProviderClassFromName } from "./index";
 
 const CONTEXT_PROVIDERS_TO_TEST: ContextProviderWithParams[] = [
   { name: "diff", params: {} },

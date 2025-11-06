@@ -624,6 +624,15 @@
       "gobi": [
         {
           "type": "webview",
+          "authentication": {
+            "providers": [
+              {
+                "id": "gobi",
+                "label": "Gobi",
+                "supportsMultipleAccounts": false
+              }
+            ]
+          },
           "id": "gourmand.gobiGUIView",
           "name": "Gobi",
           "icon": "media/icon-sidebar.svg",
@@ -758,7 +767,6 @@
     "monaco-editor": "^0.54.0",
     "monaco-vscode-textmate-theme-converter": "^0.1.7",
     "ncp": "^2.0.0",
-    "node-fetch": "^3.3.2",
     "node-machine-id": "^1.1.12",
     "posthog-node": "^5.11.1",
     "react-markdown": "^10.1.0",

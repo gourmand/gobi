@@ -22,7 +22,53 @@ export function getNonce() {
 }
 
 export function getExtensionUri(): vscode.Uri {
-  return vscode.extensions.getExtension("gourmand.gobi")!.extensionUri;
+  // The extension id may differ between development and packaged builds
+  // (for example the package.json name is "gobi-vscode-extension").
+  // Try a few likely ids first, then fall back to scanning installed
+  // extensions for one that looks like Gobi. If nothing matches, return
+  // a safe fallback pointing at the extension's compiled out folder.
+  const candidates = [
+    "gourmand.gobi",
+    "gourmand.gobi-vscode-extension",
+    "gourmand.gobi-vscode-extension-2.0.0",
+  ];
+  for (const id of candidates) {
+    const ext = vscode.extensions.getExtension(id);
+    if (ext && ext.extensionUri) {
+      return ext.extensionUri;
+    }
+  }
+
+  for (const ext of vscode.extensions.all) {
+    try {
+      const pkgName = (
+        ext.packageJSON && ((ext.packageJSON.name || "") as string)
+      ).toLowerCase();
+      if (pkgName.includes("gobi")) {
+        return ext.extensionUri;
+      }
+    } catch (e) {
+      // ignore malformed packageJSON in unrelated extensions
+    }
+  }
+
+  // Fallback: use a path relative to this file so callers still get a usable Uri
+  // even if the extension couldn't be resolved via the VS Code extensions API.
+  // __dirname will point inside the compiled extension out directory when packaged.
+  try {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const path = require("path");
+    return vscode.Uri.file(path.join(__dirname, "..", ".."));
+  } catch (e) {
+    // As a last resort, return the workspace root or an empty file uri
+    if (
+      vscode.workspace.workspaceFolders &&
+      vscode.workspace.workspaceFolders.length
+    ) {
+      return vscode.workspace.workspaceFolders[0].uri;
+    }
+    return vscode.Uri.file("/");
+  }
 }
 
 export function getViewColumnOfFile(

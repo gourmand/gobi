@@ -1,0 +1,16 @@
+{
+  "include": [
+    "extensions/vscode/src/**",
+    "extensions/vscode/**/src/**",
+    "packages/**/src/**",
+    "core/**/src/**"
+  ],
+  "exclude": [
+    "node_modules/**",
+    "**/dist/**",
+    "**/build/**",
+    "**/out/**",
+    "**/.cache/**",
+    "**/*.min.js"
+  ]
+}

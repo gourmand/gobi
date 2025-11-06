@@ -120,6 +120,44 @@ void (async () => {
     console.log(
       `[timer] VSCode copy completed in ${Date.now() - vscodeCopyStart}ms`,
     );
+    // Post-copy: ensure expected CSS filenames exist. Some build setups (Vite/Tailwind)
+    // may emit hashed CSS filenames. If that happened, copy the emitted CSS to the
+    // expected filenames so the extension can reference them deterministically.
+    try {
+      const guiAssetsPath = path.join(vscodeGuiPath, "assets");
+      const assetFiles = fs.existsSync(guiAssetsPath)
+        ? fs.readdirSync(guiAssetsPath)
+        : [];
+
+      const ensureCss = (expectedName, globMatcher) => {
+        if (assetFiles.includes(expectedName)) return;
+        // Find a candidate file matching the globMatcher (regex)
+        const rx = new RegExp(globMatcher);
+        const candidate = assetFiles.find(
+          (f) => rx.test(f) && f.endsWith(".css"),
+        );
+        if (candidate) {
+          const from = path.join(guiAssetsPath, candidate);
+          const to = path.join(guiAssetsPath, expectedName);
+          try {
+            fs.copyFileSync(from, to);
+            console.log(`[info] Copied ${candidate} -> ${expectedName}`);
+          } catch (e) {
+            console.warn(
+              `[warn] Failed to copy ${candidate} -> ${expectedName}`,
+              e,
+            );
+          }
+        }
+      };
+
+      // Ensure main index.css
+      ensureCss("index.css", "^index(\\..*)?\\.css$");
+      // Ensure console CSS (some builds emit indexConsole.*.css)
+      ensureCss("indexConsole.css", "^indexConsole(\\..*)?\\.css$");
+    } catch (e) {
+      console.warn("[warn] Error while normalizing GUI CSS filenames:", e);
+    }
   } else {
     console.log(
       "Skipping GUI copy: extension/gui already exists and is non-empty",
@@ -131,6 +169,17 @@ void (async () => {
   }
   if (!fs.existsSync(path.join("dist", "assets", "index.css"))) {
     throw new Error("gui build did not produce index.css");
+  }
+  // Console view assets (tailwind build may produce separate console styles)
+  if (!fs.existsSync(path.join("dist", "assets", "indexConsole.js"))) {
+    console.warn(
+      "gui build did not produce indexConsole.js — continuing, but console view may be unstyled",
+    );
+  }
+  if (!fs.existsSync(path.join("dist", "assets", "indexConsole.css"))) {
+    console.warn(
+      "gui build did not produce indexConsole.css — continuing, but console view may be unstyled",
+    );
   }
 
   // Copy over native / wasm modules //
@@ -372,9 +421,12 @@ void (async () => {
           : "onnxruntime.dll"
     }`,
 
-    // Code/styling for the sidebar
+    // Code/styling for the sidebar and console
     "gui/assets/index.js",
     "gui/assets/index.css",
+    // Console view assets (may be produced separately by Tailwind/Vite)
+    "gui/assets/indexConsole.js",
+    "gui/assets/indexConsole.css",
 
     // Tutorial
     "gobi_tutorial.py",
