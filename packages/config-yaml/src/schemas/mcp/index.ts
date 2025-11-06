@@ -13,7 +13,7 @@ const stdioMcpServerSchema = baseMcpServerSchema.extend({
   command: z.string(),
   type: z.literal("stdio").optional(),
   args: z.array(z.string()).optional(),
-  env: z.record(z.string()).optional(),
+  env: z.record(z.string(), z.string()).optional(),
   cwd: z.string().optional(),
 });
 export type StdioMcpServer = z.infer<typeof stdioMcpServerSchema>;

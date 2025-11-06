@@ -24,12 +24,12 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@gourmanddev/config-types": "workspace:^",
-    "yaml": "^2.6.1",
-    "zod": "^3.24.2"
+    "yaml": "^2.8.1",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
-    "cross-env": "^7.0.3",
-    "zod-to-json-schema": "^3.24.5"
+    "cross-env": "^10.1.0",
+    "zod-to-json-schema": "^3.24.6"
   },
   "engines": {
     "node": ">=24.11.0"

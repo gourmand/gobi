@@ -232,10 +232,10 @@ jobs:
       - name: Build packages and get test files
         id: vscode-get-test-file-matrix
         run: |
-          pnpm install --frozen-lockfile
+          pnpm install --no-frozen-lockfile
           pnpm -r build
           cd extensions/vscode
-          pnpm install --frozen-lockfile
+          pnpm install --no-frozen-lockfile
           pnpm run e2e:compile
           if [[ "${{ github.event.pull_request.head.repo.fork }}" == "true" || "${{ github.actor }}" == "dependabot[bot]" ]]; then
             # Exclude SSH tests for forks
