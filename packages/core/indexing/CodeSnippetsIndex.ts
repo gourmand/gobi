@@ -1,4 +1,4 @@
-import { Parser } from "web-tree-sitter";
+import type { Parser } from "web-tree-sitter";
 
 import { migrate } from "../util/paths";
 import {
