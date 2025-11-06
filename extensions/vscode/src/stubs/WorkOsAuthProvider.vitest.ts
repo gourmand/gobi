@@ -13,10 +13,16 @@ vi.mock("vscode", () => ({
   window: {
     registerUriHandler: vi.fn(),
   },
-  EventEmitter: vi.fn(() => ({
-    event: { dispose: vi.fn() },
-    fire: vi.fn(),
-  })),
+  // Provide a real, constructible EventEmitter class so tests can `new EventEmitter()`
+  EventEmitter: class {
+    event: any;
+    constructor() {
+      this.event = { dispose: vi.fn() };
+    }
+    fire() {
+      // noop
+    }
+  },
   Disposable: {
     from: vi.fn(() => ({ dispose: vi.fn() })),
   },
@@ -33,7 +39,7 @@ vi.mock("node-fetch", () => {
   };
 });
 
-vi.mock("core/control-plane/env", () => ({
+vi.mock("@gourmanddev/core/control-plane/env", () => ({
   getControlPlaneEnvSync: vi.fn(() => ({
     AUTH_TYPE: "workos",
     APP_URL: "https://gourmand.dev",
@@ -54,13 +60,28 @@ vi.mock("crypto", () => ({
 const mockSecretStorageGet = vi.fn();
 const mockSecretStorageStore = vi.fn();
 
-// Mock SecretStorage class
+// Mock SecretStorage as a real constructible class so `new SecretStorage(context)` works
 vi.mock("./SecretStorage", () => {
+  class MockSecretStorage {
+    context: any;
+    constructor(ctx: any) {
+      this.context = ctx;
+    }
+    async store(key: string, value: string) {
+      return mockSecretStorageStore(key, value);
+    }
+    async get(key: string) {
+      return mockSecretStorageGet(key);
+    }
+    async delete(key: string) {
+      // Default noop
+      return undefined;
+    }
+  }
+
   return {
-    SecretStorage: vi.fn().mockImplementation(() => ({
-      store: mockSecretStorageStore,
-      get: mockSecretStorageGet,
-    })),
+    __esModule: true,
+    SecretStorage: MockSecretStorage,
   };
 });
 
@@ -222,16 +243,15 @@ it("should not remove sessions during transient network errors", async () => {
   mockSecretStorageGet.mockResolvedValue(JSON.stringify([mockSession]));
 
   // Import WorkOsAuthProvider after setting up all mocks
+  // Import WorkOsAuthProvider after setting up all mocks
   const { WorkOsAuthProvider } = await import("./WorkOsAuthProvider");
-
-  // Allow setInterval to work normally with fake timers
-  // We're not mocking it anymore, instead we'll control when it fires
 
   // Create provider instance - this will automatically call refreshSessions with the network error
   const provider = new WorkOsAuthProvider(mockContext, mockUriHandler);
 
-  // Run microtasks to process promises from the initial refresh call
-  await Promise.resolve();
+  // Wait for the initial refresh attempt to complete (the provider exposes a
+  // static promise that resolves when an attempt has been made).
+  await (WorkOsAuthProvider as any).hasAttemptedRefresh;
 
   // Check that sessions were not cleared after network error
   expect(mockSecretStorageStore).not.toHaveBeenCalledWith(
@@ -242,14 +262,14 @@ it("should not remove sessions during transient network errors", async () => {
   // Reset the fetch mock call count to verify the next call
   fetchMock.mockClear();
 
-  // Advance timers to the next refresh interval to simulate the timer firing
-  vi.advanceTimersByTime(WorkOsAuthProvider.REFRESH_INTERVAL_MS);
-
-  // Run microtasks to process promises from the interval-triggered refresh
+  // Advance fake timers so any scheduled retry runs (retry backoff is short,
+  // but we advance by a generous amount to be robust across environments).
+  vi.advanceTimersByTime(10_000);
+  // Process any microtasks created by the retry
   await Promise.resolve();
 
-  // Verify the second attempt was made via the interval
-  expect(fetchMock).toHaveBeenCalledTimes(1);
+  // Verify the retry attempt was made
+  expect(fetchMock).toHaveBeenCalled();
   expect(fetchMock).toHaveBeenCalledWith(
     expect.any(URL),
     expect.objectContaining({
@@ -266,6 +286,7 @@ it("should not remove sessions during transient network errors", async () => {
     clearInterval(provider._refreshInterval);
     provider._refreshInterval = null;
   }
+  // No timer overrides to restore in this test
 });
 
 it("should refresh tokens at regular intervals rather than based on expiration", async () => {

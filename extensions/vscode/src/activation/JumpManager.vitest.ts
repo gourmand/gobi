@@ -114,7 +114,7 @@ vi.mock("svg-builder", () => {
 });
 
 // Mock NextEditProvider
-vi.mock("core/nextEdit/NextEditProvider", () => {
+vi.mock("@gourmanddev/core/nextEdit/NextEditProvider", () => {
   const mockDeleteChain = vi.fn();
   const mockGetInstance = vi.fn(() => ({
     deleteChain: mockDeleteChain,
