@@ -775,7 +775,7 @@
     "ws": "^8.13.0",
     "yaml": "^2.8.1"
   },
-  "engine": {
+  "engines": {
     "vscode": "^1.70.0"
   },
   "optionalDependencies": {
