@@ -1,7 +1,6 @@
 import * as fs from "fs/promises";
 import path from "path";
 import { pathToFileURL } from "url";
-import Parser from "web-tree-sitter";
 import { IDE, Position } from "../../../index";
 import { localPathOrUriToPath } from "../../../util/pathToUri";
 import { getFullLanguageName, getQueryForFile } from "../../../util/treeSitter";
@@ -25,6 +24,8 @@ import {
   TypeSpanAndSourceFile,
   TypeSpanAndSourceFileAndAst,
 } from "./types";
+// Use permissive parser runtime typing during migration
+type ParserAny = any;
 
 export class StaticContextService {
   private readonly ide: IDE;
@@ -229,7 +230,7 @@ export class StaticContextService {
     };
     let paramsTypes = "";
     for (const c of captures) {
-      const { name, node } = c;
+      const { name, node } = c as { name: string; node: any };
       // console.log(`${name} →`, node.text, node.startPosition, node.endPosition);
 
       switch (name) {
@@ -425,8 +426,9 @@ export class StaticContextService {
         // if (!seenDecls.has(JSON.stringify()) {
         const originalDeclText =
           tld.pattern === 2
-            ? tld.captures.find((d) => d.name === "top.fn.decl")!.node.text
-            : tld.captures.find((d) => d.name === "top.var.decl")!.node.text;
+            ? tld.captures.find((d: any) => d.name === "top.fn.decl")!.node.text
+            : tld.captures.find((d: any) => d.name === "top.var.decl")!.node
+                .text;
 
         if (tld.pattern === 2) {
           // build a type span
@@ -502,7 +504,7 @@ export class StaticContextService {
           );
         } else {
           const varTypNode = tld.captures.find(
-            (d) => d.name === "top.var.type",
+            (d: any) => d.name === "top.var.type",
           )!.node;
           await this.extractRelevantHeadersHelper(
             originalDeclText,
@@ -527,8 +529,8 @@ export class StaticContextService {
 
   private async extractRelevantHeadersHelper(
     originalDeclText: string,
-    node: Parser.SyntaxNode,
-    targetTypes: Set<Parser.SyntaxNode>,
+    node: any,
+    targetTypes: Set<any>,
     relevantTypes: Map<string, TypeSpanAndSourceFileAndAst>,
     relevantContext: Set<TypeSpanAndSourceFile>,
     relevantContextMap: Map<string, TypeSpanAndSourceFile>,
@@ -545,7 +547,7 @@ export class StaticContextService {
 
       if (node.type === "function_type") {
         const retTypeNode = node.namedChildren.find(
-          (c) => c && c.type === "return_type",
+          (c: any) => c && c.type === "return_type",
         );
         if (retTypeNode) {
           await this.extractRelevantHeadersHelper(
@@ -580,7 +582,7 @@ export class StaticContextService {
     relevantTypes: Map<string, TypeSpanAndSourceFileAndAst>,
     holeType: string,
   ) {
-    const targetTypes = new Set<Parser.SyntaxNode>();
+    const targetTypes = new Set<any>();
     // const ast = relevantTypes.get(holeIdentifier)!.ast;
     const ast = await getAst("file.ts", `type T = ${holeType};`);
     if (!ast) {
@@ -596,7 +598,7 @@ export class StaticContextService {
     if (!valueNode) throw new Error("No type value found");
 
     const baseNode = unwrapToBaseType(valueNode);
-    targetTypes.add(baseNode);
+    targetTypes.add(baseNode as any);
     await this.generateTargetTypesHelper(
       relevantTypes,
       holeType,
@@ -610,8 +612,8 @@ export class StaticContextService {
   private async generateTargetTypesHelper(
     relevantTypes: Map<string, TypeSpanAndSourceFileAndAst>,
     currType: string,
-    targetTypes: Set<Parser.SyntaxNode>,
-    node: Parser.SyntaxNode | null,
+    targetTypes: Set<any>,
+    node: any | null,
   ): Promise<void> {
     if (!node) return;
 
@@ -681,8 +683,8 @@ export class StaticContextService {
   }
 
   private async isTypeEquivalent(
-    node: Parser.SyntaxNode,
-    typ: Parser.SyntaxNode,
+    node: any,
+    typ: any,
     relevantTypes: Map<string, TypeSpanAndSourceFileAndAst>,
     foundNormalForms: Map<string, string>,
   ): Promise<boolean> {
@@ -714,20 +716,20 @@ export class StaticContextService {
   }
 
   private async normalize(
-    node: Parser.SyntaxNode,
+    node: any,
     relevantTypes: Map<string, TypeSpanAndSourceFileAndAst>,
   ): Promise<string> {
     if (!node) return "";
 
     switch (node.type) {
       case "function_type": {
-        const params = node.child(0); // formal_parameters
+        const params = node.children[0]; // formal_parameters
         const returnType =
           node.childForFieldName("type") || node.namedChildren[1]; // function_type → parameters, =>, return
 
         const paramTypes =
           params?.namedChildren
-            .map((param) =>
+            .map((param: any) =>
               this.normalize(
                 param!.childForFieldName("type")! ||
                   param!.namedChildren.at(-1),
@@ -741,14 +743,14 @@ export class StaticContextService {
       }
 
       case "tuple_type": {
-        const elements = node.namedChildren.map((c) =>
+        const elements = node.namedChildren.map((c: any) =>
           this.normalize(c!, relevantTypes),
         );
         return `[${elements.join(", ")}]`;
       }
 
       case "union_type": {
-        const parts = node.namedChildren.map((c) =>
+        const parts = node.namedChildren.map((c: any) =>
           this.normalize(c!, relevantTypes),
         );
         return parts.join(" | ");

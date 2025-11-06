@@ -1,14 +1,12 @@
 import { sentryVitePlugin } from "@sentry/vite-plugin";
 import react from "@vitejs/plugin-react-swc";
 import { resolve } from "path";
-import tailwindcss from "tailwindcss";
 import { defineConfig } from "vitest/config";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss(),
     sentryVitePlugin({
       org: "gobi-xd",
       project: "gobi",
@@ -57,16 +55,6 @@ export default defineConfig({
         ) {
           return false;
         }
-      }
-      return true;
-    },
-    onUnhandledRejection(err) {
-      // Suppress ProseMirror DOM errors in test environment
-      if (
-        err.message?.includes("getClientRects") ||
-        err.message?.includes("prosemirror")
-      ) {
-        return false;
       }
       return true;
     },

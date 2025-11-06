@@ -17,7 +17,7 @@
     "@types/shell-quote": "^1.7.5"
   },
   "dependencies": {
-    "shell-quote": "^1.8.1"
+    "shell-quote": "^1.8.3"
   },
   "engine": {
     "node": ">=24.11.0"

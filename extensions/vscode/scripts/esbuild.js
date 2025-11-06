@@ -10,7 +10,18 @@ const esbuildConfig = {
   entryPoints: ["src/extension.ts"],
   bundle: true,
   outfile: "out/extension.js",
-  external: ["vscode", "esbuild", "./xhr-sync-worker.js", "@huggingface/jinja"],
+  // Externals: don't bundle these into the extension output. Some packages
+  // (eg. fetch-blob) use top-level await which can't be compiled into CJS by
+  // esbuild; mark them external so they're resolved at runtime from
+  // extension's node_modules instead of being bundled.
+  external: [
+    "vscode",
+    "esbuild",
+    "./xhr-sync-worker.js",
+    "@huggingface/jinja",
+    "fetch-blob",
+    "fetch-blob/from.js",
+  ],
   format: "cjs",
   platform: "node",
   sourcemap: flags.includes("--sourcemap"),

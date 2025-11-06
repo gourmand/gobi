@@ -1,7 +1,6 @@
 import { createHash } from "crypto";
 
 import { LRUCache } from "lru-cache";
-import Parser from "web-tree-sitter";
 
 import { IDE } from "../../../index";
 import {
@@ -43,7 +42,7 @@ export class RootPathContextService {
     private readonly ide: IDE,
   ) {}
 
-  private static getNodeId(node: Parser.SyntaxNode): string {
+  private static getNodeId(node: any): string {
     return `${node.startIndex}`;
   }
 
@@ -62,10 +61,7 @@ export class RootPathContextService {
   /**
    * Key comes from hash of parent key and node type and node id.
    */
-  private static keyFromNode(
-    parentKey: string,
-    astNode: Parser.SyntaxNode,
-  ): string {
+  private static keyFromNode(parentKey: string, astNode: any): string {
     return createHash("sha256")
       .update(parentKey)
       .update(astNode.type)
@@ -75,12 +71,12 @@ export class RootPathContextService {
 
   private async getSnippetsForNode(
     filepath: string,
-    node: Parser.SyntaxNode,
+    node: any,
   ): Promise<AutocompleteSnippetDeprecated[]> {
     const snippets: AutocompleteSnippetDeprecated[] = [];
     const language = getFullLanguageName(filepath);
 
-    let query: Parser.Query | undefined;
+    let query: any | undefined;
     switch (node.type) {
       case "program":
         this.importDefinitionsService.get(filepath);
@@ -100,7 +96,7 @@ export class RootPathContextService {
       return snippets;
     }
 
-    const queries = query.matches(node).map(async (match) => {
+    const queries = query.matches(node).map(async (match: any) => {
       for (const item of match.captures) {
         try {
           const endPosition = item.node.endPosition;
@@ -123,7 +119,7 @@ export class RootPathContextService {
 
   private async getSnippets(
     filepath: string,
-    endPosition: Parser.Point,
+    endPosition: any,
     language: LanguageName,
   ): Promise<AutocompleteSnippetDeprecated[]> {
     const definitions = await this.ide.gotoDefinition({

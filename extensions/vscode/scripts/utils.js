@@ -99,6 +99,31 @@ async function copyOnnxRuntimeFromNodeModules(target) {
   process.chdir(path.join(gobiDir, "extensions", "vscode"));
   fs.mkdirSync("bin", { recursive: true });
 
+  // If the target binaries already exist in the expected napi-v6 location, skip copying.
+  try {
+    const expectedDir = path.join(
+      __dirname,
+      "../bin/napi-v6",
+      ...(target ? [target.split("-")[0], target.split("-")[1]] : []),
+    );
+    // If target isn't provided, we still check common path for current platform
+    if (fs.existsSync(expectedDir)) {
+      const sampleFile = path.join(expectedDir, "onnxruntime_binding.node");
+      if (fs.existsSync(sampleFile) && fs.statSync(sampleFile).size > 0) {
+        console.log(
+          `[info] onnxruntime binaries already present at ${expectedDir}, skipping copy`,
+        );
+        return;
+      }
+    }
+  } catch (e) {
+    // Proceed with copy if any error occurs while checking
+    console.warn(
+      "Could not verify existing onnxruntime binaries, proceeding with copy",
+      e && e.message ? e.message : e,
+    );
+  }
+
   await new Promise((resolve, reject) => {
     ncp(
       path.join(__dirname, "../../../core/node_modules/onnxruntime-node/bin"),
@@ -119,13 +144,13 @@ async function copyOnnxRuntimeFromNodeModules(target) {
     // If building for production, only need the binaries for current platform
     try {
       if (!target.startsWith("darwin")) {
-        rimrafSync(path.join(__dirname, "../bin/napi-v3/darwin"));
+        rimrafSync(path.join(__dirname, "../bin/napi-v6/darwin"));
       }
       if (!target.startsWith("linux")) {
-        rimrafSync(path.join(__dirname, "../bin/napi-v3/linux"));
+        rimrafSync(path.join(__dirname, "../bin/napi-v6/linux"));
       }
       if (!target.startsWith("win")) {
-        rimrafSync(path.join(__dirname, "../bin/napi-v3/win32"));
+        rimrafSync(path.join(__dirname, "../bin/napi-v6/win32"));
       }
 
       // Also don't want to include cuda/shared/tensorrt binaries, they are too large
@@ -138,7 +163,7 @@ async function copyOnnxRuntimeFromNodeModules(target) {
         filesToRemove.forEach((file) => {
           const filepath = path.join(
             __dirname,
-            "../bin/napi-v3/linux/x64",
+            "../bin/napi-v6/linux/x64",
             file,
           );
           if (fs.existsSync(filepath)) {

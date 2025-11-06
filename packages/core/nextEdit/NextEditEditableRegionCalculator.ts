@@ -1,6 +1,6 @@
-import Parser from "web-tree-sitter";
-import { Chunk, IDE, ILLM, Position, Range, RangeInFile } from "../index";
+import { Parser } from "web-tree-sitter";
 import { getAst } from "../autocomplete/util/ast";
+import { Chunk, IDE, ILLM, Position, Range, RangeInFile } from "../index";
 import { NEXT_EDIT_MODELS } from "../llm/constants";
 import { DocumentHistoryTracker } from "./DocumentHistoryTracker";
 import { MODEL_WINDOW_SIZES } from "./constants";
@@ -484,14 +484,16 @@ async function staticJump(ctx: {
     };
 
     // Find the node at the cursor position.
-    const nodeAtCursor = tree.rootNode.descendantForPosition(point);
+    const nodeAtCursor = tree.rootNode?.descendantForPosition?.(point);
     if (!nodeAtCursor) {
       console.log("No node found at cursor position");
       return null;
     }
 
     // Find the closest identifier node.
-    const identifierNode = findClosestIdentifierNode(nodeAtCursor);
+    const identifierNode = findClosestIdentifierNode(
+      nodeAtCursor as Parser.SyntaxNode | null,
+    );
     if (!identifierNode) {
       console.log("No identifier node found near cursor position");
       return null;
@@ -556,7 +558,7 @@ function findClosestIdentifierNode(
     // Check if one of the siblings is an identifier.
     for (let i = 0; i < parent.childCount; ++i) {
       // const sibling = node.child(i);
-      const sibling = parent.child(i);
+      const sibling = parent.children[i] as Parser.SyntaxNode | null;
       if (sibling && isIdentifierNode(sibling)) {
         // Get the leftmost identifier sibling.
         return sibling;
@@ -564,7 +566,7 @@ function findClosestIdentifierNode(
     }
   }
 
-  return findClosestIdentifierNode(parent);
+  return findClosestIdentifierNode(parent ?? null);
 }
 
 function findLeftmostIdentifier(
@@ -573,7 +575,7 @@ function findLeftmostIdentifier(
   if (isIdentifierNode(node)) return node;
 
   for (let i = 0; i < node.childCount; ++i) {
-    const child = node.child(i);
+    const child = node.children[i];
     if (child) {
       const result = findLeftmostIdentifier(child);
       if (result) return result;
@@ -634,82 +636,22 @@ function isDeclarationNode(node: Parser.SyntaxNode) {
   return declarationTypes.includes(nodeType);
 }
 
-// // Helper function to find the closest identifier node.
-// function findClosestIdentifierNode(
-//   node: Parser.SyntaxNode | undefined,
-// ): Parser.SyntaxNode | undefined {
-//   if (!node) return undefined;
+// Ensure compatibility of Node type with Parser.SyntaxNode
+interface Node extends Parser.SyntaxNode {
+  // Add any additional properties or methods if required
+}
 
-//   // Check if the current node is an identifier
-//   if (isIdentifierLike(node)) {
-//     return node;
-//   }
-
-//   // Check if the parent is an identifier
-//   const parent = node.parent;
-//   if (parent && isIdentifierLike(parent)) {
-//     return parent;
-//   }
-
-//   // Check if any of the node's children are identifiers
-//   // Return the leftmost identifier child if found
-//   for (let i = 0; i < node.childCount; i++) {
-//     const child = node.child(i);
-//     if (child && isIdentifierLike(child)) {
-//       return child;
-//     }
-//   }
-
-//   // Check if any of the parent's children are identifiers
-//   if (parent) {
-//     for (let i = 0; i < parent.childCount; i++) {
-//       const sibling = parent.child(i);
-//       if (sibling && isIdentifierLike(sibling)) {
-//         return sibling;
-//       }
-//     }
-//   }
-
-//   // Recurse on the parent if we haven't found anything yet
-//   return findClosestIdentifierNode(parent);
-// }
-
-// // Helper function to determine if a node is identifier-like
-// function isIdentifierLike(node: Parser.SyntaxNode): boolean {
-//   // Common identifier node types across languages
-//   const commonIdentifierTypes = [
-//     "identifier",
-//     "property_identifier",
-//     "type_identifier",
-//     "field_identifier",
-//     "variable_identifier",
-//     "constant",
-//     "symbol",
-//   ];
-
-//   if (commonIdentifierTypes.includes(node.type)) {
-//     return true;
-//   }
-
-//   // Check for common identifier patterns in node types
-//   return /identifier$|^identifier|_identifier/.test(node.type);
-// }
-
-// Helper function to compare ASTs and find changed nodes.
+// Adjust compareAsts function to ensure compatibility
 function compareAsts(oldAst: Parser.Tree, newAst: Parser.Tree) {
   const changedNodes: {
-    oldNode: Parser.SyntaxNode | null;
-    newNode: Parser.SyntaxNode | null;
+    oldNode: Node | null;
+    newNode: Node | null;
     depth: number;
   }[] = [];
 
-  // This is a simplified implementation.
-  // In practice, you would traverse both ASTs in parallel
-  // and identify nodes that differ.
-
   function traverse(
-    oldNode: Parser.SyntaxNode | null,
-    newNode: Parser.SyntaxNode | null,
+    oldNode: Node | null,
+    newNode: Node | null,
     depth: number = 0,
   ) {
     if (!oldNode && !newNode) return;
@@ -732,16 +674,15 @@ function compareAsts(oldAst: Parser.Tree, newAst: Parser.Tree) {
     // Recursively compare children.
     const oldChildCount = oldNode?.childCount || 0;
     const newChildCount = newNode?.childCount || 0;
-
     const maxLength = Math.max(oldChildCount, newChildCount);
     for (let i = 0; i < maxLength; i++) {
-      const oldChild = i < oldChildCount ? oldNode?.child(i) || null : null;
-      const newChild = i < newChildCount ? newNode?.child(i) || null : null;
+      const oldChild = i < oldChildCount ? oldNode?.children[i] || null : null;
+      const newChild = i < newChildCount ? newNode?.children[i] || null : null;
       traverse(oldChild, newChild, depth + 1);
     }
   }
 
-  traverse(oldAst.rootNode, newAst.rootNode);
+  traverse(oldAst.rootNode as Node, newAst.rootNode as Node);
   return changedNodes;
 }
 

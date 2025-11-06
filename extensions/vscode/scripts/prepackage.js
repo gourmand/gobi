@@ -83,27 +83,48 @@ void (async () => {
 
   // Then copy over the dist folder to the VSCode extension //
   const vscodeGuiPath = path.join(extensionRoot, "gui");
-  rimrafSync(vscodeGuiPath);
-  fs.mkdirSync(vscodeGuiPath, { recursive: true });
-  const vscodeCopyStart = Date.now();
-  console.log(`[timer] Starting VSCode copy at ${new Date().toISOString()}`);
-  await new Promise((resolve, reject) => {
-    ncp("dist", vscodeGuiPath, (error) => {
-      if (error) {
-        console.log(
-          "Error copying React app build to VSCode extension: ",
-          error,
-        );
-        reject(error);
-      } else {
-        console.log("Copied gui build to VSCode extension");
-        resolve();
-      }
+  // Only copy GUI build output if destination is missing or empty. This avoids copying
+  // the GUI on repeated runs when `pnpm -r build` already produced the files.
+  const shouldCopyGui = (() => {
+    try {
+      if (!fs.existsSync(vscodeGuiPath)) return true;
+      const files = fs.readdirSync(vscodeGuiPath);
+      return !files || files.length === 0;
+    } catch (e) {
+      return true;
+    }
+  })();
+
+  // Track timing for GUI copy. Declare start outside the block so we can
+  // safely reference it later regardless of whether we actually copy.
+  let vscodeCopyStart = undefined;
+  if (shouldCopyGui) {
+    rimrafSync(vscodeGuiPath);
+    fs.mkdirSync(vscodeGuiPath, { recursive: true });
+    vscodeCopyStart = Date.now();
+    console.log(`[timer] Starting VSCode copy at ${new Date().toISOString()}`);
+    await new Promise((resolve, reject) => {
+      ncp("dist", vscodeGuiPath, (error) => {
+        if (error) {
+          console.log(
+            "Error copying React app build to VSCode extension: ",
+            error,
+          );
+          reject(error);
+        } else {
+          console.log("Copied gui build to VSCode extension");
+          resolve();
+        }
+      });
     });
-  });
-  console.log(
-    `[timer] VSCode copy completed in ${Date.now() - vscodeCopyStart}ms`,
-  );
+    console.log(
+      `[timer] VSCode copy completed in ${Date.now() - vscodeCopyStart}ms`,
+    );
+  } else {
+    console.log(
+      "Skipping GUI copy: extension/gui already exists and is non-empty",
+    );
+  }
 
   if (!fs.existsSync(path.join("dist", "assets", "index.js"))) {
     throw new Error("gui build did not produce index.js");
@@ -342,12 +363,12 @@ void (async () => {
     "tag-qry/tree-sitter-c_sharp-tags.scm",
 
     // onnx runtime bindngs
-    `bin/napi-v3/${os}/${arch}/onnxruntime_binding.node`,
-    `bin/napi-v3/${os}/${arch}/${
+    `bin/napi-v6/${os}/${arch}/onnxruntime_binding.node`,
+    `bin/napi-v6/${os}/${arch}/${
       isMacTarget
-        ? "libonnxruntime.1.14.0.dylib"
+        ? "libonnxruntime.1.23.2.dylib"
         : isLinuxTarget
-          ? "libonnxruntime.so.1.14.0"
+          ? "libonnxruntime.so.1"
           : "onnxruntime.dll"
     }`,
 

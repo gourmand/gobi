@@ -1,18 +1,20 @@
 import path from "path";
 
 import { distance } from "fastest-levenshtein";
-import Parser from "web-tree-sitter";
+// Use permissive `any` types for web-tree-sitter runtime objects to avoid
+// tight coupling with parser typings while the repository migrates types.
+type ParserAny = any;
 
-import { DiffLine } from "../../index";
 import { LANGUAGES } from "../../autocomplete/constants/AutocompleteLanguageInfo";
 import { myersDiff } from "../../diff/myers";
+import { DiffLine } from "../../index";
 import { getParserForFile } from "../../util/treeSitter";
 
 import { findInAst } from "./findInAst";
 
 type AstReplacements = Array<{
-  nodeToReplace: Parser.SyntaxNode;
-  replacementNodes: Parser.SyntaxNode[];
+  nodeToReplace: any;
+  replacementNodes: any[];
 }>;
 
 const LAZY_COMMENT_REGEX = /\.{3}\s*(.+?)\s*\.{3}/;
@@ -108,11 +110,11 @@ function shouldRejectDiff(diff: DiffLine[]): boolean {
 }
 
 function nodeSurroundedInLazyBlocks(
-  parser: Parser,
+  parser: ParserAny,
 
   file: string,
   filename: string,
-): { newTree: Parser.Tree; newFile: string } | undefined {
+): { newTree: any; newFile: string } | undefined {
   const ext = path.extname(filename).slice(1);
   const language = LANGUAGES[ext];
   if (language) {
@@ -143,13 +145,13 @@ export async function deterministicApplyLazyEdit({
   filename: string;
   onlyFullFileRewrite?: boolean;
 }): Promise<DiffLine[] | undefined> {
-  const parser = await getParserForFile(filename);
+  const parser: ParserAny = await getParserForFile(filename);
   if (!parser) {
     return undefined;
   }
 
-  const oldTree = parser.parse(oldFile);
-  let newTree = parser.parse(newLazyFile);
+  const oldTree: any = parser.parse(oldFile);
+  let newTree: any = parser.parse(newLazyFile);
   let reconstructedNewFile: string | undefined = undefined;
 
   if (onlyFullFileRewrite) {
@@ -173,7 +175,7 @@ export async function deterministicApplyLazyEdit({
     const firstSimilarNode = findInAst(oldTree.rootNode, (node) =>
       nodesAreSimilar(node, newTree.rootNode.children[0]),
     );
-    if (firstSimilarNode?.parent?.equals(oldTree.rootNode)) {
+    if (firstSimilarNode?.parent?.equals?.(oldTree.rootNode)) {
       // If so, we tack lazy blocks to start and end, and run the usual algorithm
       const result = nodeSurroundedInLazyBlocks(parser, newLazyFile, filename);
       if (result) {
@@ -229,7 +231,7 @@ export async function deterministicApplyLazyEdit({
   return diff;
 }
 
-function isLazyBlock(node: Parser.SyntaxNode): boolean {
+function isLazyBlock(node: any): boolean {
   // Special case for "{/* ... existing code ... */}"
   if (
     node.type === "jsx_expression" &&
@@ -251,10 +253,7 @@ function stringsWithinLevDistThreshold(
   return dist / Math.min(a.length, b.length) <= threshold;
 }
 
-function programNodeIsSimilar(
-  programNode: Parser.SyntaxNode,
-  otherNode: Parser.SyntaxNode,
-): boolean {
+function programNodeIsSimilar(programNode: any, otherNode: any): boolean {
   // Check purely based on whether they are similar strings
   const newLines = programNode.text.split("\n");
   const oldLines = otherNode.text.split("\n");
@@ -301,7 +300,7 @@ function programNodeIsSimilar(
  * @param b
  * @returns
  */
-function nodesAreSimilar(a: Parser.SyntaxNode, b: Parser.SyntaxNode): boolean {
+function nodesAreSimilar(a: any, b: any): boolean {
   if (a.type !== b.type) {
     return false;
   }
@@ -340,7 +339,7 @@ function nodesAreSimilar(a: Parser.SyntaxNode, b: Parser.SyntaxNode): boolean {
   return stringsWithinLevDistThreshold(lineOneA, lineOneB, 0.2);
 }
 
-function nodesAreExact(a: Parser.SyntaxNode, b: Parser.SyntaxNode): boolean {
+function nodesAreExact(a: any, b: any): boolean {
   return a.text === b.text;
 }
 
@@ -351,8 +350,8 @@ function nodesAreExact(a: Parser.SyntaxNode, b: Parser.SyntaxNode): boolean {
  * @returns
  */
 function findLazyBlockReplacements(
-  oldNode: Parser.SyntaxNode,
-  newNode: Parser.SyntaxNode,
+  oldNode: any,
+  newNode: any,
   replacements: AstReplacements,
 ): void {
   // Base case
@@ -368,7 +367,7 @@ function findLazyBlockReplacements(
   const leftChildren = oldNode.namedChildren;
   const rightChildren = newNode.namedChildren;
   let isLazy = false;
-  let currentLazyBlockNode: Parser.SyntaxNode | undefined = undefined;
+  let currentLazyBlockNode: any | undefined = undefined;
   const currentLazyBlockReplacementNodes = [];
 
   while (leftChildren.length > 0 && rightChildren.length > 0) {
@@ -385,7 +384,9 @@ function findLazyBlockReplacements(
     }
 
     // Look for the first match of L
-    const index = rightChildren.findIndex((node) => nodesAreSimilar(L, node));
+    const index = rightChildren.findIndex((node: any) =>
+      nodesAreSimilar(L, node),
+    );
 
     if (index === -1) {
       // No match

@@ -9,8 +9,8 @@ import {
 } from "@gourmanddev/config-yaml";
 import * as JSONC from "comment-json";
 import ignore from "ignore";
-import { IDE, InternalMcpOptions } from "../../../index";
 import { convertYamlMcpConfigToInternalMcpOptions } from "../../../config/yaml/yamlToGobiConfig";
+import { IDE, InternalMcpOptions } from "../../../index";
 import {
   DEFAULT_IGNORE_DIRS,
   DEFAULT_IGNORE_FILETYPES,
@@ -113,7 +113,7 @@ export async function loadJsonMcpConfigs(
         }
         const projectServers = Object.values(
           claudeCodeFileParsed.data.projects,
-        ).map((v) => v.mcpServers);
+        ).map((v: any) => v.mcpServers);
         for (const mcpServers of projectServers) {
           if (mcpServers) {
             validJsonConfigs.push(

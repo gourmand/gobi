@@ -79,12 +79,9 @@ export function useChat({
 
     // Fork from an existing session if fork flag is used
     if (fork) {
-      const { loadSessionById, startNewSession } = require("../../session.js");
-      const sessionToFork = loadSessionById(fork);
-      if (sessionToFork) {
-        return startNewSession(sessionToFork.history);
-      }
-      // If session not found, create a new empty session
+      // Defer forking to an effect to avoid bundling issues with dynamic imports
+      // during the build. Start with an empty session synchronously and then
+      // attempt to load and fork in an effect below.
       return createSession([]);
     }
 
@@ -139,6 +136,29 @@ export function useChat({
       serviceListenerCleanupRef.current = null;
     };
   }, []);
+
+  // If a fork ID was provided, dynamically import session utilities and
+  // attempt to fork from the requested session. This is done in an effect
+  // to avoid synchronous require/imports at module-eval time that can cause
+  // bundlers (esbuild) to attempt to bundle incompatible ESM modules.
+  useEffect(() => {
+    if (!fork) return;
+
+    const run = async () => {
+      try {
+        const mod = await import("../../session.js");
+        const { loadSessionById, startNewSession } = mod;
+        const sessionToFork = loadSessionById(fork);
+        if (sessionToFork) {
+          setCurrentSession(startNewSession(sessionToFork.history));
+        }
+      } catch (error) {
+        logger.error("Failed to fork session:", { error });
+      }
+    };
+
+    run();
+  }, [fork]);
 
   const [isWaitingForResponse, setIsWaitingForResponse] = useState(false);
   const [responseStartTime, setResponseStartTime] = useState<number | null>(
