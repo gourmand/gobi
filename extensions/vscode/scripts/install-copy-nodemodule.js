@@ -16,6 +16,26 @@ async function installNodeModuleInTempDirAndCopyToCurrent(packageName, toCopy) {
   // Create a temporary directory for installing the package
   const adjustedName = packageName.replace(/@/g, "").replace("/", "-");
   const currentDir = process.cwd();
+  const destDir = path.join(currentDir, "node_modules", toCopy);
+
+  // If the destination already exists and is non-empty, skip the install/copy step.
+  try {
+    if (fs.existsSync(destDir)) {
+      const entries = fs.readdirSync(destDir);
+      if (entries && entries.length > 0) {
+        console.log(
+          `Skipping install/copy for ${packageName} because ${destDir} already exists and is non-empty.`,
+        );
+        return;
+      }
+    }
+  } catch (e) {
+    // If we can't stat the dest, fall through and attempt the install/copy as normal
+    console.warn(
+      `Could not stat destination ${destDir}:`,
+      e && e.message ? e.message : e,
+    );
+  }
   const tempDir = path.join(
     currentDir,
     "tmp",

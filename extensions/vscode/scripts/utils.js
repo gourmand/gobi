@@ -99,6 +99,31 @@ async function copyOnnxRuntimeFromNodeModules(target) {
   process.chdir(path.join(gobiDir, "extensions", "vscode"));
   fs.mkdirSync("bin", { recursive: true });
 
+  // If the target binaries already exist in the expected napi-v6 location, skip copying.
+  try {
+    const expectedDir = path.join(
+      __dirname,
+      "../bin/napi-v6",
+      ...(target ? [target.split("-")[0], target.split("-")[1]] : []),
+    );
+    // If target isn't provided, we still check common path for current platform
+    if (fs.existsSync(expectedDir)) {
+      const sampleFile = path.join(expectedDir, "onnxruntime_binding.node");
+      if (fs.existsSync(sampleFile) && fs.statSync(sampleFile).size > 0) {
+        console.log(
+          `[info] onnxruntime binaries already present at ${expectedDir}, skipping copy`,
+        );
+        return;
+      }
+    }
+  } catch (e) {
+    // Proceed with copy if any error occurs while checking
+    console.warn(
+      "Could not verify existing onnxruntime binaries, proceeding with copy",
+      e && e.message ? e.message : e,
+    );
+  }
+
   await new Promise((resolve, reject) => {
     ncp(
       path.join(__dirname, "../../../core/node_modules/onnxruntime-node/bin"),

@@ -83,24 +83,42 @@ void (async () => {
 
   // Then copy over the dist folder to the VSCode extension //
   const vscodeGuiPath = path.join(extensionRoot, "gui");
-  rimrafSync(vscodeGuiPath);
-  fs.mkdirSync(vscodeGuiPath, { recursive: true });
-  const vscodeCopyStart = Date.now();
-  console.log(`[timer] Starting VSCode copy at ${new Date().toISOString()}`);
-  await new Promise((resolve, reject) => {
-    ncp("dist", vscodeGuiPath, (error) => {
-      if (error) {
-        console.log(
-          "Error copying React app build to VSCode extension: ",
-          error,
-        );
-        reject(error);
-      } else {
-        console.log("Copied gui build to VSCode extension");
-        resolve();
-      }
+  // Only copy GUI build output if destination is missing or empty. This avoids copying
+  // the GUI on repeated runs when `pnpm -r build` already produced the files.
+  const shouldCopyGui = (() => {
+    try {
+      if (!fs.existsSync(vscodeGuiPath)) return true;
+      const files = fs.readdirSync(vscodeGuiPath);
+      return !files || files.length === 0;
+    } catch (e) {
+      return true;
+    }
+  })();
+
+  if (shouldCopyGui) {
+    rimrafSync(vscodeGuiPath);
+    fs.mkdirSync(vscodeGuiPath, { recursive: true });
+    const vscodeCopyStart = Date.now();
+    console.log(`[timer] Starting VSCode copy at ${new Date().toISOString()}`);
+    await new Promise((resolve, reject) => {
+      ncp("dist", vscodeGuiPath, (error) => {
+        if (error) {
+          console.log(
+            "Error copying React app build to VSCode extension: ",
+            error,
+          );
+          reject(error);
+        } else {
+          console.log("Copied gui build to VSCode extension");
+          resolve();
+        }
+      });
     });
-  });
+  } else {
+    console.log(
+      "Skipping GUI copy: extension/gui already exists and is non-empty",
+    );
+  }
   console.log(
     `[timer] VSCode copy completed in ${Date.now() - vscodeCopyStart}ms`,
   );
