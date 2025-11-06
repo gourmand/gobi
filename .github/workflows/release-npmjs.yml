@@ -99,7 +99,9 @@ jobs:
         if: steps.changes.outputs.changed == 'true'
         working-directory: ${{ matrix.package.path }}
         env:
-          GITHUB_TOKEN: ${{ secrets.SEMANTIC_RELEASE_GITHUB_TOKEN }}
+          # Use the built-in Actions token so a personal token isn't required.
+          # The automatic GITHUB_TOKEN is available as a secret in workflows.
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           # NPM_TOKEN not needed when using trusted publishing with OIDC
           # Uncomment below if you need to install private dependencies:
           # NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
