@@ -33,8 +33,6 @@ runs:
   steps:
     - name: Setup pnpm
       uses: pnpm/action-setup@v4
-      with:
-        version: 10
     - uses: actions/setup-node@v4
       with:
         node-version-file: ".nvmrc"
@@ -48,7 +46,6 @@ runs:
     - name: Install workspace dependencies and build packages
       shell: bash
       run: |
-        command -v pnpm || npm install -g pnpm@10
         pnpm install --frozen-lockfile
         pnpm -r build
       env:

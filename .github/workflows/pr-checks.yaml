@@ -25,8 +25,6 @@ jobs:
       - uses: actions/checkout@v5
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
@@ -226,8 +224,6 @@ jobs:
       - uses: actions/checkout@v5
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
@@ -237,7 +233,8 @@ jobs:
       - name: Build packages and get test files
         id: vscode-get-test-file-matrix
         run: |
-          node ./scripts/build-packages.js
+          pnpm install --frozen-lockfile
+          pnpm -r build
           cd extensions/vscode
           pnpm install --frozen-lockfile
           pnpm run e2e:compile
@@ -268,8 +265,6 @@ jobs:
           fetch-depth: 0
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
-        with:
-          version: 10
       - uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
