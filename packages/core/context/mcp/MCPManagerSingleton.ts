@@ -189,7 +189,7 @@ export class MCPManagerSingleton {
     serverName: string,
     promptName: string,
     args: Record<string, string> = {},
-  ) {
+  ): Promise<any> {
     const connection = this.connections.get(serverName);
     if (!connection) {
       throw new Error(

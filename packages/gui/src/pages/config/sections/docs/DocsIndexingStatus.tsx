@@ -1,10 +1,10 @@
 import { ConfigYaml } from "@gourmanddev/config-yaml";
+import { SiteIndexingConfig } from "@gourmanddev/core";
 import {
   ArrowPathIcon,
   PencilIcon,
   StopIcon,
 } from "@heroicons/react/24/outline";
-import { SiteIndexingConfig } from "@gourmanddev/core";
 import { useContext, useEffect, useMemo, useState } from "react";
 import ConfirmationDialog from "../../../../components/dialogs/ConfirmationDialog";
 import { ToolTip } from "../../../../components/gui/Tooltip";
@@ -168,7 +168,7 @@ function DocsIndexingStatus({
               className={
                 "h-3 w-3 cursor-pointer text-gray-400 hover:brightness-125"
               }
-              onClick={() => editDoc(docFromYaml)}
+              onClick={() => editDoc(docFromYaml as any)}
             />
 
             {["aborted", "complete", "failed"].includes(

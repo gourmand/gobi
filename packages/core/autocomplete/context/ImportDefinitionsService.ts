@@ -65,16 +65,10 @@ export class ImportDefinitionsService {
       return null;
     }
 
-    const ast = parser.parse(fileContents, undefined, {
-      includedRanges: [
-        {
-          startIndex: 0,
-          endIndex: 10_000,
-          startPosition: { row: 0, column: 0 },
-          endPosition: { row: 100, column: 0 },
-        },
-      ],
-    });
+    // Keep the parse call simple to avoid overload signature mismatches
+    // across different web-tree-sitter runtime builds. We only need the
+    // resulting tree.rootNode for queries below.
+    const ast: any = parser.parse(fileContents);
     const language = getFullLanguageName(filepath);
     const query = await getQueryForFile(
       filepath,
@@ -86,26 +80,32 @@ export class ImportDefinitionsService {
       };
     }
 
-    const matches = query?.matches(ast.rootNode);
+    const matches: any[] = (query?.matches(ast.rootNode) as any[]) || [];
 
     const fileInfo: FileInfo = {
       imports: {},
     };
     for (const match of matches) {
-      const startPosition = match.captures[0].node.startPosition;
-      const defs = await this.ide.gotoDefinition({
-        filepath,
-        position: {
-          line: startPosition.row,
-          character: startPosition.column,
-        },
-      });
-      fileInfo.imports[match.captures[0].node.text] = await Promise.all(
-        defs.map(async (def) => ({
-          ...def,
-          contents: await this.ide.readRangeInFile(def.filepath, def.range),
-        })),
-      );
+      try {
+        const firstCapture = match?.captures?.[0];
+        if (!firstCapture || !firstCapture.node) continue;
+        const startPosition = firstCapture.node.startPosition;
+        const defs = await this.ide.gotoDefinition({
+          filepath,
+          position: {
+            line: startPosition.row,
+            character: startPosition.column,
+          },
+        });
+        fileInfo.imports[firstCapture.node.text] = await Promise.all(
+          defs.map(async (def: any) => ({
+            ...def,
+            contents: await this.ide.readRangeInFile(def.filepath, def.range),
+          })),
+        );
+      } catch (e) {
+        console.warn("ImportDefinitionsService: failed to resolve match", e);
+      }
     }
 
     return fileInfo;

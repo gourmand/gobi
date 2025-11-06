@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "path";
 
-import Parser, { Language } from "web-tree-sitter";
+import Parser from "web-tree-sitter";
 import { FileSymbolMap, IDE, SymbolWithRange } from "../index";
 import { getUriFileExtension } from "./uri";
 
@@ -120,8 +120,8 @@ export const IGNORE_PATH_PATTERNS: Partial<Record<LanguageName, RegExp[]>> = {
 
 export async function getParserForFile(filepath: string) {
   try {
-    await Parser.init();
-    const parser = new Parser();
+    await (Parser as any).init();
+    const parser = new (Parser as any)();
 
     const language = await getLanguageForFile(filepath);
     if (!language) {
@@ -139,14 +139,14 @@ export async function getParserForFile(filepath: string) {
 
 // Loading the wasm files to create a Language object is an expensive operation and with
 // sufficient number of files can result in errors, instead keep a map of language name
-// to Language object
-const nameToLanguage = new Map<string, Language>();
+// to Language object. Use `any` for the Language type to avoid tight coupling.
+const nameToLanguage = new Map<string, any>();
 
 export async function getLanguageForFile(
   filepath: string,
-): Promise<Language | undefined> {
+): Promise<any | undefined> {
   try {
-    await Parser.init();
+    await (Parser as any).init();
     const extension = getUriFileExtension(filepath);
 
     const languageName = supportedLanguages[extension];
@@ -174,7 +174,7 @@ export const getFullLanguageName = (filepath: string) => {
 export async function getQueryForFile(
   filepath: string,
   queryPath: string,
-): Promise<Parser.Query | undefined> {
+): Promise<any | undefined> {
   const language = await getLanguageForFile(filepath);
   if (!language) {
     return undefined;
@@ -197,9 +197,7 @@ export async function getQueryForFile(
   return query;
 }
 
-async function loadLanguageForFileExt(
-  fileExtension: string,
-): Promise<Language> {
+async function loadLanguageForFileExt(fileExtension: string): Promise<any> {
   const wasmPath = path.join(
     process.env.NODE_ENV === "test" ? process.cwd() : __dirname,
     ...(process.env.NODE_ENV === "test"
@@ -207,11 +205,11 @@ async function loadLanguageForFileExt(
       : ["tree-sitter-wasms"]),
     `tree-sitter-${supportedLanguages[fileExtension]}.wasm`,
   );
-  return await Parser.Language.load(wasmPath);
+  return await (Parser as any).Language.load(wasmPath);
 }
 
 // See https://tree-sitter.github.io/tree-sitter/using-parsers
-const GET_SYMBOLS_FOR_NODE_TYPES: Parser.SyntaxNode["type"][] = [
+const GET_SYMBOLS_FOR_NODE_TYPES: string[] = [
   "class_declaration",
   "class_definition",
   "function_item", // function name = first "identifier" child
@@ -233,7 +231,7 @@ export async function getSymbolsForFile(
     return;
   }
 
-  let tree: Parser.Tree;
+  let tree: any;
   try {
     tree = parser.parse(contents);
   } catch (e) {
@@ -244,7 +242,7 @@ export async function getSymbolsForFile(
 
   // Function to recursively find all named nodes (classes and functions)
   const symbols: SymbolWithRange[] = [];
-  function findNamedNodesRecursive(node: Parser.SyntaxNode) {
+  function findNamedNodesRecursive(node: any) {
     // console.log(`node: ${node.type}, ${node.text}`);
     if (GET_SYMBOLS_FOR_NODE_TYPES.includes(node.type)) {
       // console.log(`parent: ${node.type}, ${node.text.substring(0, 200)}`);
@@ -255,7 +253,7 @@ export async function getSymbolsForFile(
       // Empirically, the actual name is the last identifier in the node
       // Especially with languages where return type is declared before the name
       // TODO use findLast in newer version of node target
-      let identifier: Parser.SyntaxNode | undefined = undefined;
+      let identifier: any | undefined = undefined;
       for (let i = node.children.length - 1; i >= 0; i--) {
         if (
           node.children[i].type === "identifier" ||

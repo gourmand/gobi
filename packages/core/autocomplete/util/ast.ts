@@ -1,14 +1,15 @@
-import Parser from "web-tree-sitter";
-
 import { RangeInFileWithContents } from "../../index";
 import { getParserForFile } from "../../util/treeSitter";
 
-export type AstPath = Parser.SyntaxNode[];
+// Use `any` for the AST types here to avoid tight coupling with the
+// web-tree-sitter runtime types. These functions operate on the runtime
+// parser result and perform only simple traversal logic.
+export type AstPath = any[];
 
 export async function getAst(
   filepath: string,
   fileContents: string,
-): Promise<Parser.Tree | undefined> {
+): Promise<any | undefined> {
   const parser = await getParserForFile(filepath);
 
   if (!parser) {
@@ -24,10 +25,10 @@ export async function getAst(
 }
 
 export async function getTreePathAtCursor(
-  ast: Parser.Tree,
+  ast: any,
   cursorIndex: number,
 ): Promise<AstPath> {
-  const path = [ast.rootNode];
+  const path: any[] = [ast.rootNode];
   while (path[path.length - 1].childCount > 0) {
     let foundChild = false;
     for (const child of path[path.length - 1].children) {

@@ -1,12 +1,5 @@
 import { parseConfigYaml } from "@gourmanddev/config-yaml";
 import {
-  ArrowsPointingOutIcon,
-  BookmarkIcon as BookmarkOutline,
-  EyeIcon,
-  PencilIcon,
-} from "@heroicons/react/24/outline";
-import { BookmarkIcon as BookmarkSolid } from "@heroicons/react/24/solid";
-import {
   BrowserSerializedGobiConfig,
   RuleSource,
   RuleWithSource,
@@ -19,6 +12,13 @@ import {
   DEFAULT_SYSTEM_MESSAGES_URL,
 } from "@gourmanddev/core/llm/defaultSystemMessages";
 import { getRuleDisplayName } from "@gourmanddev/core/llm/rules/rules-utils";
+import {
+  ArrowsPointingOutIcon,
+  BookmarkIcon as BookmarkOutline,
+  EyeIcon,
+  PencilIcon,
+} from "@heroicons/react/24/outline";
+import { BookmarkIcon as BookmarkSolid } from "@heroicons/react/24/solid";
 import { useContext, useMemo, useState } from "react";
 import { DropdownButton } from "../../../components/DropdownButton";
 import HeaderButtonWithToolTip from "../../../components/gui/HeaderButtonWithToolTip";
@@ -295,7 +295,7 @@ function PromptsSubSection() {
         const yamlPrompt = parsedPrompts[index];
         if (yamlPrompt) {
           if ("uses" in yamlPrompt) {
-            commandWithSlug.slug = yamlPrompt.uses;
+            commandWithSlug.slug = yamlPrompt.uses as string;
           } else {
             commandWithSlug.slug = `${selectedProfile?.fullSlug.ownerSlug}/${selectedProfile?.fullSlug.packageSlug}`;
           }

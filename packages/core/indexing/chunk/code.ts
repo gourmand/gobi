@@ -1,30 +1,26 @@
-import { SyntaxNode } from "web-tree-sitter";
-
 import { ChunkWithoutID } from "../../index.js";
 import { countTokensAsync } from "../../llm/countTokens.js";
 import { getParserForFile } from "../../util/treeSitter.js";
 
-function collapsedReplacement(node: SyntaxNode): string {
+function collapsedReplacement(node: any): string {
   if (node.type === "statement_block") {
     return "{ ... }";
   }
   return "...";
 }
 
-function firstChild(
-  node: SyntaxNode,
-  grammarName: string | string[],
-): SyntaxNode | null {
+function firstChild(node: any, grammarName: string | string[]): any | null {
   if (Array.isArray(grammarName)) {
     return (
-      node.children.find((child) => grammarName.includes(child.type)) || null
+      node.children.find((child: any) => grammarName.includes(child.type)) ||
+      null
     );
   }
-  return node.children.find((child) => child.type === grammarName) || null;
+  return node.children.find((child: any) => child.type === grammarName) || null;
 }
 
 async function collapseChildren(
-  node: SyntaxNode,
+  node: any,
   code: string,
   blockTypes: string[],
   collapseTypes: string[],
@@ -33,10 +29,10 @@ async function collapseChildren(
 ): Promise<string> {
   code = code.slice(0, node.endIndex);
   const block = firstChild(node, blockTypes);
-  const collapsedChildren = [];
+  const collapsedChildren: string[] = [];
 
   if (block) {
-    const childrenToCollapse = block.children.filter((child) =>
+    const childrenToCollapse = block.children.filter((child: any) =>
       collapseTypes.includes(child.type),
     );
     for (const child of childrenToCollapse.reverse()) {
@@ -108,7 +104,7 @@ export const FUNCTION_DECLARATION_NODE_TYPEs = [
 ];
 
 async function constructClassDefinitionChunk(
-  node: SyntaxNode,
+  node: any,
   code: string,
   maxChunkSize: number,
 ): Promise<string> {
@@ -123,7 +119,7 @@ async function constructClassDefinitionChunk(
 }
 
 async function constructFunctionDefinitionChunk(
-  node: SyntaxNode,
+  node: any,
   code: string,
   maxChunkSize: number,
 ): Promise<string> {
@@ -172,7 +168,7 @@ async function constructFunctionDefinitionChunk(
 
 const collapsedNodeConstructors: {
   [key: string]: (
-    node: SyntaxNode,
+    node: any,
     code: string,
     maxChunkSize: number,
   ) => Promise<string>;
@@ -191,7 +187,7 @@ const collapsedNodeConstructors: {
 };
 
 async function maybeYieldChunk(
-  node: SyntaxNode,
+  node: any,
   code: string,
   maxChunkSize: number,
   root = true,
@@ -211,7 +207,7 @@ async function maybeYieldChunk(
 }
 
 async function* getSmartCollapsedChunks(
-  node: SyntaxNode,
+  node: any,
   code: string,
   maxChunkSize: number,
   root = true,
@@ -235,7 +231,7 @@ async function* getSmartCollapsedChunks(
   }
 
   // Recurse (because even if collapsed version was shown, want to show the children in full somewhere)
-  const generators = node.children.map((child) =>
+  const generators = node.children.map((child: any) =>
     getSmartCollapsedChunks(child, code, maxChunkSize, false),
   );
   for (const generator of generators) {

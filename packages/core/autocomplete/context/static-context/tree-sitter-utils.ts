@@ -1,5 +1,4 @@
 import * as fs from "fs/promises";
-import Parser from "web-tree-sitter";
 import { getFullLanguageName, getQueryForFile } from "../../../util/treeSitter";
 import { getAst } from "../../util/ast";
 
@@ -17,7 +16,7 @@ export function findEnclosingTypeDeclaration(
   sourceCode: string,
   cursorLine: number,
   cursorColumn: number,
-  ast: Parser.Tree,
+  ast: any,
 ): TypeDeclarationResult | null {
   const point = { row: cursorLine, column: cursorColumn };
   let node = ast.rootNode.descendantForPosition(point);
@@ -53,7 +52,7 @@ export function findEnclosingTypeDeclaration(
 
 export async function extractTopLevelDecls(
   currentFile: string,
-  givenParser?: Parser,
+  givenParser?: any,
 ) {
   const ast = await getAst(currentFile, await fs.readFile(currentFile, "utf8"));
   if (!ast) {
@@ -80,7 +79,7 @@ export async function extractTopLevelDecls(
 
 export async function extractTopLevelDeclsWithFormatting(
   currentFile: string,
-  givenParser?: Parser,
+  givenParser?: any,
 ) {
   const ast = await getAst(currentFile, await fs.readFile(currentFile, "utf8"));
   if (!ast) {
@@ -158,9 +157,9 @@ export async function extractTopLevelDeclsWithFormatting(
   return results;
 }
 
-export function extractFunctionTypeFromDecl(match: Parser.QueryMatch): string {
-  let paramsNode: Parser.SyntaxNode | undefined = undefined;
-  let returnNode: Parser.SyntaxNode | undefined = undefined;
+export function extractFunctionTypeFromDecl(match: any): string {
+  let paramsNode: any | undefined = undefined;
+  let returnNode: any | undefined = undefined;
 
   for (const capture of match.captures) {
     if (capture.name === "top.fn.param.type") {
@@ -191,7 +190,7 @@ export function extractFunctionTypeFromDecl(match: Parser.QueryMatch): string {
   return `(${paramsNode!.text}) => ${returnNode!.text}`;
 }
 
-export function unwrapToBaseType(node: Parser.SyntaxNode): Parser.SyntaxNode {
+export function unwrapToBaseType(node: any): any {
   if (
     [
       "function_type",
@@ -204,7 +203,7 @@ export function unwrapToBaseType(node: Parser.SyntaxNode): Parser.SyntaxNode {
   }
 
   for (const child of node.namedChildren) {
-    const unwrapped = unwrapToBaseType(child!);
+    const unwrapped = unwrapToBaseType(child! as any);
     if (
       unwrapped !== child ||
       [
