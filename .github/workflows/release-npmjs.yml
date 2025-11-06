@@ -96,7 +96,7 @@ jobs:
     #       INCEPTION_API_KEY: ${{ secrets.INCEPTION_API_KEY }}
 
       - name: Publish to npm via semantic-release
-        if: steps.changes.outputs.changed == 'true'
+        # if: steps.changes.outputs.changed == 'true'
         working-directory: ${{ matrix.package.path }}
         env:
           # Use the built-in Actions token so a personal token isn't required.
