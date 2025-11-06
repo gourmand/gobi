@@ -95,10 +95,13 @@ void (async () => {
     }
   })();
 
+  // Track timing for GUI copy. Declare start outside the block so we can
+  // safely reference it later regardless of whether we actually copy.
+  let vscodeCopyStart = undefined;
   if (shouldCopyGui) {
     rimrafSync(vscodeGuiPath);
     fs.mkdirSync(vscodeGuiPath, { recursive: true });
-    const vscodeCopyStart = Date.now();
+    vscodeCopyStart = Date.now();
     console.log(`[timer] Starting VSCode copy at ${new Date().toISOString()}`);
     await new Promise((resolve, reject) => {
       ncp("dist", vscodeGuiPath, (error) => {
@@ -114,14 +117,14 @@ void (async () => {
         }
       });
     });
+    console.log(
+      `[timer] VSCode copy completed in ${Date.now() - vscodeCopyStart}ms`,
+    );
   } else {
     console.log(
       "Skipping GUI copy: extension/gui already exists and is non-empty",
     );
   }
-  console.log(
-    `[timer] VSCode copy completed in ${Date.now() - vscodeCopyStart}ms`,
-  );
 
   if (!fs.existsSync(path.join("dist", "assets", "index.js"))) {
     throw new Error("gui build did not produce index.js");
