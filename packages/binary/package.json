@@ -20,6 +20,10 @@
     "build:windows-x64": "TARGET=windows-x64 node sea-build.mjs"
   },
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gourmand/gobi"
+  },
   "devDependencies": {
     "@biomejs/biome": "2.3.4",
     "@types/follow-redirects": "^1.14.4",
