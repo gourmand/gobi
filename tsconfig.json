@@ -5,6 +5,7 @@
     "moduleResolution": "nodenext",
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "allowImportingTsExtensions": true
+    "allowImportingTsExtensions": true,
+    "noEmit": true
   }
 }

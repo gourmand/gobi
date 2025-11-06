@@ -38,7 +38,7 @@
     "@lancedb/lancedb": "^0.21.1",
     "@octokit/rest": "^20.1.1",
     "adm-zip": "^0.5.16",
-    "apache-arrow": "^18.1.0",
+    "apache-arrow": "^14.0.2",
     "commander": "^12.0.0",
     "data-uri-to-buffer": "^6.0.2",
     "fetch-blob": "^4.0.0",
@@ -63,7 +63,7 @@
     "@lancedb/vectordb-darwin-x64": "^0.21.2",
     "@lancedb/vectordb-linux-arm64-gnu": "^0.21.2",
     "@lancedb/vectordb-linux-x64-gnu": "^0.21.2",
-    "@lancedb/vectordb-win32-arm64-msvc": "^0.21.2",
+    "@lancedb/vectordb-win32-arm64-msvc": "^0.18.1",
     "@lancedb/vectordb-win32-x64-msvc": "^0.21.2"
   }
 }
