@@ -1,22 +1,24 @@
 import { ctxItemToRifWithContents } from "@gourmanddev/core/commands/util";
 import { memo, useMemo, useRef } from "react";
+import ReactMarkdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
+import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
 import styled from "styled-components";
 import { visit } from "unist-util-visit";
 import { v4 as uuidv4 } from "uuid";
-import {
-  defaultBorderRadius,
-  vscBackground,
-  vscEditorBackground,
-  vscForeground,
-} from "../index";
 import useUpdatingRef from "../../hooks/useUpdatingRef";
 import { useAppSelector } from "../../redux/hooks";
 import { selectUIConfig } from "../../redux/slices/configSlice";
 import { getContextItemsFromHistory } from "../../redux/thunks/updateFileSymbols";
 import { getFontSize } from "../../util";
 import { ToolTip } from "../gui/Tooltip";
+import {
+  defaultBorderRadius,
+  vscBackground,
+  vscEditorBackground,
+  vscForeground,
+} from "../index";
 import FilenameLink from "./FilenameLink";
 import "./katex.css";
 import "./markdown.css";
@@ -29,13 +31,11 @@ import { SyntaxHighlightedPre } from "./SyntaxHighlightedPre";
 import { isSymbolNotRif, matchCodeToSymbolOrFile } from "./utils";
 import { fixDoubleDollarNewLineLatex } from "./utils/fixDoubleDollarLatex";
 import { patchNestedMarkdown } from "./utils/patchNestedMarkdown";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
 
 const StyledMarkdown = styled.div<{
   fontSize?: number;
-  whiteSpace: string;
-  bgColor: string;
+  $whiteSpace: string;
+  $bgColor: string;
 }>`
   h1 {
     font-size: 1.25em;
@@ -62,7 +62,7 @@ const StyledMarkdown = styled.div<{
   }
 
   pre {
-    white-space: ${(props) => props.whiteSpace};
+    white-space: ${(props) => props.$whiteSpace};
     background-color: ${vscEditorBackground};
     border-radius: ${defaultBorderRadius};
 
@@ -108,7 +108,7 @@ const StyledMarkdown = styled.div<{
     font-family: var(--vscode-editor-font-family);
   }
 
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => props.$bgColor};
   font-family:
     var(--vscode-font-family),
     system-ui,
@@ -382,8 +382,8 @@ const StyledMarkdownPreview = memo(function StyledMarkdownPreview(
   return (
     <StyledMarkdown
       fontSize={getFontSize()}
-      whiteSpace={codeWrapState}
-      bgColor={props.useParentBackgroundColor ? "" : vscBackground}
+      $whiteSpace={codeWrapState}
+      $bgColor={props.useParentBackgroundColor ? "" : vscBackground}
       className={props.className}
     >
       <ReactMarkdown

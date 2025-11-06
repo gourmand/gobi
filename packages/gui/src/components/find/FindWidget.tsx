@@ -11,8 +11,8 @@ import {
   useRef,
   useState,
 } from "react";
-import { HeaderButton, Input } from "../index";
 import HeaderButtonWithToolTip from "../gui/HeaderButtonWithToolTip";
+import { HeaderButton, Input } from "../index";
 import {
   Rectangle,
   SearchMatch,
@@ -277,7 +277,7 @@ export const useFindWidget = (
       </HeaderButtonWithToolTip>
       {/* TODO - add useRegex functionality */}
       <HeaderButton
-        inverted={false}
+        $inverted={false}
         onClick={() => setOpen(false)}
         className="focus:ring"
       >

@@ -1,14 +1,14 @@
-import { Editor, JSONContent } from "@tiptap/react";
 import {
   ContextItemWithId,
   InputModifiers,
   RuleWithSource,
   SlashCommandSource,
 } from "@gourmanddev/core";
+import { Editor, JSONContent } from "@tiptap/react";
 import { memo, useMemo } from "react";
-import { defaultBorderRadius, vscBackground } from "../index";
 import { useAppSelector } from "../../redux/hooks";
 import { selectSlashCommandComboBoxInputs } from "../../redux/selectors";
+import { defaultBorderRadius, vscBackground } from "../index";
 import { ContextItemsPeek } from "./belowMainInput/ContextItemsPeek";
 import { RulesPeek } from "./belowMainInput/RulesPeek";
 import { GradientBorder } from "./GradientBorder";
@@ -116,10 +116,10 @@ function GobiInputBox(props: GobiInputBoxProps) {
         {props.isMainInput && <Lump />}
         <GradientBorder
           loading={isStreaming && props.isLastUserInput ? 1 : 0}
-          borderColor={
+          $borderColor={
             isStreaming && props.isLastUserInput ? undefined : vscBackground
           }
-          borderRadius={defaultBorderRadius}
+          $borderRadius={defaultBorderRadius}
         >
           <TipTapEditor
             editorState={props.editorState}
