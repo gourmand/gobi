@@ -15,7 +15,7 @@ jobs:
     name: Validate Conventional Commits
     runs-on: ubuntu-latest
     if: ${{ !github.event.pull_request.draft }}
-    gobi-on-error: true
+    continue-on-error: true
     permissions:
       pull-requests: write
       issues: write

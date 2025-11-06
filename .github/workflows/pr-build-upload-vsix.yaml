@@ -28,6 +28,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Build VS Code extension
         uses: ./.github/actions/build-vscode-extension
         with:
@@ -35,7 +44,6 @@ jobs:
           arch: ${{ matrix.arch }}
           npm_config_arch: ${{ matrix.arch }}
           pre-release: false
-          commit-sha: ${{ github.sha }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload build artifact

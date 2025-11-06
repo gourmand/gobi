@@ -266,6 +266,15 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: ".nvmrc"
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9
+
       - name: Build VS Code extension
         uses: ./.github/actions/build-vscode-extension
         with:
@@ -273,11 +282,6 @@ jobs:
           arch: x64
           npm_config_arch: x64
           pre-release: false
-        - name: Setup pnpm
-          uses: pnpm/action-setup@v4
-          with:
-            version: 9
-          commit-sha: ${{ github.sha }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Upload build artifact
@@ -288,9 +292,9 @@ jobs:
 
   vscode-e2e-tests:
     name: ${{ matrix.test_file || 'unknown' }} (${{ matrix.command }})
-            pnpm install --frozen-lockfile
-            pnpm test
+    runs-on: ubuntu-latest
     timeout-minutes: 15
+    needs: vscode-get-test-file-matrix
     # Tests requiring secrets need approval from maintainers
     strategy:
       fail-fast: false

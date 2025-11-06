@@ -368,7 +368,7 @@ jobs:
 
       - name: Run Security Scans
         id: security-scan
-        gobi-on-error: true
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
           CHANGED_FILES: ${{ steps.changed-files.outputs.changed_files }}
@@ -416,7 +416,7 @@ jobs:
 
       - name: Generate AI Mitigation Suggestions
         if: always() && steps.security-scan.outputs.scan_status == 'failed'
-        gobi-on-error: true
+        continue-on-error: true
         env:
           GOBI_API_KEY: ${{ secrets.GOBI_API_KEY }}
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -459,7 +459,7 @@ jobs:
 
       - name: Post Mitigation Summary to PR
         if: steps.security-scan.outputs.scan_status == 'failed' && hashFiles('mitigation-suggestions.md') != ''
-        gobi-on-error: true
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -496,7 +496,7 @@ jobs:
 
       - name: Generate Security Report
         if: always()
-        gobi-on-error: true
+        continue-on-error: true
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
         run: |
@@ -542,7 +542,7 @@ jobs:
 
       - name: Upload Security Report
         if: always()
-        gobi-on-error: true
+        continue-on-error: true
         uses: actions/upload-artifact@v4
         with:
           name: security-scan-results
