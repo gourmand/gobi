@@ -15,7 +15,7 @@ const {
 } = require("../../../scripts/util");
 
 const { generateAndCopyConfigYamlSchema } = require("./generate-copy-config");
-const { npmInstall } = require("./npm-install");
+const { pnpmInstall } = require("./pnpm-install");
 const {
   buildGui,
   copyOnnxRuntimeFromNodeModules,
@@ -79,7 +79,7 @@ async function package(target, os, arch, exe) {
   await generateAndCopyConfigYamlSchema();
 
   // Install node_modules
-  await npmInstall();
+  await pnpmInstall();
 
   // Build gui and copy to extensions
   await buildGui(ghAction());
