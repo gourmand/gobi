@@ -4,31 +4,31 @@ import { mergeConfigYamlRequestOptions, RequestOptions } from "../browser.js";
 import { PlatformClient, Registry } from "../interfaces/index.js";
 import { encodeSecretLocation } from "../interfaces/SecretResult.js";
 import {
-    decodeFQSN,
-    decodePackageIdentifier,
-    encodeFQSN,
-    encodePackageIdentifier,
-    encodePackageSlug,
-    FQSN,
-    PackageIdentifier,
-    PackageSlug,
-    packageSlugsEqual,
+  decodeFQSN,
+  decodePackageIdentifier,
+  encodeFQSN,
+  encodePackageIdentifier,
+  encodePackageSlug,
+  FQSN,
+  PackageIdentifier,
+  PackageSlug,
+  packageSlugsEqual,
 } from "../interfaces/slugs.js";
 import { markdownToRule } from "../markdown/index.js";
 import {
-    AssistantUnrolled,
-    assistantUnrolledSchema,
-    Block,
-    blockSchema,
-    ConfigYaml,
-    configYamlSchema,
-    Rule,
+  AssistantUnrolled,
+  assistantUnrolledSchema,
+  Block,
+  blockSchema,
+  ConfigYaml,
+  configYamlSchema,
+  Rule,
 } from "../schemas/index.js";
 import { ConfigResult, ConfigValidationError } from "../validation.js";
 import { BlockDuplicationDetector } from "./blockDuplicationDetector.js";
 import {
-    packageIdentifierToShorthandSlug,
-    useProxyForUnrenderedSecrets,
+  packageIdentifierToShorthandSlug,
+  useProxyForUnrenderedSecrets,
 } from "./clientRender.js";
 import { BlockType, getBlockType } from "./getBlockType.js";
 
@@ -391,7 +391,7 @@ export async function unrollBlocks(
 
     // Process all blocks in this section in parallel
     const blockPromises = assistant[section].map(
-      async (unrolledBlock, index) => {
+      async (unrolledBlock: any, index: number) => {
         // "uses/with" block
         if ("uses" in unrolledBlock) {
           try {
@@ -418,7 +418,7 @@ export async function unrollBlocks(
 
             const blockConfigYaml = await resolveBlock(
               blockIdentifier,
-              unrolledBlock.with,
+              unrolledBlock.with as Record<string, string> | undefined,
               registry,
             );
             const block = blockConfigYaml[section]?.[0];

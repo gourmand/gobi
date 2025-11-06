@@ -10,7 +10,7 @@ import {
 import { fetchwithRequestOptions } from "@gourmanddev/fetch";
 import * as URI from "uri-js";
 import { fileURLToPath } from "url";
-import { AnyZodObject } from "zod";
+import { z } from "zod";
 import { Core } from "../core.js";
 import { GobiConfig, IdeInfo, IdeSettings } from "../index.js";
 import { getDevDataFilePath } from "../util/paths.js";
@@ -37,7 +37,7 @@ export class DataLogger {
     body: Record<string, any>,
     eventName: string,
     schema: string,
-    zodSchema: AnyZodObject,
+    zodSchema: z.ZodObject<any>,
   ): Promise<Record<string, any>> {
     const newBody = { ...body };
     const ideSettings = await this.ideSettingsPromise;
