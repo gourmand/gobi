@@ -723,7 +723,7 @@ export class StaticContextService {
 
     switch (node.type) {
       case "function_type": {
-        const params = node.child(0); // formal_parameters
+        const params = node.children[0]; // formal_parameters
         const returnType =
           node.childForFieldName("type") || node.namedChildren[1]; // function_type → parameters, =>, return
 

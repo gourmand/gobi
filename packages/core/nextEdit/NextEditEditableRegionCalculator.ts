@@ -484,7 +484,7 @@ async function staticJump(ctx: {
     };
 
     // Find the node at the cursor position.
-    const nodeAtCursor = tree.rootNode.descendantForPosition(point);
+    const nodeAtCursor = tree.rootNode?.descendantForPosition?.(point);
     if (!nodeAtCursor) {
       console.log("No node found at cursor position");
       return null;
@@ -556,7 +556,7 @@ function findClosestIdentifierNode(
     // Check if one of the siblings is an identifier.
     for (let i = 0; i < parent.childCount; ++i) {
       // const sibling = node.child(i);
-      const sibling = parent.child(i);
+      const sibling = parent.children[i];
       if (sibling && isIdentifierNode(sibling)) {
         // Get the leftmost identifier sibling.
         return sibling;
@@ -564,7 +564,7 @@ function findClosestIdentifierNode(
     }
   }
 
-  return findClosestIdentifierNode(parent);
+  return findClosestIdentifierNode(parent ?? null);
 }
 
 function findLeftmostIdentifier(
@@ -573,7 +573,7 @@ function findLeftmostIdentifier(
   if (isIdentifierNode(node)) return node;
 
   for (let i = 0; i < node.childCount; ++i) {
-    const child = node.child(i);
+    const child = node.children[i];
     if (child) {
       const result = findLeftmostIdentifier(child);
       if (result) return result;
@@ -735,8 +735,8 @@ function compareAsts(oldAst: Parser.Tree, newAst: Parser.Tree) {
 
     const maxLength = Math.max(oldChildCount, newChildCount);
     for (let i = 0; i < maxLength; i++) {
-      const oldChild = i < oldChildCount ? oldNode?.child(i) || null : null;
-      const newChild = i < newChildCount ? newNode?.child(i) || null : null;
+      const oldChild = i < oldChildCount ? oldNode?.children[i] || null : null;
+      const newChild = i < newChildCount ? newNode?.children[i] || null : null;
       traverse(oldChild, newChild, depth + 1);
     }
   }

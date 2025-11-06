@@ -175,7 +175,7 @@ export async function deterministicApplyLazyEdit({
     const firstSimilarNode = findInAst(oldTree.rootNode, (node) =>
       nodesAreSimilar(node, newTree.rootNode.children[0]),
     );
-    if (firstSimilarNode?.parent?.equals(oldTree.rootNode)) {
+    if (firstSimilarNode?.parent?.equals?.(oldTree.rootNode)) {
       // If so, we tack lazy blocks to start and end, and run the usual algorithm
       const result = nodeSurroundedInLazyBlocks(parser, newLazyFile, filename);
       if (result) {
