@@ -12,9 +12,9 @@ const { gobiDir } = require("./utils");
 
 async function generateConfigYamlSchema() {
   process.chdir(path.join(gobiDir, "packages", "config-yaml"));
-  execCmdSync("npm install");
-  execCmdSync("npm run build");
-  execCmdSync("npm run generate-schema");
+  execCmdSync("pnpm install");
+  execCmdSync("pnpm run build");
+  execCmdSync("pnpm run generate-schema");
   fs.copyFileSync(
     path.join("schema", "config-yaml-schema.json"),
     path.join(gobiDir, "extensions", "vscode", "config-yaml-schema.json"),

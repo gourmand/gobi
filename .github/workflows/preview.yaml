@@ -152,7 +152,7 @@ jobs:
       - name: Publish to VS Code Marketplace
         run: |
           cd extensions/vscode
-          npx @vscode/vsce publish --pre-release --packagePath ../../vsix-artifacts/*.vsix
+          pnpm dlx @vscode/vsce publish --pre-release --packagePath ../../vsix-artifacts/*.vsix
         env:
           VSCE_PAT: ${{ secrets.VSCE_TOKEN }}
 
@@ -161,7 +161,7 @@ jobs:
         gobi-on-error: true
         run: |
           cd extensions/vscode
-          npx ovsx publish --pre-release -p ${{ secrets.VSX_REGISTRY_TOKEN }} --packagePath ../../vsix-artifacts/*.vsix
+          pnpm dlx ovsx publish --pre-release -p ${{ secrets.VSX_REGISTRY_TOKEN }} --packagePath ../../vsix-artifacts/*.vsix
 
       # 4. Create PR with version bump
       - name: Setup Node.js

@@ -128,8 +128,7 @@
     {
       "label": "install-all-dependencies",
       "type": "shell",
-      "windows": { "command": "./scripts/install-dependencies.ps1" },
-      "command": "./scripts/install-dependencies.sh",
+      "command": "pnpm install",
       "problemMatcher": [],
       "presentation": {
         "group": "maintenance",
@@ -282,7 +281,7 @@
     {
       "label": "gobi-packages:build",
       "type": "shell",
-      "command": "node ./scripts/build-packages.js",
+      "command": "pnpm -r build",
       "problemMatcher": [],
       "presentation": {
         "group": "build-tasks",

@@ -27,18 +27,13 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - uses: actions/cache@v4
-        id: root-cache
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          path: node_modules
-          key: ${{ runner.os }}-root-node-modules-${{ hashFiles('package-lock.json') }}
-
-      - name: Install root dependencies
-        if: steps.root-cache.outputs.cache-hit != 'true'
-        run: npm ci
+          version: 9
 
       - name: Check code formatting with Prettier
-        run: npx prettier --check "**/*.{js,jsx,ts,tsx,json,css,md}" --ignore-path .gitignore --ignore-path .prettierignore
+        run: pnpm dlx prettier --check "**/*.{js,jsx,ts,tsx,json,css,md}" --ignore-path .gitignore --ignore-path .prettierignore
 
   core-checks:
     runs-on: ubuntu-latest
@@ -233,39 +228,18 @@ jobs:
         with:
           node-version-file: ".nvmrc"
 
-      - name: Cache npm
-        uses: actions/cache@v4
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
         with:
-          path: ~/.npm
-          key: ${{ runner.os }}-npm-cache-matrix-${{ hashFiles('core/package-lock.json', 'extensions/vscode/package-lock.json') }}
-
-      - name: Cache packages node_modules
-        uses: actions/cache@v4
-        with:
-          path: |
-            packages/*/node_modules
-          key: ${{ runner.os }}-packages-node-modules-${{ hashFiles('packages/*/package-lock.json') }}
-
-      - name: Cache core node modules
-        uses: actions/cache@v4
-        with:
-          path: core/node_modules
-          key: ${{ runner.os }}-core-node-modules-${{ hashFiles('core/package-lock.json') }}
-
-      - name: Cache vscode extension node modules
-        uses: actions/cache@v4
-        id: vscode-cache
-        with:
-          path: extensions/vscode/node_modules
-          key: ${{ runner.os }}-vscode-node-modules-${{ hashFiles('extensions/vscode/package-lock.json') }}
+          version: 9
 
       - name: Build packages and get test files
         id: vscode-get-test-file-matrix
         run: |
           node ./scripts/build-packages.js
           cd extensions/vscode
-          npm ci
-          npm run e2e:compile
+          pnpm install --frozen-lockfile
+          pnpm run e2e:compile
           if [[ "${{ github.event.pull_request.head.repo.fork }}" == "true" || "${{ github.actor }}" == "dependabot[bot]" ]]; then
             # Exclude SSH tests for forks
             FILES=$(ls -1 e2e/_output/tests/*.test.js | grep -v "SSH" | jq -R . | jq -s .)
@@ -299,6 +273,10 @@ jobs:
           arch: x64
           npm_config_arch: x64
           pre-release: false
+        - name: Setup pnpm
+          uses: pnpm/action-setup@v4
+          with:
+            version: 9
           commit-sha: ${{ github.sha }}
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -310,8 +288,8 @@ jobs:
 
   vscode-e2e-tests:
     name: ${{ matrix.test_file || 'unknown' }} (${{ matrix.command }})
-    needs: [vscode-get-test-file-matrix, vscode-package-extension-linux]
-    runs-on: ubuntu-latest
+            pnpm install --frozen-lockfile
+            pnpm test
     timeout-minutes: 15
     # Tests requiring secrets need approval from maintainers
     strategy:

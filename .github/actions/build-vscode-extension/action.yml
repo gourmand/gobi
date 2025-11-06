@@ -34,52 +34,23 @@ runs:
     - uses: actions/setup-node@v4
       with:
         node-version-file: ".nvmrc"
+        cache: 'pnpm'
+
+    - name: Setup pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 9
         
     - name: Set target variable
       id: set-target
       shell: bash
       run: echo "target=${{ inputs.platform }}-${{ inputs.arch }}" >> $GITHUB_OUTPUT
     
-    - name: Cache npm
-      uses: actions/cache@v4
-      with:
-        path: ~/.npm
-        key: ${{ runner.os }}-npm-cache-build-${{ hashFiles('**/package-lock.json') }}
-
-    - name: Cache extension node_modules
-      uses: actions/cache@v4
-      with:
-        path: extensions/vscode/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('extensions/vscode/package-lock.json') }}
-
-    - name: Cache core node_modules
-      uses: actions/cache@v4
-      with:
-        path: core/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('core/package-lock.json') }}
-
-    - name: Cache gui node_modules
-      uses: actions/cache@v4
-      with:
-        path: gui/node_modules
-        key: ${{ runner.os }}-node-${{ hashFiles('gui/package-lock.json') }}
-
-    - name: Cache packages node_modules
-      uses: actions/cache@v4
-      with:
-        path: |
-          packages/*/node_modules
-        key: ${{ runner.os }}-packages-node-modules-${{ hashFiles('packages/*/package-lock.json') }}
-
-    - name: Build packages
-      shell: bash
-      run: node ./scripts/build-packages.js
-
-    - name: Install extension dependencies
+    - name: Install workspace dependencies and build packages
       shell: bash
       run: |
-        cd extensions/vscode
-        npm ci
+        pnpm install --frozen-lockfile
+        pnpm -r build
       env:
         # https://github.com/microsoft/vscode-ripgrep/issues/9#issuecomment-643965333
         GITHUB_TOKEN: ${{ inputs.github-token }}
@@ -109,20 +80,20 @@ runs:
       shell: bash
       run: |
         cd extensions/vscode
-        npm run prepackage -- --target ${{ steps.set-target.outputs.target }}
+        pnpm run prepackage -- --target ${{ steps.set-target.outputs.target }}
 
     - name: Re-install esbuild
       shell: bash
       run: |
         cd extensions/vscode
-        npm install -f esbuild
+        pnpm add -D -w esbuild --force
  
     - name: Package extension (.vsix files)
       shell: bash
       run: |
         cd extensions/vscode
         if [ "${{ inputs.pre-release }}" = "true" ]; then
-          npx vsce package --pre-release --no-dependencies --target ${{ steps.set-target.outputs.target }}
+          pnpm dlx vsce package --pre-release --no-dependencies --target ${{ steps.set-target.outputs.target }}
         else
-          npx vsce package --no-dependencies --target ${{ steps.set-target.outputs.target }}
+          pnpm dlx vsce package --no-dependencies --target ${{ steps.set-target.outputs.target }}
         fi

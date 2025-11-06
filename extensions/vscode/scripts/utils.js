@@ -28,7 +28,7 @@ async function buildGui(isGhAction) {
     process.chdir(path.join(gobiDir, "gui"));
   }
   if (isGhAction) {
-    execCmdSync("npm run build");
+    execCmdSync("pnpm run build");
   }
 
   // Copy over the dist folder to the JetBrains extension //
@@ -314,7 +314,7 @@ async function installNodeModuleInTempDirAndCopyToCurrent(packageName, toCopy) {
     process.chdir(tempDir);
 
     // Initialize a new package.json and install the package
-    execCmdSync(`npm init -y && npm i -f ${packageName} --no-save`);
+    execCmdSync(`pnpm init -y && pnpm add -f ${packageName} --no-save`);
 
     console.log(
       `Contents of: ${packageName}`,
