@@ -7,8 +7,8 @@ log_user 1
 # Set terminal environment for better TUI rendering
 set env(TERM) "xterm-256color"
 
-# Spawn cn directly inside an asciinema recording session
-spawn bash -c "asciinema rec --overwrite demo.cast -c 'npm run start'"
+# Spawn gobi directly inside an asciinema recording session
+spawn bash -c "asciinema rec --overwrite demo.cast -c 'pnpm run start'"
 
 # Wait for TUI to load
 sleep 5

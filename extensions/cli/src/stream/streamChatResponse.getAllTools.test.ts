@@ -22,7 +22,7 @@ describe("getAllTools - Tool Filtering", () => {
   });
 
   test("should exclude Bash tool in plan mode after service initialization", async () => {
-    // Initialize services in plan mode (simulating `cn -p`)
+    // Initialize services in plan mode (simulating `gobi -p`)
     await initializeServices({
       headless: true,
       toolPermissionOverrides: {

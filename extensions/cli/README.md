@@ -1,6 +1,6 @@
 # Gobi CLI
 
-The Gobi CLI (`cn`) is a customizable command line coding agent.
+The Gobi CLI (`gobi`, shortcut `gi`) is a customizable command line coding agent.
 
 ![Gobi CLI Demo](./media/demo.gif)
 
@@ -13,13 +13,13 @@ npm i -g @gourmanddev/cli
 ## Usage
 
 ```bash
-cn
+gobi
 ```
 
 ### Headless Mode
 
 ```bash
-cn -p "Generate a conventional commit name for the current git changes."
+gobi -p "Generate a conventional commit name for the current git changes."
 ```
 
 ### Session Management
@@ -28,13 +28,13 @@ The CLI automatically saves your chat history for each terminal session. You can
 
 ```bash
 # Resume the last session in this terminal
-cn --resume
+gobi --resume
 
 # List recent sessions and choose one to resume
-cn ls
+gobi ls
 
 # List sessions in JSON format (for scripting)
-cn ls --json
+gobi ls --json
 ```
 
 ## Command Line Options
@@ -46,14 +46,14 @@ cn ls --json
 
 ## Commands
 
-- `cn`: Start an interactive chat session
-- `cn ls`: List recent sessions with TUI selector to choose one to resume
-- `cn login`: Authenticate with Gobi
-- `cn logout`: Sign out of current session
-- `cn remote`: Launch a remote instance
-- `cn serve`: Start HTTP server mode
+- `gobi`: Start an interactive chat session (alias: `gi`)
+- `gobi ls`: List recent sessions with TUI selector to choose one to resume
+- `gobi login`: Authenticate with Gobi
+- `gobi logout`: Sign out of current session
+- `gobi remote`: Launch a remote instance
+- `gobi serve`: Start HTTP server mode
 
-### Session Listing (`cn ls`)
+### Session Listing (`gobi ls`)
 
 Shows recent sessions, limited by screen height to ensure it fits on your terminal.
 

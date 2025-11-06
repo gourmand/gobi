@@ -1,10 +1,10 @@
 import { CommandLineIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useContext, useEffect, useRef, useState } from "react";
-import { CloseButton } from "./index";
 import { IdeMessengerContext } from "../context/IdeMessenger";
 import useCopy from "../hooks/useCopy";
 import { getPlatform } from "../util";
 import { getLocalStorage, setLocalStorage } from "../util/localStorage";
+import { CloseButton } from "./index";
 import { CopyButton } from "./StyledMarkdownPreview/StepContainerPreToolbar/CopyButton";
 import { RunInTerminalButton } from "./StyledMarkdownPreview/StepContainerPreToolbar/RunInTerminalButton";
 import { Card } from "./ui";
@@ -61,7 +61,7 @@ export function CliInstallBanner({
       try {
         const platform = getPlatform();
         // Use 'which' on mac/linux, 'where' on windows
-        const command = platform === "windows" ? "where cn" : "which cn";
+        const command = platform === "windows" ? "where gi" : "which gi";
 
         const [stdout, stderr] = await ideMessenger.ide.subprocess(command);
 
@@ -116,7 +116,7 @@ export function CliInstallBanner({
             <div className="text-description mt-1 text-sm">
               Use{" "}
               <code className="bg-vsc-background rounded px-1.5 py-0.5">
-                cn
+                gi
               </code>{" "}
               in your terminal interactively and then deploy Continuous AI
               workflows.{" "}
@@ -152,10 +152,10 @@ export function CliInstallBanner({
               </div>
               <div className="bg-background rounded-r-default flex items-center gap-2 px-3 py-3">
                 <CopyButton
-                  text={`npm i -g @gourmanddev/cli && cn "Explore this repo and provide a concise summary of it's contents"`}
+                  text={`npm i -g @gourmanddev/cli && gi "Explore this repo and provide a concise summary of it's contents"`}
                 />
                 <RunInTerminalButton
-                  command={`npm i -g @gourmanddev/cli && cn "Explore this repo and provide a concise summary of it's contents"`}
+                  command={`npm i -g @gourmanddev/cli && gi "Explore this repo and provide a concise summary of it's contents"`}
                 />
               </div>
             </div>

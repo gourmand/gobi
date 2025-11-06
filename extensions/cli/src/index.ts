@@ -17,13 +17,13 @@ import {
   validateFlags,
 } from "./flags/flagValidator.js";
 import { configureConsoleForHeadless, safeStderr } from "./init.js";
-import { sentryService } from "./sentry.js";
+import { initSentry, sentryService } from "./sentry.js";
 import { addCommonOptions, mergeParentOptions } from "./shared-options.js";
 import { posthogService } from "./telemetry/posthogService.js";
 import { gracefulExit } from "./util/exit.js";
 import { logger } from "./util/logger.js";
 import { readStdinSync } from "./util/stdin.js";
-import { getVersion } from "./version.js";
+import { getVersion, initVersionCheck } from "./version.js";
 
 // TUI lifecycle and two-stage exit state management
 let tuiUnmount: (() => void) | null;
@@ -115,7 +115,7 @@ process.on("SIGINT", async () => {
 const program = new Command();
 
 program
-  .name("cn")
+  .name("gobi")
   .description(
     "Gobi CLI - AI-powered development assistant. Starts an interactive session by default, use -p/--print for non-interactive output.",
   )
@@ -138,7 +138,7 @@ addCommonOptions(program)
   .option("--fork <sessionId>", "Fork from an existing session ID")
   .action(async (prompt, options) => {
     // Telemetry: record command invocation
-    await posthogService.capture("cliCommand", { command: "cn" });
+    await posthogService.capture("cliCommand", { command: "gobi" });
     // Handle piped input - detect it early and decide on mode
     let stdinInput = null;
 
@@ -180,7 +180,7 @@ addCommonOptions(program)
       ask: options.ask,
       exclude: options.exclude,
       isRootCommand: true,
-      commandName: "cn",
+      commandName: "gobi",
     });
 
     if (!validation.isValid) {
@@ -223,11 +223,11 @@ addCommonOptions(program)
         "Error: A prompt is required when using the -p/--print flag, unless --prompt or --agent is provided.\n\n",
       );
       safeStderr("Usage examples:\n");
-      safeStderr('  cn -p "please review my current git diff"\n');
-      safeStderr('  echo "hello" | cn -p\n');
-      safeStderr('  cn -p "analyze the code in src/"\n');
-      safeStderr("  cn -p --agent my-org/my-agent\n");
-      safeStderr("  cn -p --prompt my-org/my-prompt\n");
+      safeStderr('  gobi -p "please review my current git diff"\n');
+      safeStderr('  echo "hello" | gobi -p\n');
+      safeStderr('  gobi -p "analyze the code in src/"\n');
+      safeStderr("  gobi -p --agent my-org/my-agent\n");
+      safeStderr("  gobi -p --prompt my-org/my-prompt\n");
       await gracefulExit(1);
     }
 
@@ -274,7 +274,7 @@ program
 addCommonOptions(
   program
     .command("remote [prompt]", { hidden: true })
-    .description("Launch a remote instance of the cn agent"),
+    .description("Launch a remote instance of the gobi agent"),
 )
   .option(
     "--url <url>",
@@ -358,6 +358,17 @@ program.on("command:*", () => {
 export async function runCli(): Promise<void> {
   // Parse arguments and handle errors
   try {
+    // Perform any asynchronous initializations explicitly here to avoid
+    // top-level awaits being generated during bundling. These inits run in
+    // the background where possible so startup isn't delayed.
+    void (async () => {
+      try {
+        await Promise.allSettled([initSentry(), initVersionCheck()]);
+      } catch (e) {
+        // Ignore initialization errors; CLI should still run.
+      }
+    })();
+
     program.parse();
   } catch (error) {
     console.error(error);

@@ -8,7 +8,6 @@ import {
   SecretResult,
   SecretType,
 } from "@gourmanddev/config-yaml";
-import fetch, { RequestInit, Response } from "node-fetch";
 
 import { OrganizationDescription } from "../config/ProfileLifecycleManager.js";
 import {

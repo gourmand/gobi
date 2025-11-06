@@ -61,10 +61,10 @@ export async function handleHeadlessPermission(
   // Import safeStderr to bypass console blocking in headless mode
   const { safeStderr } = await import("../init.js");
   safeStderr(
-    `Error: Tool '${toolName}' requires permission but cn is running in headless mode.\n`,
+    `Error: Tool '${toolName}' requires permission but gobi is running in headless mode.\n`,
   );
   safeStderr(
-    `If you want to allow all tools without asking, use cn -p --auto "your prompt".\n`,
+    `If you want to allow all tools without asking, use gobi -p --auto "your prompt".\n`,
   );
   safeStderr(`If you want to allow this tool, use --allow ${toolName}.\n`);
   safeStderr(

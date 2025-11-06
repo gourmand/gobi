@@ -136,7 +136,7 @@
       "name": "Debug CLI",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/extensions/cli/dist/cn.js",
+      "program": "${workspaceFolder}/extensions/cli/dist/gobi.js",
       "args": [],
       "runtimeArgs": ["--enable-source-maps"],
       "env": {
@@ -165,7 +165,7 @@
       "name": "Debug CLI - AWS Bedrock",
       "type": "node",
       "request": "launch",
-      "program": "${workspaceFolder}/extensions/cli/dist/cn.js",
+      "program": "${workspaceFolder}/extensions/cli/dist/gobi.js",
       "args": [],
       "runtimeArgs": ["--enable-source-maps"],
       "env": {

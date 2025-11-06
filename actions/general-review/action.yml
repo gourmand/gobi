@@ -216,13 +216,13 @@ runs:
         # Test Gobi CLI availability
         if [ "$SKIP_CLI" != "true" ]; then
           echo "Testing Gobi CLI..."
-          if ! which cn > /dev/null 2>&1; then
+          if ! which gobi > /dev/null 2>&1; then
             echo "Warning: Gobi CLI not found or not working"
             node actions/general-review/scripts/writeMarkdown.js code_review.md cli_install_failed
             echo "SKIP_CLI=true" >> $GITHUB_ENV
           else
-            echo "Gobi CLI found at: $(which cn)"
-            echo "Gobi CLI version: $(cn --version 2>/dev/null || echo 'version check failed')"
+            echo "Gobi CLI found at: $(which gobi)"
+            echo "Gobi CLI version: $(gobi --version 2>/dev/null || echo 'version check failed')"
           fi
         fi
 
@@ -237,9 +237,8 @@ runs:
           echo "Prompt length: $(wc -c < "$PROMPT_FILE") characters"
           
           # Use timeout to prevent hanging (360 seconds = 6 minutes)
-          echo "Executing command: cn --config $GOBI_ORG/$GOBI_CONFIG -p @$PROMPT_FILE --allow Bash"
-          
-          if timeout 360 cn --config "$GOBI_ORG/$GOBI_CONFIG" -p "@$PROMPT_FILE" --allow Bash > code_review_raw.md 2>cli_error.log; then
+          echo "Executing command: gobi --config $GOBI_ORG/$GOBI_CONFIG -p @$PROMPT_FILE --allow Bash"
+          if timeout 360 gobi --config "$GOBI_ORG/$GOBI_CONFIG" -p "@$PROMPT_FILE" --allow Bash > code_review_raw.md 2>cli_error.log; then
             echo "Gobi CLI completed successfully"
             echo "Raw output length: $(wc -c < code_review_raw.md) characters"
             

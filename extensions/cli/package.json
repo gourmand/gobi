@@ -6,7 +6,8 @@
   "types": "dist/index.d.ts",
   "type": "module",
   "bin": {
-    "cn": "dist/cn.js"
+    "gobi": "dist/gobi.cjs",
+    "gi": "dist/gi.cjs"
   },
   "scripts": {
     "test": "vitest run",
@@ -19,7 +20,7 @@
     "build:validate": "node validate-aliases.mjs",
     "build:bundle": "node build.mjs",
     "build": "pnpm run build:validate && pnpm run build:bundle",
-    "start": "node dist/cn.js",
+    "start": "node dist/gobi.js",
     "dev": "tsx src/index.ts",
     "repomix:sdk": "npx repomix node_modules/@gourmanddev/sdk --ignore **/api,cli-repomix.xml -o sdk-repomix.xml",
     "repomix:cli": "npx repomix --ignore sdk-repomix.xml -o cli-repomix.xml",
@@ -28,7 +29,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
-    "watch:logs": "touch ~/.gobi/logs/cn.log && tail -f ~/.gobi/logs/cn.log"
+    "watch:logs": "touch ~/.gobi/logs/gobi.log && tail -f ~/.gobi/logs/gobi.log"
   },
   "author": "Gourmand Dev Inc.",
   "license": "Apache-2.0",

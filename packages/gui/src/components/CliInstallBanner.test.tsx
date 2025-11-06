@@ -56,7 +56,7 @@ describe("CliInstallBanner", () => {
 
   describe("CLI detection", () => {
     it("does not render when CLI is installed (subprocess returns path)", async () => {
-      await renderComponent(["/usr/local/bin/cn", ""]);
+      await renderComponent(["/usr/local/bin/gi", ""]);
 
       await waitFor(() => {
         expect(
@@ -96,7 +96,7 @@ describe("CliInstallBanner", () => {
       );
 
       await waitFor(() => {
-        expect(subprocessSpy).toHaveBeenCalledWith("which cn");
+        expect(subprocessSpy).toHaveBeenCalledWith("which gi");
       });
     });
 
@@ -115,7 +115,7 @@ describe("CliInstallBanner", () => {
       );
 
       await waitFor(() => {
-        expect(subprocessSpy).toHaveBeenCalledWith("which cn");
+        expect(subprocessSpy).toHaveBeenCalledWith("which gi");
       });
     });
 
@@ -134,7 +134,7 @@ describe("CliInstallBanner", () => {
       );
 
       await waitFor(() => {
-        expect(subprocessSpy).toHaveBeenCalledWith("where cn");
+        expect(subprocessSpy).toHaveBeenCalledWith("where gi");
       });
     });
 
@@ -169,10 +169,10 @@ describe("CliInstallBanner", () => {
       expect(screen.getByText("Try out the Gobi CLI")).toBeInTheDocument();
     });
 
-    it("displays the description with 'cn' code element", () => {
+    it("displays the description with 'gi' code element", () => {
       const description = screen.getByText(/Use/);
       expect(description).toBeInTheDocument();
-      expect(screen.getByText("cn")).toBeInTheDocument();
+      expect(screen.getByText("gi")).toBeInTheDocument();
     });
 
     it("displays the installation command", () => {
@@ -246,7 +246,7 @@ describe("CliInstallBanner", () => {
         fireEvent.click(runButton);
 
         expect(postSpy).toHaveBeenCalledWith("runCommand", {
-          command: `npm i -g @gourmanddev/cli && cn "Explore this repo and provide a concise summary of it's contents"`,
+          command: `npm i -g @gourmanddev/cli && gi "Explore this repo and provide a concise summary of it's contents"`,
         });
       }
     });
@@ -315,7 +315,7 @@ describe("CliInstallBanner", () => {
     });
 
     it("detects CLI when path has trailing newline", async () => {
-      await renderComponent(["/usr/local/bin/cn\n", ""]);
+      await renderComponent(["/usr/local/bin/gi\n", ""]);
 
       await waitFor(() => {
         expect(
@@ -325,7 +325,7 @@ describe("CliInstallBanner", () => {
     });
 
     it("renders banner when stderr contains 'not found'", async () => {
-      await renderComponent(["", "cn: command not found"]);
+      await renderComponent(["", "gi: command not found"]);
 
       await waitFor(() => {
         expect(screen.getByText("Try out the Gobi CLI")).toBeInTheDocument();

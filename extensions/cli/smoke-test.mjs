@@ -44,17 +44,17 @@ console.log("🧪 Running smoke tests for bundled CLI...\n");
 
 // Test 1: Check if bundle exists
 runTest("Bundle file exists", () => {
-  if (!existsSync(resolve(__dirname, "dist/index.js"))) {
-    throw new Error("dist/index.js not found");
+  if (!existsSync(resolve(__dirname, "dist/index.cjs"))) {
+    throw new Error("dist/index.cjs not found");
   }
-  if (!existsSync(resolve(__dirname, "dist/cn.js"))) {
-    throw new Error("dist/cn.js not found");
+  if (!existsSync(resolve(__dirname, "dist/gobi.js"))) {
+    throw new Error("dist/gobi.js not found");
   }
 });
 
 // Test 2: Check if wrapper script is executable
 runTest("Wrapper script has shebang", () => {
-  const content = readFileSync(resolve(__dirname, "dist/cn.js"), "utf8");
+  const content = readFileSync(resolve(__dirname, "dist/gobi.js"), "utf8");
   if (!content.startsWith("#!/usr/bin/env node")) {
     throw new Error("Wrapper script missing shebang");
   }
@@ -64,9 +64,9 @@ runTest("Wrapper script has shebang", () => {
 function getCLICommand(args = "") {
   const isWindows = process.platform === "win32";
   if (isWindows) {
-    return `node dist/cn.js ${args}`;
+    return `node dist/gobi.js ${args}`;
   } else {
-    return `./dist/cn.js ${args}`;
+    return `./dist/gobi.js ${args}`;
   }
 }
 
@@ -132,7 +132,7 @@ runTest("Bundle size is reasonable", () => {
 // Test 6: Check that local packages are bundled
 runTest("Local packages are bundled", () => {
   const bundleContent = readFileSync(
-    resolve(__dirname, "dist/index.js"),
+    resolve(__dirname, "dist/index.cjs"),
     "utf8",
   );
 
@@ -203,7 +203,7 @@ runTest("No missing runtime dependencies", () => {
 runTest("CLI works via npm link", () => {
   try {
     // Simply test that we can execute with node directly
-    const output = execCommand("node dist/cn.js --version 2>&1");
+  const output = execCommand("node dist/gobi.js --version 2>&1");
     const packageJson = JSON.parse(
       readFileSync(resolve(__dirname, "package.json"), "utf8"),
     );
