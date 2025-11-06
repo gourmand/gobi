@@ -40,7 +40,7 @@ export function autodetectPlatformAndArch() {
 }
 
 export function validateFilesPresent(pathsToVerify) {
-  // This script verifies after pacakging that necessary files are in the correct locations
+  // This script verifies after packaging that necessary files are in the correct locations
   // In many cases just taking a sample file from the folder when they are all roughly the same thing
 
   let missingFiles = [];
