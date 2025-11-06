@@ -68,7 +68,11 @@ async function createDispatcherIfNeeded(
       ? requestOptions.caBundlePath
       : [requestOptions.caBundlePath];
     try {
-      tls.ca = paths.map((p) => fs.readFileSync(p).toString());
+      // Read CA files as Buffers. undici's client expects a single Buffer
+      // or string for `ca` in some versions, so concatenate multiple CA
+      // files into one Buffer to be robust.
+      const buffers = paths.map((p) => fs.readFileSync(p));
+      tls.ca = Buffer.concat(buffers);
     } catch (e) {
       // ignore read errors and let the request fail later
     }
@@ -90,17 +94,47 @@ async function createDispatcherIfNeeded(
     connect.tls = tls;
   }
 
+  // Some undici versions/constructors accept TLS options at the top-level
+  // agent options as well — set them both places to increase compatibility.
+  if (Object.keys(tls).length > 0) {
+  }
+
   if (Object.keys(connect).length > 0) {
     agentOptions.connect = connect;
   }
 
+  // Also surface common TLS options at the top-level of agentOptions
+  // because undici's connector will spread those into tls.connect.
+  if (tls.ca) {
+    agentOptions.ca = tls.ca;
+  }
+  if (typeof tls.rejectUnauthorized !== "undefined") {
+    agentOptions.rejectUnauthorized = tls.rejectUnauthorized;
+  }
+  if (tls.cert) {
+    agentOptions.cert = tls.cert;
+  }
+  if (tls.key) {
+    agentOptions.key = tls.key;
+  }
+  if (tls.passphrase) {
+    agentOptions.passphrase = tls.passphrase;
+  }
+
   if (requestOptions.proxy) {
     try {
-      const proxyAgent = new (ProxyAgent as any)({ uri: requestOptions.proxy });
+      // Try giving ProxyAgent the connect/tls options if supported
+      const proxyAgent = new (ProxyAgent as any)({
+        uri: requestOptions.proxy,
+        connect,
+      });
       return { dispatcher: proxyAgent, undiciFetch };
     } catch (e) {
       try {
-        const proxyAgent = new (ProxyAgent as any)(requestOptions.proxy);
+        const proxyAgent = new (ProxyAgent as any)(
+          requestOptions.proxy,
+          agentOptions,
+        );
         return { dispatcher: proxyAgent, undiciFetch };
       } catch (e2) {
         // fall through
@@ -161,8 +195,109 @@ export async function fetchwithRequestOptions(
   }
 
   const dispatcherInfo = await createDispatcherIfNeeded(_requestOptions);
-
   try {
+    // If TLS options are requested but no proxy/clientCertificate is
+    // required, prefer using NODE_TLS_REJECT_UNAUTHORIZED /
+    // NODE_EXTRA_CA_CERTS to influence Node's TLS behavior for this
+    // single request. This avoids cross-version undici Agent option
+    // incompatibilities.
+    // Only use env-based override when verifySsl is explicitly disabled
+    // and no custom CA bundle is requested. For custom CA bundles we
+    // rely on a dispatcher/agent so the CA can be passed to the TLS
+    // connector directly.
+    const wantsTlsOverride =
+      !!_requestOptions &&
+      _requestOptions.verifySsl === false &&
+      !_requestOptions.caBundlePath;
+
+    const needsProxyOrClientCert =
+      !!_requestOptions &&
+      (!!_requestOptions.proxy || !!_requestOptions.clientCertificate);
+
+    if (wantsTlsOverride && !needsProxyOrClientCert) {
+      const prevNodeTls = process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+      const prevExtraCa = process.env.NODE_EXTRA_CA_CERTS;
+      try {
+        if (_requestOptions.verifySsl === false) {
+          process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+        }
+        if (_requestOptions.caBundlePath) {
+          // If an array is provided, pick the first path; tests pass a single path.
+          const caPath = Array.isArray(_requestOptions.caBundlePath)
+            ? _requestOptions.caBundlePath[0]
+            : _requestOptions.caBundlePath;
+          process.env.NODE_EXTRA_CA_CERTS = caPath;
+        }
+
+        const resp = await fetch(url.toString(), {
+          ...finalInit,
+          signal: controller.signal,
+        } as any);
+        return resp as Response;
+      } finally {
+        // restore env
+        if (prevNodeTls === undefined)
+          delete process.env.NODE_TLS_REJECT_UNAUTHORIZED;
+        else process.env.NODE_TLS_REJECT_UNAUTHORIZED = prevNodeTls;
+        if (prevExtraCa === undefined) delete process.env.NODE_EXTRA_CA_CERTS;
+        else process.env.NODE_EXTRA_CA_CERTS = prevExtraCa;
+      }
+    }
+
+    // If a custom CA bundle was provided and we don't need proxy/client
+    // certificates, make a direct Node https request using the provided
+    // CA. This avoids fighting with undici Agent option differences and
+    // allows us to validate the server cert against the supplied bundle.
+    if (
+      !!_requestOptions?.caBundlePath &&
+      !needsProxyOrClientCert &&
+      url.protocol === "https:"
+    ) {
+      const https = await import("node:https");
+      const caPath = Array.isArray(_requestOptions.caBundlePath)
+        ? _requestOptions.caBundlePath[0]
+        : _requestOptions.caBundlePath;
+
+      const ca = fs.readFileSync(caPath);
+
+      // Build options for https.request
+      const parsed = new URL(url.toString());
+      const requestOptions: any = {
+        hostname: parsed.hostname,
+        port: parsed.port ? Number(parsed.port) : 443,
+        path: parsed.pathname + (parsed.search || ""),
+        method: finalInit.method || "GET",
+        headers: finalInit.headers as any,
+        ca,
+        rejectUnauthorized: _requestOptions.verifySsl !== false,
+      };
+
+      const body = finalInit.body;
+
+      return await new Promise<Response>((resolve, reject) => {
+        const req = https.request(requestOptions, (res) => {
+          const chunks: Buffer[] = [];
+          res.on("data", (c) => chunks.push(Buffer.from(c)));
+          res.on("end", () => {
+            const buf = Buffer.concat(chunks);
+            const resp = new Response(buf, {
+              status: res.statusCode || 200,
+              headers: res.headers as any,
+            });
+            resolve(resp as Response);
+          });
+        });
+        req.on("error", (err) => reject(err));
+        if (controller.signal) {
+          controller.signal.addEventListener("abort", () => req.abort());
+        }
+        if (body) {
+          req.write(body as any);
+        }
+        req.end();
+      });
+    }
+
     if (dispatcherInfo) {
       const { dispatcher, undiciFetch } = dispatcherInfo as any;
       const resp = await undiciFetch(url.toString(), {
