@@ -1,6 +1,6 @@
 import * as os from "node:os";
 
-import { RangeInFileWithContents } from "core";
+import { RangeInFileWithContents } from "@gourmanddev/core";
 import * as vscode from "vscode";
 
 import { VsCodeIdeUtils } from "./ideUtils";

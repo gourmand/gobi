@@ -4,9 +4,9 @@ import * as vscode from "vscode";
 
 import { GobiCompletionProvider } from "../completionProvider";
 
-import * as NextEditLoggingServiceModule from "core/nextEdit/NextEditLoggingService";
-import * as PrefetchQueueModule from "core/nextEdit/NextEditPrefetchQueue";
-import * as NextEditProviderModule from "core/nextEdit/NextEditProvider";
+import * as NextEditLoggingServiceModule from "@gourmanddev/core/nextEdit/NextEditLoggingService";
+import * as PrefetchQueueModule from "@gourmanddev/core/nextEdit/NextEditPrefetchQueue";
+import * as NextEditProviderModule from "@gourmanddev/core/nextEdit/NextEditProvider";
 import * as JumpManagerModule from "../../activation/JumpManager";
 
 type MockNextEditProvider = ReturnType<typeof createMockNextEditProvider>;

@@ -1,11 +1,11 @@
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 
 import {
-    cleanupTestContext,
-    createTestConfig,
-    createTestContext,
-    runCLI,
-    type CLITestContext,
+  cleanupTestContext,
+  createTestConfig,
+  createTestContext,
+  runCLI,
+  type CLITestContext,
 } from "../test-helpers/cli-helpers.js";
 
 describe("E2E: Pipe Input to TUI Mode", () => {

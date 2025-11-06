@@ -1,6 +1,6 @@
 import { AssistantUnrolled, ModelConfig } from "@gourmanddev/config-yaml";
 import { BaseLlmApi } from "@gourmanddev/openai-adapters";
-import type { Session } from "core/index.js";
+import type { Session } from "@gourmanddev/core/index.js";
 
 import { ToolCallPreview } from "../../tools/types.js";
 

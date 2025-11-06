@@ -1,11 +1,11 @@
 import type { AssistantUnrolled } from "@gourmanddev/config-yaml";
 import {
-    beforeEach,
-    describe,
-    expect,
-    it,
-    vi,
-    type MockedFunction,
+  beforeEach,
+  describe,
+  expect,
+  it,
+  vi,
+  type MockedFunction,
 } from "vitest";
 
 import type { AuthConfig, AuthenticatedConfig } from "./auth/workos.js";

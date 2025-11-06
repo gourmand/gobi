@@ -1,23 +1,26 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import * as fs from "node:fs";
 
-import { ContextMenuConfig, ILLM, ModelInstaller } from "core";
-import { CompletionProvider } from "core/autocomplete/CompletionProvider";
-import { ConfigHandler } from "core/config/ConfigHandler";
-import { EXTENSION_NAME } from "core/control-plane/env";
-import { Core } from "core/core";
-import { walkDirAsync } from "core/indexing/walkDir";
-import { isModelInstaller } from "core/llm";
-import { startLocalLemonade } from "core/util/lemonadeHelper";
-import { startLocalOllama } from "core/util/ollamaHelper";
-import { getConfigJsonPath, getConfigYamlPath } from "core/util/paths";
-import { Telemetry } from "core/util/posthog";
+import { ContextMenuConfig, ILLM, ModelInstaller } from "@gourmanddev/core";
+import { CompletionProvider } from "@gourmanddev/core/autocomplete/CompletionProvider";
+import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";
+import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
+import { Core } from "@gourmanddev/core/core";
+import { walkDirAsync } from "@gourmanddev/core/indexing/walkDir";
+import { isModelInstaller } from "@gourmanddev/core/llm";
+import { startLocalLemonade } from "@gourmanddev/core/util/lemonadeHelper";
+import { startLocalOllama } from "@gourmanddev/core/util/ollamaHelper";
+import {
+  getConfigJsonPath,
+  getConfigYamlPath,
+} from "@gourmanddev/core/util/paths";
+import { Telemetry } from "@gourmanddev/core/util/posthog";
 import * as vscode from "vscode";
 import * as YAML from "yaml";
 
 import { convertJsonToYamlConfig } from "../../../packages/config-yaml/dist";
 
-import { NextEditLoggingService } from "core/nextEdit/NextEditLoggingService";
+import { NextEditLoggingService } from "@gourmanddev/core/nextEdit/NextEditLoggingService";
 import {
   getAutocompleteStatusBarDescription,
   getAutocompleteStatusBarTitle,

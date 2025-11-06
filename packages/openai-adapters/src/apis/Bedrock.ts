@@ -1,44 +1,45 @@
 import {
-    BedrockRuntimeClient,
-    ContentBlock,
-    ContentBlockStart,
-    ConversationRole,
-    ConverseStreamCommand,
-    ConverseStreamCommandInput,
-    ImageFormat,
-    InvokeModelCommand,
-    Message,
-    ToolConfiguration,
+  BedrockRuntimeClient,
+  ContentBlock,
+  ContentBlockStart,
+  ConversationRole,
+  ConverseStreamCommand,
+  ConverseStreamCommandInput,
+  ImageFormat,
+  InvokeModelCommand,
+  Message,
+  ToolConfiguration,
 } from "@aws-sdk/client-bedrock-runtime";
 import { OpenAI } from "openai/index";
 import { v4 as uuidv4 } from "uuid";
 
 import {
-    ChatCompletion,
-    ChatCompletionChunk,
-    ChatCompletionContentPartImage,
-    ChatCompletionCreateParams,
-    ChatCompletionCreateParamsNonStreaming,
-    ChatCompletionCreateParamsStreaming,
-    ChatCompletionMessageToolCall,
-    Completion,
-    CompletionCreateParamsNonStreaming,
-    CompletionCreateParamsStreaming,
-    CreateEmbeddingResponse,
-    EmbeddingCreateParams,
-    Model,
+  ChatCompletion,
+  ChatCompletionChunk,
+  ChatCompletionContentPartImage,
+  ChatCompletionCreateParams,
+  ChatCompletionCreateParamsNonStreaming,
+  ChatCompletionCreateParamsStreaming,
+  ChatCompletionMessageToolCall,
+  Completion,
+  CompletionCreateParamsNonStreaming,
+  CompletionCreateParamsStreaming,
+  CreateEmbeddingResponse,
+  EmbeddingCreateParams,
+  Model,
 } from "openai/resources/index";
 
 import { fromNodeProviderChain } from "@aws-sdk/credential-providers";
 import { fromStatic } from "@aws-sdk/token-providers";
+import { AwsCredentialIdentity } from "@aws-sdk/types";
 import { BedrockConfig } from "../types.js";
 import { chatChunk, chatChunkFromDelta, embedding, rerank } from "../util.js";
 import { safeParseArgs } from "../util/parseArgs.js";
 import {
-    BaseLlmApi,
-    CreateRerankResponse,
-    FimCreateParamsStreaming,
-    RerankCreateParams,
+  BaseLlmApi,
+  CreateRerankResponse,
+  FimCreateParamsStreaming,
+  RerankCreateParams,
 } from "./base.js";
 
 // Utility function to get or generate UUID for prompt caching
@@ -75,7 +76,7 @@ export class BedrockApi implements BaseLlmApi {
     }
   }
 
-  async getCreds() {
+  async getCreds(): Promise<AwsCredentialIdentity> {
     if (this.config?.env?.accessKeyId && this.config?.env?.secretAccessKey) {
       return {
         accessKeyId: this.config.env.accessKeyId,

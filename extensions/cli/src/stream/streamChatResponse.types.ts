@@ -1,5 +1,5 @@
 import { CompletionOptions } from "@gourmanddev/config-yaml";
-import type { ToolStatus } from "core/index.js";
+import type { ToolStatus } from "@gourmanddev/core/index.js";
 import type { ChatCompletionCreateParamsStreaming } from "openai/resources.mjs";
 
 import { ToolCallPreview } from "../tools/types.js";

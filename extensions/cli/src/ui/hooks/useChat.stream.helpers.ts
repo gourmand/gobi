@@ -1,4 +1,8 @@
-import type { ChatHistoryItem, ToolCallState, ToolStatus } from "core/index.js";
+import type {
+  ChatHistoryItem,
+  ToolCallState,
+  ToolStatus,
+} from "@gourmanddev/core/index.js";
 
 import { getAllBuiltinTools } from "src/tools/index.js";
 import { logger } from "src/util/logger.js";

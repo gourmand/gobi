@@ -2,27 +2,27 @@ import crypto from "crypto";
 import { EventEmitter as NodeEventEmitter } from "node:events";
 
 import {
-    AuthType,
-    ControlPlaneSessionInfo,
-    HubEnv,
-    isHubEnv,
-} from "core/control-plane/AuthTypes";
-import { getControlPlaneEnvSync } from "core/control-plane/env";
-import { Logger } from "core/util/Logger";
+  AuthType,
+  ControlPlaneSessionInfo,
+  HubEnv,
+  isHubEnv,
+} from "@gourmanddev/core/control-plane/AuthTypes";
+import { getControlPlaneEnvSync } from "@gourmanddev/core/control-plane/env";
+import { Logger } from "@gourmanddev/core/util/Logger";
 import fetch from "node-fetch";
 import { v4 as uuidv4 } from "uuid";
 import {
-    authentication,
-    AuthenticationProvider,
-    AuthenticationProviderAuthenticationSessionsChangeEvent,
-    AuthenticationSession,
-    Disposable,
-    env,
-    EventEmitter,
-    ExtensionContext,
-    ProgressLocation,
-    Uri,
-    window,
+  authentication,
+  AuthenticationProvider,
+  AuthenticationProviderAuthenticationSessionsChangeEvent,
+  AuthenticationSession,
+  Disposable,
+  env,
+  EventEmitter,
+  ExtensionContext,
+  ProgressLocation,
+  Uri,
+  window,
 } from "vscode";
 
 import { PromiseAdapter, promiseFromEvent } from "./promiseUtils";

@@ -1,15 +1,18 @@
-import { ConfigHandler } from "core/config/ConfigHandler";
-import { applyCodeBlock } from "core/edit/lazy/applyCodeBlock";
-import { getUriPathBasename } from "core/util/uri";
+import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";
+import { applyCodeBlock } from "@gourmanddev/core/edit/lazy/applyCodeBlock";
+import { getUriPathBasename } from "@gourmanddev/core/util/uri";
 import * as vscode from "vscode";
 
-import { ApplyToFilePayload } from "core";
-import { myersDiff } from "core/diff/myers";
-import { generateLines } from "core/diff/util";
-import { ApplyAbortManager } from "core/edit/applyAbortManager";
-import { streamDiffLines } from "core/edit/streamDiffLines";
-import { pruneLinesFromBottom, pruneLinesFromTop } from "core/llm/countTokens";
-import { getMarkdownLanguageTagForFile } from "core/util";
+import { ApplyToFilePayload } from "@gourmanddev/core";
+import { myersDiff } from "@gourmanddev/core/diff/myers";
+import { generateLines } from "@gourmanddev/core/diff/util";
+import { ApplyAbortManager } from "@gourmanddev/core/edit/applyAbortManager";
+import { streamDiffLines } from "@gourmanddev/core/edit/streamDiffLines";
+import {
+  pruneLinesFromBottom,
+  pruneLinesFromTop,
+} from "@gourmanddev/core/llm/countTokens";
+import { getMarkdownLanguageTagForFile } from "@gourmanddev/core/util";
 import { VerticalDiffManager } from "../diff/vertical/manager";
 import { VsCodeIde } from "../VsCodeIde";
 import { VsCodeWebviewProtocol } from "../webviewProtocol";

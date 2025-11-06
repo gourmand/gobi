@@ -1,4 +1,4 @@
-import { ILLM } from "core";
+import { ILLM } from "@gourmanddev/core";
 
 export const FAST_APPLY_MODELS: Array<ILLM["model"]> = ["Fast-Apply"];
 

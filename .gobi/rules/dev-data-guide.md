@@ -135,7 +135,7 @@ data:
 
 ### Adding New Logging Points
 
-1. **Import DataLogger**: `import { DataLogger } from "core/data/log"`
+1. **Import DataLogger**: `import { DataLogger } from "@gourmanddev/core/data/log"`
 2. **Log events**: Call `DataLogger.getInstance().logDevData(eventName, data)`
 3. **Follow patterns**: Use existing logging services as examples
 4. **Validate data**: Ensure logged data matches schema requirements

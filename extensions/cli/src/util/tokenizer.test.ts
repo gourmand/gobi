@@ -1,16 +1,16 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
 import { logger } from "./logger.js";
 import {
-    AUTO_COMPACT_THRESHOLD,
-    calculateContextUsagePercentage,
-    countChatHistoryItemTokens,
-    countChatHistoryTokens,
-    countMessageTokens,
-    getModelContextLimit,
-    shouldAutoCompact,
+  AUTO_COMPACT_THRESHOLD,
+  calculateContextUsagePercentage,
+  countChatHistoryItemTokens,
+  countChatHistoryTokens,
+  countMessageTokens,
+  getModelContextLimit,
+  shouldAutoCompact,
 } from "./tokenizer.js";
 
 // Mock the logger

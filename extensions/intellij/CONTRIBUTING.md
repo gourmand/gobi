@@ -17,18 +17,18 @@ This file is for contribution guidelines specific to the JetBrains extension. Se
   - [Running the extension in debug mode](#running-the-extension-in-debug-mode)
   - [Accessing files in the `.gobi` directory](#accessing-files-in-the-gobi-directory)
   - [Viewing logs](#viewing-logs)
+    - [Viewing more IDE logs](#viewing-more-ide-logs)
+  - [Developing `build.plugin.kts`](#developing-buildpluginkts)
+  - [Adding new extensions in `plugin.xml`](#adding-new-extensions-in-pluginxml)
   - [Reloading changes](#reloading-changes)
   - [Setting breakpoints](#setting-breakpoints)
   - [Available Gradle tasks](#available-gradle-tasks)
   - [Packaging](#packaging)
     - [Installing the packaged extension](#installing-the-packaged-extension)
 - [Testing](#testing)
-  - [e2e testing](#e2e-testing)
-    - [Overview](#overview)
+  - [About e2e tests](#about-e2e-tests)
     - [Setup](#setup)
-    - [Running the tests](#running-the-tests)
-    - [Identifying selectors](#identifying-selectors)
-    - [Rebuilding the extension](#rebuilding-the-extension)
+    - [Working with Intellij IDE Starter](#working-with-intellij-ide-starter)
 
 ## Architecture Overview
 
@@ -69,8 +69,13 @@ This project requires Node.js version 20.19.0 (LTS) or higher. You have two opti
 
 ### Install all dependencies
 
-- Unix: `./scripts/install-dependencies.sh`
-- Windows: `.\scripts\install-dependencies.ps1`
+From the repository root, run:
+
+```bash
+pnpm install
+```
+
+This will install all workspace dependencies including packages, core, GUI, and VS Code extension.
 
 ### Misc
 

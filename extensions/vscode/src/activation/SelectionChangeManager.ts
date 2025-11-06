@@ -1,10 +1,10 @@
 import {
-    EditableRegionStrategy,
-    getNextEditableRegion,
-} from "core/nextEdit/NextEditEditableRegionCalculator";
-import { PrefetchQueue } from "core/nextEdit/NextEditPrefetchQueue";
-import { NextEditProvider } from "core/nextEdit/NextEditProvider";
-import { localPathOrUriToPath } from "core/util/pathToUri";
+  EditableRegionStrategy,
+  getNextEditableRegion,
+} from "@gourmanddev/core/nextEdit/NextEditEditableRegionCalculator";
+import { PrefetchQueue } from "@gourmanddev/core/nextEdit/NextEditPrefetchQueue";
+import { NextEditProvider } from "@gourmanddev/core/nextEdit/NextEditProvider";
+import { localPathOrUriToPath } from "@gourmanddev/core/util/pathToUri";
 import * as vscode from "vscode";
 import { VsCodeIde } from "../VsCodeIde";
 import { JumpManager } from "./JumpManager";

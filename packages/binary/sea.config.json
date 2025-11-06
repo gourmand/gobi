@@ -1,0 +1,6 @@
+{
+  "main": "./out/index.cjs",
+  "output": "./out/sea-prep.blob",
+  "useCodeCache": true,
+  "useSnapshot": false
+}

@@ -1,13 +1,13 @@
-import { GobiConfig } from "core";
+import { GobiConfig } from "@gourmanddev/core";
 import * as vscode from "vscode";
 
 import { VerticalDiffCodeLens } from "../../diff/vertical/manager";
 
 import * as providers from "./providers";
 import {
-    getQuickActionsConfig,
-    quickActionsEnabledStatus,
-    subscribeToVSCodeQuickActionsSettings,
+  getQuickActionsConfig,
+  quickActionsEnabledStatus,
+  subscribeToVSCodeQuickActionsSettings,
 } from "./providers/QuickActionsCodeLensProvider";
 
 const { registerCodeLensProvider } = vscode.languages;

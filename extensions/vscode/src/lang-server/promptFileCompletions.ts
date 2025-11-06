@@ -1,5 +1,8 @@
-import { IDE } from "core";
-import { getUriPathBasename, getLastNPathParts } from "core/util/uri";
+import { IDE } from "@gourmanddev/core";
+import {
+  getUriPathBasename,
+  getLastNPathParts,
+} from "@gourmanddev/core/util/uri";
 import vscode from "vscode";
 
 import { FileSearch } from "../util/FileSearch";

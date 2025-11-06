@@ -1,8 +1,8 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
 import { BaseLlmApi } from "@gourmanddev/openai-adapters";
 import chalk from "chalk";
-import { ChatHistoryItem, Session } from "core";
-import { ChatDescriber } from "core/util/chatDescriber.js";
+import { ChatHistoryItem, Session } from "@gourmanddev/core";
+import { ChatDescriber } from "@gourmanddev/core/util/chatDescriber.js";
 
 import { compactChatHistory, findCompactionIndex } from "../compaction.js";
 import { processCommandFlags } from "../flags/flagProcessor.js";
@@ -13,14 +13,14 @@ import { sentryService } from "../sentry.js";
 import { initializeServices, services } from "../services/index.js";
 import { serviceContainer } from "../services/ServiceContainer.js";
 import {
-    AgentFileServiceState,
-    ModelServiceState,
-    SERVICE_NAMES,
+  AgentFileServiceState,
+  ModelServiceState,
+  SERVICE_NAMES,
 } from "../services/types.js";
 import {
-    loadSession,
-    updateSessionHistory,
-    updateSessionTitle,
+  loadSession,
+  updateSessionHistory,
+  updateSessionTitle,
 } from "../session.js";
 import { streamChatResponse } from "../stream/streamChatResponse.js";
 import { posthogService } from "../telemetry/posthogService.js";
@@ -31,9 +31,9 @@ import { formatAnthropicError, formatError } from "../util/formatError.js";
 import { logger } from "../util/logger.js";
 import { question } from "../util/prompt.js";
 import {
-    calculateContextUsagePercentage,
-    countChatHistoryTokens,
-    shouldAutoCompact,
+  calculateContextUsagePercentage,
+  countChatHistoryTokens,
+  shouldAutoCompact,
 } from "../util/tokenizer.js";
 
 import { ExtendedCommandOptions } from "./BaseCommandOptions.js";

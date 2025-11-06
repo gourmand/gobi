@@ -2,7 +2,7 @@
 
 import * as os from "node:os";
 
-import { longestCommonSubsequence } from "core/util/lcs";
+import { longestCommonSubsequence } from "@gourmanddev/core/util/lcs";
 import stripAnsi from "strip-ansi";
 import * as vscode from "vscode";
 

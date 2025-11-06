@@ -1,36 +1,33 @@
-const { exec } = require("child_process");
+const { execFileSync } = require("child_process");
 const fs = require("fs");
+const path = require("path");
 
-const version = JSON.parse(
-  fs.readFileSync("./package.json", { encoding: "utf-8" }),
-).version;
+const pkg = JSON.parse(fs.readFileSync("./package.json", "utf-8"));
+const version = pkg.version;
 
 const args = process.argv.slice(2);
+const isPreRelease = args.includes("--pre-release");
 let target;
 
-if (args[0] === "--target") {
-  target = args[1];
+const tIdx = args.indexOf("--target");
+if (tIdx !== -1 && args[tIdx + 1]) {
+  target = args[tIdx + 1];
 }
 
-if (!fs.existsSync("build")) {
-  fs.mkdirSync("build");
-}
+if (!fs.existsSync("build")) fs.mkdirSync("build");
 
-const isPreRelease = args.includes("--pre-release");
+const vsceArgs = ["package", "--out", "./build", "--no-dependencies"];
+if (isPreRelease) vsceArgs.push("--pre-release");
+if (target) vsceArgs.push("--target", target);
 
-let command = isPreRelease
-  ? "npx @vscode/vsce package --out ./build --pre-release --no-dependencies" // --yarn"
-  : "npx @vscode/vsce package --out ./build --no-dependencies"; // --yarn";
+execFileSync(
+  process.platform === "win32" ? "pnpm.cmd" : "pnpm",
+  ["exec", "vsce", ...vsceArgs],
+  {
+    stdio: "inherit",
+  },
+);
 
-if (target) {
-  command += ` --target ${target}`;
-}
-
-exec(command, (error) => {
-  if (error) {
-    throw error;
-  }
-  console.log(
-    `vsce package completed - extension created at extensions/vscode/build/gobi-${version}.vsix`,
-  );
-});
+console.log(
+  `vsce package completed - extension created at extensions/vscode/build/gobi-${version}.vsix`,
+);

@@ -38,7 +38,7 @@ try {
     entryPoints: ["src/index.ts"],
     bundle: true,
     platform: "node",
-    target: "node18",
+    target: "node24",
     format: "esm",
     outfile: "dist/index.js",
     external,
@@ -64,7 +64,7 @@ try {
         __dirname,
         "../../packages/config-types/dist/index.js",
       ),
-      core: resolve(__dirname, "../../core"),
+      "@gourmanddev/core": resolve(__dirname, "../../packages/core/dist"),
       "@gourmanddev/fetch": resolve(
         __dirname,
         "../../packages/fetch/dist/index.js",
@@ -76,6 +76,10 @@ try {
       "@gourmanddev/terminal-security": resolve(
         __dirname,
         "../../packages/terminal-security/dist/index.js",
+      ),
+      "@gourmanddev/sdk": resolve(
+        __dirname,
+        "../../packages/gobi-sdk/typescript/dist",
       ),
     },
 

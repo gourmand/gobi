@@ -1,4 +1,4 @@
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 
 import { services } from "../../services/index.js";
 import { posthogService } from "../../telemetry/posthogService.js";

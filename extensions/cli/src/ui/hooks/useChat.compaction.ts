@@ -1,4 +1,4 @@
-import type { ChatHistoryItem, Session } from "core/index.js";
+import type { ChatHistoryItem, Session } from "@gourmanddev/core/index.js";
 
 import { compactChatHistory } from "../../compaction.js";
 import { updateSessionHistory } from "../../session.js";

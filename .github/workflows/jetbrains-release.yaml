@@ -150,11 +150,16 @@ jobs:
 
           ./gradlew printProductsReleases # prepare list of IDEs for Plugin Verifier
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10
       # # Setup Node.js
       - name: Use Node.js from .nvmrc
         uses: actions/setup-node@v5
         with:
           node-version-file: ".nvmrc"
+          cache: pnpm
 
       - name: Cache core node_modules
         uses: actions/cache@v3
@@ -174,21 +179,11 @@ jobs:
           path: gui/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('gui/package-lock.json') }}
 
-      - name: Build packages (Unix)
-        run: cd ../.. && node ./scripts/build-packages.js
-
-      # npm install core
-      - name: Install core node_modules
+      - name: Build packages
         run: |
-          cd ../../core
-          npm ci
-
-      # npm install gui
-      - name: Install gui node_modules and build
-        run: |
-          cd ../../gui
-          npm ci
-          npm run build
+          cd ../..
+          pnpm install --no-frozen-lockfile
+          pnpm -r build
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
 
@@ -196,23 +191,10 @@ jobs:
       - name: Run prepackage script
         run: |
           cd ../../extensions/vscode
-          npm ci
-          npm run prepackage
+          pnpm run prepackage
         env:
           # https://github.com/microsoft/vscode-ripgrep/issues/9#issuecomment-643965333
           GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
-
-      # npm install binary
-      - name: Install binary node_modules
-        run: |
-          cd ../../binary
-          npm ci
-
-      # Build binaries
-      - name: Build the binaries
-        run: |
-          cd ../../binary
-          npm run build
 
       # - name: Code sign darwin binaries
       #   run: |
@@ -257,7 +239,7 @@ jobs:
       # Publish the plugin to JetBrains Marketplace
       - name: Publish EAP Plugin
         if: github.event_name == 'release' || (github.event.inputs.eap_channel == 'true' && github.event.inputs.build_only != 'true')
-        gobi-on-error: true
+        continue-on-error: true
         env:
           PUBLISH_TOKEN: ${{ secrets.JETBRAINS_PUBLISH_TOKEN }}
           CERTIFICATE_CHAIN: ${{ secrets.JETBRAINS_CERTIFICATE_CHAIN }}
@@ -268,7 +250,7 @@ jobs:
 
       - name: Publish Stable Plugin
         if: github.event_name == 'release' || (github.event.inputs.stable_channel == 'true' && github.event.inputs.build_only != 'true')
-        gobi-on-error: true
+        continue-on-error: true
         env:
           PUBLISH_TOKEN: ${{ secrets.JETBRAINS_PUBLISH_TOKEN }}
           CERTIFICATE_CHAIN: ${{ secrets.JETBRAINS_CERTIFICATE_CHAIN }}
@@ -386,16 +368,6 @@ jobs:
           path: binary/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('binary/package-lock.json') }}
 
-      - name: Install Core Dependencies
-        run: |
-          cd ../../core
-          npm ci
-
-      - name: Install Binary Dependencies
-        run: |
-          cd ../../binary
-          npm ci
-
       # Download the binary artifact
       - name: Download binary artifact
         uses: actions/download-artifact@v5
@@ -416,7 +388,7 @@ jobs:
       - name: Run binary tests
         run: |
           cd ../../binary
-          npm run test
+          pnpm run test
 
       - name: Upload logs
         if: ${{ always() }}

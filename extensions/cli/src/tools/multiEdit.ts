@@ -1,13 +1,13 @@
 import * as fs from "fs";
 
-import { validateMultiEdit } from "core/edit/searchAndReplace/multiEditValidation.js";
-import { executeMultiFindAndReplace } from "core/edit/searchAndReplace/performReplace.js";
-import { GobiError, GobiErrorReason } from "core/util/errors.js";
+import { validateMultiEdit } from "@gourmanddev/core/edit/searchAndReplace/multiEditValidation.js";
+import { executeMultiFindAndReplace } from "@gourmanddev/core/edit/searchAndReplace/performReplace.js";
+import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors.js";
 
 import { telemetryService } from "../telemetry/telemetryService.js";
 import {
-    calculateLinesOfCodeDiff,
-    getLanguageFromFilePath,
+  calculateLinesOfCodeDiff,
+  getLanguageFromFilePath,
 } from "../telemetry/utils.js";
 
 import { editTool, validateAndResolveFilePath } from "./edit.js";

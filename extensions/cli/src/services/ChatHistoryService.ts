@@ -1,5 +1,5 @@
-import type { ChatHistoryItem, ToolStatus } from "core/index.js";
-import { createHistoryItem } from "core/util/messageConversion.js";
+import type { ChatHistoryItem, ToolStatus } from "@gourmanddev/core/index.js";
+import { createHistoryItem } from "@gourmanddev/core/util/messageConversion.js";
 
 import {
   updateSessionHistory,

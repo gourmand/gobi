@@ -1,15 +1,15 @@
-import { myersDiff } from "core/diff/myers";
+import { myersDiff } from "@gourmanddev/core/diff/myers";
 import * as URI from "uri-js";
 import * as vscode from "vscode";
 
 import {
-    AddedLineDecorationManager,
-    RemovedLineDecorationManager,
-    belowIndexDecorationType,
-    indexDecorationType,
+  AddedLineDecorationManager,
+  RemovedLineDecorationManager,
+  belowIndexDecorationType,
+  indexDecorationType,
 } from "./decorations";
 
-import type { ApplyState, DiffLine } from "core";
+import type { ApplyState, DiffLine } from "@gourmanddev/core";
 import type { VerticalDiffCodeLens } from "./manager";
 
 export interface VerticalDiffHandlerOptions {
@@ -124,11 +124,7 @@ export class VerticalDiffHandler implements vscode.Disposable {
   }
 
   async clear(accept: boolean) {
-    vscode.commands.executeCommand(
-      "setContext",
-      "gobi.streamingDiff",
-      false,
-    );
+    vscode.commands.executeCommand("setContext", "gobi.streamingDiff", false);
 
     const removedRanges = this.removedLineDecorations.ranges;
     if (accept) {
@@ -378,8 +374,7 @@ export class VerticalDiffHandler implements vscode.Disposable {
 
     // Then, we insert our diff lines
     await this.editor.edit((editBuilder) => {
-      editBuilder.replace(this.range, replaceContent),
-        { undoStopAfter: false, undoStopBefore: false };
+      editBuilder.replace(this.range, replaceContent, { undoStopAfter: false, undoStopBefore: false });
     });
 
     // Lastly, we apply decorations

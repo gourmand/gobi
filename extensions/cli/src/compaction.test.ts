@@ -1,13 +1,13 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
 import { BaseLlmApi } from "@gourmanddev/openai-adapters";
-import type { ChatHistoryItem } from "core/index.js";
-import { convertToUnifiedHistory } from "core/util/messageConversion.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
+import { convertToUnifiedHistory } from "@gourmanddev/core/util/messageConversion.js";
 import { describe, expect, it, vi } from "vitest";
 
 import {
-    compactChatHistory,
-    findCompactionIndex,
-    getHistoryForLLM,
+  compactChatHistory,
+  findCompactionIndex,
+  getHistoryForLLM,
 } from "./compaction.js";
 import { streamChatResponse } from "./stream/streamChatResponse.js";
 

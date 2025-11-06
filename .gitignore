@@ -160,6 +160,7 @@ extensions/intellij/.idea/**
 **/.idea/inspectionProfiles/Project_Default.xml
 **/.idea/php.xml
 **/.idea/kotlinc.xml
+**/.idea/*theme*.xml
 
 
 extensions/intellij/bin
@@ -177,3 +178,5 @@ keys
 
 .channels_cache.json
 .users_cache.json
+
+audit_output/

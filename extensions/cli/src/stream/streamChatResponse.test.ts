@@ -1,6 +1,6 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
 import { BaseLlmApi } from "@gourmanddev/openai-adapters";
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import type { ChatCompletionChunk } from "openai/resources/chat/completions.mjs";
 import { vi } from "vitest";
 
@@ -12,8 +12,8 @@ import { PreprocessedToolCall } from "../tools/types.js";
 import { writeFileTool } from "../tools/writeFile.js";
 
 import {
-    executeStreamedToolCalls,
-    preprocessStreamedToolCalls,
+  executeStreamedToolCalls,
+  preprocessStreamedToolCalls,
 } from "./streamChatResponse.helpers.js";
 import { processStreamingResponse } from "./streamChatResponse.js";
 

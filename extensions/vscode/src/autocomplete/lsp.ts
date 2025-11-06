@@ -1,26 +1,29 @@
-import { AutocompleteLanguageInfo } from "core/autocomplete/constants/AutocompleteLanguageInfo";
+import { AutocompleteLanguageInfo } from "@gourmanddev/core/autocomplete/constants/AutocompleteLanguageInfo";
 import {
-    AutocompleteCodeSnippet,
-    AutocompleteSnippetType,
-} from "core/autocomplete/snippets/types";
-import { GetLspDefinitionsFunction } from "core/autocomplete/types";
-import { getAst, getTreePathAtCursor } from "core/autocomplete/util/ast";
+  AutocompleteCodeSnippet,
+  AutocompleteSnippetType,
+} from "@gourmanddev/core/autocomplete/snippets/types";
+import { GetLspDefinitionsFunction } from "@gourmanddev/core/autocomplete/types";
 import {
-    FUNCTION_BLOCK_NODE_TYPES,
-    FUNCTION_DECLARATION_NODE_TYPEs,
-} from "core/indexing/chunk/code";
-import { intersection } from "core/util/ranges";
+  getAst,
+  getTreePathAtCursor,
+} from "@gourmanddev/core/autocomplete/util/ast";
+import {
+  FUNCTION_BLOCK_NODE_TYPES,
+  FUNCTION_DECLARATION_NODE_TYPEs,
+} from "@gourmanddev/core/indexing/chunk/code";
+import { intersection } from "@gourmanddev/core/util/ranges";
 import * as URI from "uri-js";
 import * as vscode from "vscode";
 
 import type {
-    DocumentSymbol,
-    IDE,
-    Range,
-    RangeInFile,
-    RangeInFileWithContents,
-    SignatureHelp,
-} from "core";
+  DocumentSymbol,
+  IDE,
+  Range,
+  RangeInFile,
+  RangeInFileWithContents,
+  SignatureHelp,
+} from "@gourmanddev/core";
 import type Parser from "web-tree-sitter";
 
 type GotoProviderName =

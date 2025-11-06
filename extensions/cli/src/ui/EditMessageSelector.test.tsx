@@ -2,7 +2,7 @@
  * @vitest-environment jsdom
  */
 import { render } from "@testing-library/react";
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 

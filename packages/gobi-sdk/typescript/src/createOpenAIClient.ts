@@ -4,6 +4,7 @@ import {
 } from "@gourmanddev/config-yaml";
 import fetch, { Response } from "node-fetch";
 import OpenAI from "openai";
+import { Fetch } from "openai/core";
 
 /**
  * Interface for OpenAI client options with assistant models
@@ -50,7 +51,7 @@ export function createOpenAIClient({
   return new OpenAI({
     apiKey,
     baseURL: new URL("model-proxy/v1/", baseURL).toString(),
-    fetch: async (url, init) => {
+    fetch: (async (url: URL | RequestInfo, init?: RequestInit) => {
       // Clone the init object to avoid modifying the original
       const modifiedInit = init ? { ...init } : {};
 
@@ -97,9 +98,12 @@ export function createOpenAIClient({
       }
 
       // Using node-fetch explicitly, otherwise `fetch` has shadowing issues
-      const response = await fetch(url.toString(), modifiedInit as any);
-
-      return response as unknown as Response;
-    },
+      const response: Response = await fetch(url.toString(), modifiedInit as any);
+      const bytes = async () => {
+        const arrayBuffer = await response.arrayBuffer();
+        return new Uint8Array(arrayBuffer);
+      }
+      return Object.assign(response, {bytes});
+    }) as unknown as Fetch,
   });
 }

@@ -1,18 +1,18 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { EXTENSION_NAME } from "core/control-plane/env";
+import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
 // @ts-ignore
 import * as vscode from "vscode";
 
-import { DiffChar, DiffLine } from "core";
-import { CodeRenderer } from "core/codeRenderer/CodeRenderer";
-import { myersCharDiff } from "core/diff/myers";
-import { getOffsetPositionAtLastNewLine } from "core/nextEdit/diff/diff";
-import { NextEditLoggingService } from "core/nextEdit/NextEditLoggingService";
-import { NextEditProvider } from "core/nextEdit/NextEditProvider";
+import { DiffChar, DiffLine } from "@gourmanddev/core";
+import { CodeRenderer } from "@gourmanddev/core/codeRenderer/CodeRenderer";
+import { myersCharDiff } from "@gourmanddev/core/diff/myers";
+import { getOffsetPositionAtLastNewLine } from "@gourmanddev/core/nextEdit/diff/diff";
+import { NextEditLoggingService } from "@gourmanddev/core/nextEdit/NextEditLoggingService";
+import { NextEditProvider } from "@gourmanddev/core/nextEdit/NextEditProvider";
 import { getThemeString } from "../util/getTheme";
 import {
-    HandlerPriority,
-    SelectionChangeManager,
+  HandlerPriority,
+  SelectionChangeManager,
 } from "./SelectionChangeManager";
 
 export interface TextApplier {

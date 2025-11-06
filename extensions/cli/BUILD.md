@@ -6,11 +6,10 @@ The Gobi CLI uses esbuild to bundle the application along with local packages (`
 
 ## Build Steps
 
-1. **Build packages**: `cd ../../ && node ./scripts/build-packages.js`
-2. **Install dependencies**: `npm install`
-3. **Build**: `npm run build`
-   - This first builds the local packages
-   - Then bundles everything with esbuild
+1. **Build packages**: From repo root: `pnpm install && pnpm -r build`
+2. **Install dependencies**: `pnpm install` (or if in workspace root, already done)
+3. **Build**: `pnpm run build`
+   - This bundles everything with esbuild
 
 ## How it Works
 

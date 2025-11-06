@@ -1,12 +1,12 @@
-import { GobiConfig, QuickActionConfig } from "core";
-import { Telemetry } from "core/util/posthog";
+import { GobiConfig, QuickActionConfig } from "@gourmanddev/core";
+import { Telemetry } from "@gourmanddev/core/util/posthog";
 import * as vscode from "vscode";
 
 import { QuickEditShowParams } from "../../../quickEdit/QuickEditQuickPick";
 import { isTutorialFile } from "../../../util/tutorial";
 import {
-    GOBI_WORKSPACE_KEY,
-    getGobiWorkspaceConfig,
+  GOBI_WORKSPACE_KEY,
+  getGobiWorkspaceConfig,
 } from "../../../util/workspaceConfig";
 
 export const ENABLE_QUICK_ACTIONS_KEY = "enableQuickActions";

@@ -1,4 +1,4 @@
-import { GlobalContext } from "core/util/GlobalContext.js";
+import { GlobalContext } from "@gourmanddev/core/util/GlobalContext.js";
 
 /**
  * Get the persisted model name for CLI from GlobalContext

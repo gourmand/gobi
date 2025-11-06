@@ -1,4 +1,4 @@
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import { describe, expect, it, vi } from "vitest";
 
 import { createStreamCallbacks } from "./useChat.stream.helpers.js";

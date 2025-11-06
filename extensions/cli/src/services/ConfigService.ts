@@ -8,10 +8,10 @@ import { logger } from "../util/logger.js";
 import { BaseService, ServiceWithDependencies } from "./BaseService.js";
 import { serviceContainer } from "./ServiceContainer.js";
 import {
-    AgentFileServiceState,
-    ApiClientServiceState,
-    ConfigServiceState,
-    SERVICE_NAMES,
+  AgentFileServiceState,
+  ApiClientServiceState,
+  ConfigServiceState,
+  SERVICE_NAMES,
 } from "./types.js";
 
 interface ConfigServiceInit {

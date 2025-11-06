@@ -1,12 +1,12 @@
-import { ILLM } from "core";
-import { EXTENSION_NAME } from "core/control-plane/env";
+import { ILLM } from "@gourmanddev/core";
+import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
 import * as vscode from "vscode";
 
 import { Battery } from "../util/battery";
 import { getMetaKeyLabel } from "../util/util";
 import {
-    GOBI_WORKSPACE_KEY,
-    getGobiWorkspaceConfig,
+  GOBI_WORKSPACE_KEY,
+  getGobiWorkspaceConfig,
 } from "../util/workspaceConfig";
 
 export enum StatusBarStatus {

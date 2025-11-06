@@ -1,6 +1,6 @@
 // Helper functions extracted from streamChatResponse.ts to reduce file size
 
-import { GobiError, GobiErrorReason } from "core/util/errors.js";
+import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors.js";
 import { ChatCompletionToolMessageParam } from "openai/resources/chat/completions.mjs";
 
 import { checkToolPermission } from "../permissions/permissionChecker.js";
@@ -11,11 +11,11 @@ import { posthogService } from "../telemetry/posthogService.js";
 import { telemetryService } from "../telemetry/telemetryService.js";
 import { calculateTokenCost } from "../telemetry/utils.js";
 import {
-    executeToolCall,
-    getAllBuiltinTools,
-    getAvailableTools,
-    Tool,
-    validateToolCallArgsPresent,
+  executeToolCall,
+  getAllBuiltinTools,
+  getAvailableTools,
+  Tool,
+  validateToolCallArgsPresent,
 } from "../tools/index.js";
 import { PreprocessedToolCall, ToolCall } from "../tools/types.js";
 import { logger } from "../util/logger.js";
@@ -361,9 +361,7 @@ export async function preprocessStreamedToolCalls(
       callbacks?.onToolStart?.(toolCall.name, toolCall.arguments);
 
       const errorReason =
-        error instanceof GobiError
-          ? error.reason
-          : GobiErrorReason.Unknown;
+        error instanceof GobiError ? error.reason : GobiErrorReason.Unknown;
 
       const errorMessage =
         error instanceof Error ? error.message : String(error);

@@ -152,28 +152,20 @@ jobs:
           component: core
           include-root: true
 
-      - name: Build core
-        run: |
-          cd core
-          npm run build
-
       - name: Prepare package for direct stable release
         if: ${{ inputs.release_type == 'direct-stable' }}
         working-directory: extensions/cli
         run: |
-          # Install dependencies for direct build
-          npm ci
-
           # Update version to the specified stable version
           npm version ${{ inputs.stable_version }} --no-git-tag-version
 
       - name: Build (verification step)
         working-directory: extensions/cli
-        run: npm run build
+        run: pnpm run build
 
       - name: Run tests (verification step)
         working-directory: extensions/cli
-        run: npm test
+        run: pnpm test
 
       - name: Set final version
         id: final_version

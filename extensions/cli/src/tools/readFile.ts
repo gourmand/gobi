@@ -1,6 +1,6 @@
 import * as fs from "fs";
 
-import { throwIfFileIsSecurityConcern } from "core/indexing/ignore.js";
+import { throwIfFileIsSecurityConcern } from "@gourmanddev/core/indexing/ignore.js";
 
 import { formatToolArgument } from "./formatters.js";
 import { Tool } from "./types.js";

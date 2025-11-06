@@ -1,7 +1,7 @@
 import { ModelConfig } from "@gourmanddev/config-yaml";
 import {
-    DefaultApiInterface,
-    GetFreeTrialStatus200Response,
+  DefaultApiInterface,
+  GetFreeTrialStatus200Response,
 } from "@gourmanddev/sdk/dist/api/dist/index.js";
 import { Text } from "ink";
 import React, { useEffect, useState } from "react";

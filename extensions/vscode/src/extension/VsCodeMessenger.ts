@@ -1,20 +1,23 @@
-import { ConfigHandler } from "core/config/ConfigHandler";
-import { DataLogger } from "core/data/log";
-import { EDIT_MODE_STREAM_ID } from "core/edit/constants";
+import { ConfigHandler } from "@gourmanddev/core/config/ConfigHandler";
+import { DataLogger } from "@gourmanddev/core/data/log";
+import { EDIT_MODE_STREAM_ID } from "@gourmanddev/core/edit/constants";
 import {
-    FromCoreProtocol,
-    FromWebviewProtocol,
-    ToCoreProtocol,
-} from "core/protocol";
-import { ToWebviewFromCoreProtocol } from "core/protocol/coreWebview";
-import { ToIdeFromWebviewOrCoreProtocol } from "core/protocol/ide";
-import { ToIdeFromCoreProtocol } from "core/protocol/ideCore";
-import { InProcessMessenger, Message } from "core/protocol/messenger";
+  FromCoreProtocol,
+  FromWebviewProtocol,
+  ToCoreProtocol,
+} from "@gourmanddev/core/protocol";
+import { ToWebviewFromCoreProtocol } from "@gourmanddev/core/protocol/coreWebview";
+import { ToIdeFromWebviewOrCoreProtocol } from "@gourmanddev/core/protocol/ide";
+import { ToIdeFromCoreProtocol } from "@gourmanddev/core/protocol/ideCore";
 import {
-    CORE_TO_WEBVIEW_PASS_THROUGH,
-    WEBVIEW_TO_CORE_PASS_THROUGH,
-} from "core/protocol/passThrough";
-import { stripImages } from "core/util/messageContent";
+  InProcessMessenger,
+  Message,
+} from "@gourmanddev/core/protocol/messenger";
+import {
+  CORE_TO_WEBVIEW_PASS_THROUGH,
+  WEBVIEW_TO_CORE_PASS_THROUGH,
+} from "@gourmanddev/core/protocol/passThrough";
+import { stripImages } from "@gourmanddev/core/util/messageContent";
 import * as vscode from "vscode";
 
 import { ApplyManager } from "../apply";
@@ -22,8 +25,8 @@ import { VerticalDiffManager } from "../diff/vertical/manager";
 import { addCurrentSelectionToEdit } from "../quickEdit/AddCurrentSelection";
 import EditDecorationManager from "../quickEdit/EditDecorationManager";
 import {
-    getControlPlaneSessionInfo,
-    WorkOsAuthProvider,
+  getControlPlaneSessionInfo,
+  WorkOsAuthProvider,
 } from "../stubs/WorkOsAuthProvider";
 import { handleLLMError } from "../util/errorHandling";
 import { showTutorial } from "../util/tutorial";

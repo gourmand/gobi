@@ -1,5 +1,5 @@
 import chalk from "chalk";
-import type { ChatHistoryItem } from "core/index.js";
+import type { ChatHistoryItem } from "@gourmanddev/core/index.js";
 import express, { Request, Response } from "express";
 
 import { ToolPermissionServiceState } from "src/services/ToolPermissionService.js";
@@ -10,15 +10,15 @@ import { runEnvironmentInstallSafe } from "../environment/environmentHandler.js"
 import { processCommandFlags } from "../flags/flagProcessor.js";
 import { toolPermissionManager } from "../permissions/permissionManager.js";
 import {
-    getService,
-    initializeServices,
-    SERVICE_NAMES,
-    services,
+  getService,
+  initializeServices,
+  SERVICE_NAMES,
+  services,
 } from "../services/index.js";
 import {
-    AuthServiceState,
-    ConfigServiceState,
-    ModelServiceState,
+  AuthServiceState,
+  ConfigServiceState,
+  ModelServiceState,
 } from "../services/types.js";
 import { createSession, getCompleteStateSnapshot } from "../session.js";
 import { messageQueue } from "../stream/messageQueue.js";
@@ -32,8 +32,8 @@ import { readStdinSync } from "../util/stdin.js";
 
 import { ExtendedCommandOptions } from "./BaseCommandOptions.js";
 import {
-    streamChatResponseWithInterruption,
-    type ServerState,
+  streamChatResponseWithInterruption,
+  type ServerState,
 } from "./serve.helpers.js";
 
 interface ServeOptions extends ExtendedCommandOptions {

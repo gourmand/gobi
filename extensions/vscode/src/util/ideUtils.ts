@@ -1,5 +1,5 @@
-import { EXTENSION_NAME } from "core/control-plane/env";
-import { findUriInDirs } from "core/util/uri";
+import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
+import { findUriInDirs } from "@gourmanddev/core/util/uri";
 import _ from "lodash";
 import * as URI from "uri-js";
 import * as vscode from "vscode";
@@ -8,15 +8,15 @@ import { threadStopped } from "../debug/debug";
 import { VsCodeExtension } from "../extension/VsCodeExtension";
 import { GitExtension, Repository } from "../otherExtensions/git";
 import {
-    SuggestionRanges,
-    acceptSuggestionCommand,
-    rejectSuggestionCommand,
-    showSuggestion as showSuggestionInEditor,
+  SuggestionRanges,
+  acceptSuggestionCommand,
+  rejectSuggestionCommand,
+  showSuggestion as showSuggestionInEditor,
 } from "../suggestions";
 
 import { getUniqueId, openEditorAndRevealRange } from "./vscode";
 
-import type { Range, Thread } from "core";
+import type { Range, Thread } from "@gourmanddev/core";
 
 const util = require("node:util");
 const asyncExec = util.promisify(require("node:child_process").exec);

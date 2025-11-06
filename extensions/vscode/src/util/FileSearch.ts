@@ -1,6 +1,9 @@
-import { IDE } from "core";
-import { walkDirs } from "core/indexing/walkDir";
-import { deduplicateArray, splitCamelCaseAndNonAlphaNumeric } from "core/util";
+import { IDE } from "@gourmanddev/core";
+import { walkDirs } from "@gourmanddev/core/indexing/walkDir";
+import {
+  deduplicateArray,
+  splitCamelCaseAndNonAlphaNumeric,
+} from "@gourmanddev/core/util";
 // @ts-ignore
 import MiniSearch from "minisearch";
 import * as vscode from "vscode";

@@ -1,10 +1,10 @@
-import { IDE } from "core";
+import { IDE } from "@gourmanddev/core";
 import {
   AutocompleteCodeSnippet,
   AutocompleteSnippetType,
-} from "core/autocomplete/snippets/types";
-import { isSecurityConcern } from "core/indexing/ignore";
-import { PosthogFeatureFlag, Telemetry } from "core/util/posthog";
+} from "@gourmanddev/core/autocomplete/snippets/types";
+import { isSecurityConcern } from "@gourmanddev/core/indexing/ignore";
+import { PosthogFeatureFlag, Telemetry } from "@gourmanddev/core/util/posthog";
 import { LRUCache } from "lru-cache";
 import * as vscode from "vscode";
 
