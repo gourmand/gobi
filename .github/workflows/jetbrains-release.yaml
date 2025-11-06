@@ -187,33 +187,14 @@ jobs:
         env:
           NODE_OPTIONS: "--max-old-space-size=8192"
 
-      # npm install core
-      - name: Install core node_modules
-        run: |
-          cd ../../core
-          npm ci
-
       # Run prepackage.js script
       - name: Run prepackage script
         run: |
           cd ../../extensions/vscode
-          npm ci
-          npm run prepackage
+          pnpm run prepackage
         env:
           # https://github.com/microsoft/vscode-ripgrep/issues/9#issuecomment-643965333
           GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
-
-      # npm install binary
-      - name: Install binary node_modules
-        run: |
-          cd ../../binary
-          npm ci
-
-      # Build binaries
-      - name: Build the binaries
-        run: |
-          cd ../../binary
-          npm run build
 
       # - name: Code sign darwin binaries
       #   run: |
@@ -387,16 +368,6 @@ jobs:
           path: binary/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('binary/package-lock.json') }}
 
-      - name: Install Core Dependencies
-        run: |
-          cd ../../core
-          npm ci
-
-      - name: Install Binary Dependencies
-        run: |
-          cd ../../binary
-          npm ci
-
       # Download the binary artifact
       - name: Download binary artifact
         uses: actions/download-artifact@v5
@@ -417,7 +388,7 @@ jobs:
       - name: Run binary tests
         run: |
           cd ../../binary
-          npm run test
+          pnpm run test
 
       - name: Upload logs
         if: ${{ always() }}

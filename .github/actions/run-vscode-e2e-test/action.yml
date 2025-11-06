@@ -64,8 +64,6 @@ runs:
           cd extensions/vscode
           pnpm run e2e:ci:download
         fi
-        cd core
-        npm ci
 
     - name: Fix VSCode binary permissions
       shell: bash
@@ -96,7 +94,7 @@ runs:
       shell: bash
       run: |
         cd extensions/vscode
-        IGNORE_SSH_TESTS="${{ inputs.is_fork }}" TEST_FILE="${{ inputs.test_file }}" npm run ${{ inputs.command }}
+        IGNORE_SSH_TESTS="${{ inputs.is_fork }}" TEST_FILE="${{ inputs.test_file }}" pnpm run ${{ inputs.command }}
       env:
         DISPLAY: :99
 

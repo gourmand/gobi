@@ -39,17 +39,6 @@ jobs:
           component: core
           include-root: true
 
-      - name: Build core
-        run: |
-          cd core
-          npm run build
-
-      - name: Install CLI dependencies
-        working-directory: extensions/cli
-        run: npm ci
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       - name: Get current version
         id: get_version
         working-directory: extensions/cli
@@ -88,7 +77,7 @@ jobs:
 
       - name: Build
         working-directory: extensions/cli
-        run: npm run build
+        run: pnpm run build
 
       - name: Publish beta to npm
         working-directory: extensions/cli

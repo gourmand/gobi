@@ -23,5 +23,5 @@ runs:
     - name: Install and build packages
       shell: bash
       run: |
-        pnpm install --no-frozen-lockfile
+        pnpm install --frozen-lockfile
         pnpm -r build

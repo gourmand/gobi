@@ -89,12 +89,6 @@ runs:
         path: binary/node_modules
         key: ${{ runner.os }}-binary-node-modules-${{ hashFiles('binary/package-lock.json') }}
 
-    - name: Build the binaries
-      shell: bash
-      run: |
-        cd binary
-        npm run build
-
     - name: Run tests
       shell: bash
       run: |

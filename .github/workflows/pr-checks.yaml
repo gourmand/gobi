@@ -56,17 +56,17 @@ jobs:
 
       - name: Type check and lint
         run: |
-          cd core
-          npx tsc --noEmit
-          npm run lint
+          cd packages/core
+          pnpm tsc --noEmit
+          pnpm run lint
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
 
       - name: Run tests
         run: |
-          cd core
-          npm test
-          npm run vitest
+          cd packages/core
+          pnpm test
+          pnpm run vitest
         env:
           IGNORE_API_KEY_TESTS: ${{ steps.llm-changes.outputs.ignore_api_tests }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -102,14 +102,14 @@ jobs:
 
       - name: Type check and lint
         run: |
-          cd gui
-          npx tsc --noEmit
-          npm run lint
+          cd packages/gui
+          pnpm tsc --noEmit
+          pnpm run lint
 
       - name: Run tests
         run: |
-          cd gui
-          npm test
+          cd packages/gui
+          pnpm test
 
   binary-checks:
     runs-on: ubuntu-latest
@@ -155,14 +155,14 @@ jobs:
       - name: Type check and lint
         run: |
           cd extensions/vscode
-          npm run write-build-timestamp
-          npx tsc --noEmit
-          npm run lint
+          pnpm run write-build-timestamp
+          pnpm tsc --noEmit
+          pnpm run lint
 
       - name: Run vitest tests
         run: |
           cd extensions/vscode
-          npm run vitest
+          pnpm run vitest
 
   get-packages-matrix:
     runs-on: ubuntu-latest
@@ -200,8 +200,7 @@ jobs:
       - name: Test and check ${{ matrix.package }}
         run: |
           cd packages/${{ matrix.package }}
-          npm ci
-          npm test
+          pnpm test
         env:
           IGNORE_API_KEY_TESTS: ${{ steps.llm-changes.outputs.ignore_api_tests }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
@@ -233,10 +232,10 @@ jobs:
       - name: Build packages and get test files
         id: vscode-get-test-file-matrix
         run: |
-          pnpm install --no-frozen-lockfile
+          pnpm install --frozen-lockfile
           pnpm -r build
           cd extensions/vscode
-          pnpm install --no-frozen-lockfile
+          pnpm install --frozen-lockfile
           pnpm run e2e:compile
           if [[ "${{ github.event.pull_request.head.repo.fork }}" == "true" || "${{ github.actor }}" == "dependabot[bot]" ]]; then
             # Exclude SSH tests for forks
