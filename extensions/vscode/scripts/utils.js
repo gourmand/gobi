@@ -119,13 +119,13 @@ async function copyOnnxRuntimeFromNodeModules(target) {
     // If building for production, only need the binaries for current platform
     try {
       if (!target.startsWith("darwin")) {
-        rimrafSync(path.join(__dirname, "../bin/napi-v3/darwin"));
+        rimrafSync(path.join(__dirname, "../bin/napi-v6/darwin"));
       }
       if (!target.startsWith("linux")) {
-        rimrafSync(path.join(__dirname, "../bin/napi-v3/linux"));
+        rimrafSync(path.join(__dirname, "../bin/napi-v6/linux"));
       }
       if (!target.startsWith("win")) {
-        rimrafSync(path.join(__dirname, "../bin/napi-v3/win32"));
+        rimrafSync(path.join(__dirname, "../bin/napi-v6/win32"));
       }
 
       // Also don't want to include cuda/shared/tensorrt binaries, they are too large
@@ -138,7 +138,7 @@ async function copyOnnxRuntimeFromNodeModules(target) {
         filesToRemove.forEach((file) => {
           const filepath = path.join(
             __dirname,
-            "../bin/napi-v3/linux/x64",
+            "../bin/napi-v6/linux/x64",
             file,
           );
           if (fs.existsSync(filepath)) {

@@ -136,12 +136,12 @@ async function package(target, os, arch, exe) {
     "tag-qry/tree-sitter-c_sharp-tags.scm",
 
     // onnx runtime bindngs
-    `bin/napi-v3/${os}/${arch}/onnxruntime_binding.node`,
-    `bin/napi-v3/${os}/${arch}/${
+    `bin/napi-v6/${os}/${arch}/onnxruntime_binding.node`,
+    `bin/napi-v6/${os}/${arch}/${
       os === "darwin"
-        ? "libonnxruntime.1.14.0.dylib"
+        ? "libonnxruntime.1.23.2.dylib"
         : os === "linux"
-          ? "libonnxruntime.so.1.14.0"
+          ? "libonnxruntime.so.1"
           : "onnxruntime.dll"
     }`,
 
