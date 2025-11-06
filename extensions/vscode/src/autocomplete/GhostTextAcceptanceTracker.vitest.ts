@@ -30,6 +30,26 @@ vi.mock("vscode", () => {
   };
 });
 
+// Mock SelectionChangeManager to avoid importing large/async real implementation during tests.
+vi.mock("../activation/SelectionChangeManager", () => {
+  return {
+    HandlerPriority: {
+      CRITICAL: 5,
+      HIGH: 4,
+      NORMAL: 3,
+      LOW: 2,
+      FALLBACK: 1,
+    },
+    SelectionChangeManager: {
+      getInstance: () => ({
+        registerListener: () => {
+          return () => {};
+        },
+      }),
+    },
+  };
+});
+
 // Mock svg-builder and its content entry so ESM directory imports don't fail in tests
 vi.mock("svg-builder", () => {
   const mockSvgBuilder = {
