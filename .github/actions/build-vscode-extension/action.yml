@@ -75,12 +75,18 @@ runs:
         cd extensions/vscode
         pnpm add -D -w esbuild --force
  
+    - name: Run prepublish script
+      shell: bash
+      run: |
+        cd extensions/vscode
+        pnpm run vscode:prepublish
+
     - name: Package extension (.vsix files)
       shell: bash
       run: |
         cd extensions/vscode
         if [ "${{ inputs.pre-release }}" = "true" ]; then
-          pnpm dlx vsce package --pre-release --no-dependencies --target ${{ steps.set-target.outputs.target }}
+          pnpm dlx vsce package --pre-release --no-dependencies --no-yarn --target ${{ steps.set-target.outputs.target }}
         else
-          pnpm dlx vsce package --no-dependencies --target ${{ steps.set-target.outputs.target }}
+          pnpm dlx vsce package --no-dependencies --no-yarn --target ${{ steps.set-target.outputs.target }}
         fi

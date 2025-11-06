@@ -1,0 +1,3 @@
+# Used by pnpm to hoist packages so prepackage.js can copy from node_modules into out/node_modules
+public-hoist-pattern[]=@lancedb/*
+public-hoist-pattern[]=@esbuild/*
