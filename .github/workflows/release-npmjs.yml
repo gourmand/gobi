@@ -54,24 +54,24 @@ jobs:
       - name: Build workspace packages
         run: pnpm -r build
 
-      - name: Detect changes for ${{ matrix.package.name }}
-        id: changes
-        shell: bash
-        run: |
-          set -euo pipefail
-          BASE_SHA="${{ github.event.before || '' }}"
-          if [[ -z "$BASE_SHA" ]]; then
-            # Fallback: compare against the previous commit on main
-            git fetch origin main
-            BASE_SHA=$(git rev-parse origin/main)
-          fi
-          if git diff --quiet "$BASE_SHA" HEAD -- "${{ matrix.package.path }}"; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-            echo "No changes detected in ${{ matrix.package.path }}"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "Changes detected in ${{ matrix.package.path }}"
-          fi
+      # - name: Detect changes for ${{ matrix.package.name }}
+      #   id: changes
+      #   shell: bash
+      #   run: |
+      #     set -euo pipefail
+      #     BASE_SHA="${{ github.event.before || '' }}"
+      #     if [[ -z "$BASE_SHA" ]]; then
+      #       # Fallback: compare against the previous commit on main
+      #       git fetch origin main
+      #       BASE_SHA=$(git rev-parse origin/main)
+      #     fi
+      #     if git diff --quiet "$BASE_SHA" HEAD -- "${{ matrix.package.path }}"; then
+      #       echo "changed=false" >> "$GITHUB_OUTPUT"
+      #       echo "No changes detected in ${{ matrix.package.path }}"
+      #     else
+      #       echo "changed=true" >> "$GITHUB_OUTPUT"
+      #       echo "Changes detected in ${{ matrix.package.path }}"
+      #     fi
 
     #   - name: Run tests
     #     if: steps.changes.outputs.changed == 'true'
