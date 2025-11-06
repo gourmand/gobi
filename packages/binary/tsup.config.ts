@@ -8,7 +8,7 @@ export default defineConfig({
   clean: true,
   splitting: false,
   outDir: "out",
-  noExternal: ["/^@gourmanddev\//"],
+  noExternal: [/^@gourmanddev\//],
   external: ["sqlite3", "win-ca"],
   loader: {
     ".wasm": "file",
