@@ -38,6 +38,16 @@ runs:
         node-version-file: ".nvmrc"
         cache: pnpm
 
+    # - name: Add platform-specific dependencies
+    #   run: |
+    #     if [[ "$RUNNER_OS" == "Linux" ]]; then
+    #       pnpm add @lancedb/vectordb-linux-x64-gnu
+    #     elif [[ "$RUNNER_OS" == "Windows" ]]; then
+    #       pnpm add @lancedb/vectordb-win32-arm64-msvc
+    #     elif [[ "$RUNNER_OS" == "macOS" ]]; then
+    #       pnpm add @lancedb/vectordb-darwin-arm64
+    #     fi
+    #   shell: bash
     - name: Set target variable
       id: set-target
       shell: bash
@@ -51,13 +61,6 @@ runs:
       env:
         # https://github.com/microsoft/vscode-ripgrep/issues/9#issuecomment-643965333
         GITHUB_TOKEN: ${{ inputs.github-token }}
-
-    - name: Build GUI
-      shell: bash
-      run: |
-        cd packages/gui
-        pnpm run build --max-old-space-size=4096
-      env:
         NODE_OPTIONS: "--max-old-space-size=4096"
 
     - name: Prepackage the extension

@@ -184,21 +184,14 @@ jobs:
           cd ../..
           pnpm install --no-frozen-lockfile
           pnpm -r build
+        env:
+          NODE_OPTIONS: "--max-old-space-size=8192"
 
       # npm install core
       - name: Install core node_modules
         run: |
           cd ../../core
           npm ci
-
-      # npm install gui
-      - name: Install gui node_modules and build
-        run: |
-          cd ../../gui
-          npm ci
-          npm run build
-        env:
-          NODE_OPTIONS: "--max-old-space-size=8192"
 
       # Run prepackage.js script
       - name: Run prepackage script

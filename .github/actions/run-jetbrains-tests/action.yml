@@ -30,12 +30,8 @@ runs:
       run: |
         pnpm install --no-frozen-lockfile
         pnpm -r build
-
-    - name: Build GUI
-      shell: bash
-      run: |
-        cd packages/gui
-        pnpm run build
+      env:
+        NODE_OPTIONS: "--max-old-space-size=4096"
 
     - name: Setup Java
       uses: actions/setup-java@v4.5.0
