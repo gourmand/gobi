@@ -77,6 +77,14 @@ export async function renderWithProviders(
     rendered = render(ui, { wrapper: Wrapper, ...renderOptions });
   });
 
+  // Flush pending effects and microtasks to reduce "not wrapped in act(...)" warnings
+  // Tests can still opt to await specific updates where needed, but this helps
+  // reduce common noisy warnings caused by microtask scheduling during mount.
+  // Small timeout ensures queued macrotasks are processed as well.
+  await act(async () => {
+    await new Promise((resolve) => setTimeout(resolve, 0));
+  });
+
   // Return an object with the store and all of RTL's query functions
   return {
     user,
