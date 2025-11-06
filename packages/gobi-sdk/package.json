@@ -1,6 +1,6 @@
 {
   "name": "@gourmanddev/sdk-generator",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "private": true,
   "description": "SDK Generator for gourmand.dev gobi",
   "type": "module",

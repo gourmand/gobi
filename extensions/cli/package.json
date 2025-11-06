@@ -1,6 +1,6 @@
 {
   "name": "@gourmanddev/cli",
-  "version": "0.0.0-dev",
+  "version": "0.0.0",
   "description": "Gobi CLI",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

@@ -22,15 +22,6 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      matrix:
-        package:
-          - { name: 'config-types', path: 'packages/config-types' }
-          - { name: 'terminal-security', path: 'packages/terminal-security' }
-          - { name: 'fetch', path: 'packages/fetch' }
-          - { name: 'config-yaml', path: 'packages/config-yaml' }
-          - { name: 'llm-info', path: 'packages/llm-info' }
-          - { name: 'openai-adapters', path: 'packages/openai-adapters' }
-          - { name: 'sdk', path: 'packages/gobi-sdk/typescript' }
 
     steps:
       - name: Checkout
@@ -53,56 +44,6 @@ jobs:
 
       - name: Build workspace packages
         run: pnpm -r build
-     
-      # - name: Detect changes for ${{ matrix.package.name }}
-      #   id: changes
-      #   shell: bash
-      #   run: |
-      #     set -euo pipefail
-      #     BASE_SHA="${{ github.event.before || '' }}"
-      #     if [[ -z "$BASE_SHA" ]]; then
-      #       # Fallback: compare against the previous commit on main
-      #       git fetch origin main
-      #       BASE_SHA=$(git rev-parse origin/main)
-      #     fi
-      #     if git diff --quiet "$BASE_SHA" HEAD -- "${{ matrix.package.path }}"; then
-      #       echo "changed=false" >> "$GITHUB_OUTPUT"
-      #       echo "No changes detected in ${{ matrix.package.path }}"
-      #     else
-      #       echo "changed=true" >> "$GITHUB_OUTPUT"
-      #       echo "Changes detected in ${{ matrix.package.path }}"
-      #     fi
 
-    #   - name: Run tests
-    #     if: steps.changes.outputs.changed == 'true'
-    #     working-directory: ${{ matrix.package.path }}
-    #     run: |
-    #       if [ -f package.json ] && jq -e '.scripts.test' package.json >/dev/null; then
-    #         npm test --silent || npm run test
-    #       else
-    #         echo "No test script; skipping"
-    #       fi
-    #     env:
-    #       OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-    #       ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-    #       GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-    #       MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
-    #       AZURE_OPENAI_API_KEY: ${{ secrets.AZURE_OPENAI_API_KEY }}
-    #       AZURE_FOUNDRY_CODESTRAL_API_KEY: ${{ secrets.AZURE_FOUNDRY_CODESTRAL_API_KEY }}
-    #       AZURE_FOUNDRY_MISTRAL_SMALL_API_KEY: ${{ secrets.AZURE_FOUNDRY_MISTRAL_SMALL_API_KEY }}
-    #       AZURE_OPENAI_GPT41_API_KEY: ${{ secrets.AZURE_OPENAI_GPT41_API_KEY }}
-    #       VOYAGE_API_KEY: ${{ secrets.VOYAGE_API_KEY }}
-    #       RELACE_API_KEY: ${{ secrets.RELACE_API_KEY }}
-    #       INCEPTION_API_KEY: ${{ secrets.INCEPTION_API_KEY }}
-
-      - name: Publish to npm via semantic-release
-        # if: steps.changes.outputs.changed == 'true'
-        working-directory: ${{ matrix.package.path }}
-        env:
-          # Use the built-in Actions token so a personal token isn't required.
-          # The automatic GITHUB_TOKEN is available as a secret in workflows.
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # NPM_TOKEN not needed when using trusted publishing with OIDC
-          # Uncomment below if you need to install private dependencies:
-          # NODE_AUTH_TOKEN: ${{ secrets.NPM_READ_TOKEN }}
-        run: pnpm publish --provenance --access public
+      - name: Publish workspace packages
+        run: pnpm -r publish --access public --provenance

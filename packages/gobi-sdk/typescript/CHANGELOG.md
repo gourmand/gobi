@@ -1,6 +1,6 @@
-# Changelog
+# @gourmanddev/sdk
 
-## 2.0.0
+## 1.0.0
 
 ### Major Changes
 
@@ -9,4 +9,4 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @gourmanddev/config-types@2.0.0
+  - @gourmanddev/config-yaml@2.0.0

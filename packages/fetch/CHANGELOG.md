@@ -1,4 +1,4 @@
-# Changelog
+# @gourmanddev/fetch
 
 ## 2.0.0
 

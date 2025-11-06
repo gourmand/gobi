@@ -1,6 +1,6 @@
 {
   "name": "@gourmanddev/terminal-security",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Terminal command security evaluation for Gobi",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

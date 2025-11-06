@@ -1,6 +1,6 @@
 {
   "name": "@gourmanddev/sdk",
-  "version": "0.0.13",
+  "version": "1.0.0",
   "description": "SDK for gourmand.dev",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

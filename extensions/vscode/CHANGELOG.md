@@ -1,4 +1,4 @@
-# Changelog
+# gobi-vscode-extension
 
 ## 2.0.0
 
@@ -10,3 +10,5 @@
 
 - Updated dependencies
   - @gourmanddev/config-types@2.0.0
+  - @gourmanddev/core@2.0.0
+  - @gourmanddev/fetch@2.0.0

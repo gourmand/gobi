@@ -1,4 +1,4 @@
-# Changelog
+# @gourmanddev/binary
 
 ## 2.0.0
 
@@ -9,4 +9,5 @@
 ### Patch Changes
 
 - Updated dependencies
-  - @gourmanddev/config-types@2.0.0
+  - @gourmanddev/core@2.0.0
+  - @gourmanddev/fetch@2.0.0

@@ -1,4 +1,11 @@
 # Changelog
+
+## 0.0.0
+
+### Major Changes
+
+- v2 major package upgrades for security and maintainability
+
 ### Bug Fixes
 
 - update readme ([0d45e14](https://github.com/gourmand/gobi/cli/commit/0d45e14b1be6557ace027cfeadfbf418061a28b0))
@@ -47,6 +54,7 @@
 - type err ([f5f1bca](https://github.com/gourmand/gobi/cli/commit/f5f1bca7c6a9f2c4f2842605847d55b765fd3499))
 
 # Changelog
+
 - improve streaming message handling and API endpoint ([b822b93](https://github.com/gourmand/gobi/cli/commit/b822b938f110af2de2c040f45cd3fca770d9a4a7))
 - use ignore-walk for sys msg ([eb59dcc](https://github.com/gourmand/gobi/cli/commit/eb59dcc76a5bf16d4da2e4f2c7dc87765e8382b3))
 
