@@ -70,3 +70,25 @@ Object.defineProperty(Element.prototype, "getBoundingClientRect", {
     height: 20,
   })),
 });
+
+// Provide a constructible ResizeObserver for tests (some components call `new ResizeObserver(...)`)
+class TestResizeObserver {
+  private cb: ResizeObserverCallback | null = null;
+  constructor(cb?: ResizeObserverCallback) {
+    this.cb = cb || null;
+  }
+  observe(_target?: Element) {
+    // no-op for tests
+  }
+  unobserve(_target?: Element) {
+    // no-op for tests
+  }
+  disconnect() {
+    // no-op for tests
+  }
+}
+
+Object.defineProperty(window, "ResizeObserver", {
+  writable: true,
+  value: TestResizeObserver,
+});

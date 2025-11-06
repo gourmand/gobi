@@ -21,11 +21,21 @@ type ExtendedRenderOptions = Omit<RenderOptions, "queries"> & {
 };
 
 function setupMocks() {
-  global.ResizeObserver = vi.fn().mockImplementation(() => ({
-    observe: vi.fn(),
-    unobserve: vi.fn(),
-    disconnect: vi.fn(),
-  }));
+  // Provide a constructible ResizeObserver mock (some components call `new ResizeObserver(...)`)
+  class MockResizeObserver {
+    cb: ResizeObserverCallback | null = null;
+    constructor(cb?: ResizeObserverCallback) {
+      this.cb = cb ?? null;
+    }
+    observe = vi.fn();
+    unobserve = vi.fn();
+    disconnect = vi.fn();
+  }
+
+  // Assign to global so code using `new ResizeObserver(...)` works in tests
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore - test shim
+  (global as any).ResizeObserver = MockResizeObserver;
 }
 
 export async function renderWithProviders(

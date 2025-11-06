@@ -9,7 +9,8 @@ vi.mock("uuid", () => ({
   v4: vi.fn(() => "test-uuid"),
 }));
 
-vi.mock("core/util/ideUtils", () => ({
+// Ensure we mock the correct package path so the mocked function is a vi.fn()
+vi.mock("@gourmanddev/core/util/ideUtils", () => ({
   resolveRelativePathInDir: vi.fn(),
 }));
 

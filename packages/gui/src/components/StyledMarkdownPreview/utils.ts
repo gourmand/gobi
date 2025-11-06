@@ -25,13 +25,15 @@ const commonTerminalCommands = [
 
 export function isTerminalCodeBlock(
   language: string | undefined | null,
-  text: string,
+  text?: string,
 ) {
+  const safeText = (text || "").trim();
+
   return (
     (language && terminalLanguages.includes(language)) ||
     ((!language || language?.length === 0) &&
-      (text.trim().split("\n").length === 1 ||
-        commonTerminalCommands.some((c) => text.trim().startsWith(c))))
+      (safeText.split("\n").length === 1 ||
+        commonTerminalCommands.some((c) => safeText.startsWith(c))))
   );
 }
 

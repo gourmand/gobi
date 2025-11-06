@@ -1,6 +1,6 @@
-import { fireEvent, render, screen } from "@testing-library/react";
 import { ApplyState } from "@gourmanddev/core";
 import { EditOperation } from "@gourmanddev/core/tools/definitions/multiEdit";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { FindAndReplaceDisplay } from "./FindAndReplace";
 
@@ -19,7 +19,8 @@ vi.mock("../../../components/ui", () => ({
   useFontSize: () => 14,
 }));
 
-vi.mock("core/edit/searchAndReplace/performReplace", () => ({
+// Mock the core package path so vitest resolves the mocked function correctly
+vi.mock("@gourmanddev/core/edit/searchAndReplace/performReplace", () => ({
   executeFindAndReplace: vi.fn(),
 }));
 

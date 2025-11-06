@@ -1,5 +1,5 @@
-import { screen, waitFor } from "@testing-library/react";
 import { ToolCallState } from "@gourmanddev/core";
+import { screen, waitFor } from "@testing-library/react";
 import { renderWithProviders } from "../../util/test/render";
 import { UnifiedTerminalCommand } from "./UnifiedTerminal";
 
@@ -178,8 +178,8 @@ describe("UnifiedTerminalCommand", () => {
     expect(container.textContent).toMatch(/Bold text/);
     expect(container.textContent).toMatch(/Underlined text/);
 
-    // Verify ANSI processing created styled spans
-    const styledSpans = container.querySelectorAll('span[class*="sc-esYiGF"]');
+    // Verify ANSI processing created styled spans (look for spans inside the code block)
+    const styledSpans = container.querySelectorAll("pre code span");
     expect(styledSpans.length).toBeGreaterThan(0);
   });
 

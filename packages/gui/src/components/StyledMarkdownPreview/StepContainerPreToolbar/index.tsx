@@ -1,10 +1,10 @@
+import { inferResolvedUriFromRelativePath } from "@gourmanddev/core/util/ideUtils";
+import { renderContextItems } from "@gourmanddev/core/util/messageContent";
 import { evaluateTerminalCommandSecurity } from "@gourmanddev/terminal-security";
 import {
   ChevronDownIcon,
   ExclamationTriangleIcon,
 } from "@heroicons/react/24/outline";
-import { inferResolvedUriFromRelativePath } from "@gourmanddev/core/util/ideUtils";
-import { renderContextItems } from "@gourmanddev/core/util/messageContent";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { IdeMessengerContext } from "../../../context/IdeMessenger";
 import { useIdeMessengerRequest } from "../../../hooks/useIdeMessengerRequest";
@@ -140,12 +140,14 @@ export function StepContainerPreToolbar({
 
   // Check if this is a bash/shell code block and evaluate security
   const securityWarning = useMemo(() => {
+    const safeCodeBlockContent = codeBlockContent || "";
+
     // Check if it's a terminal code block (includes bash, sh, or looks like terminal commands)
-    if (isTerminalCodeBlock(language, codeBlockContent)) {
+    if (isTerminalCodeBlock(language, safeCodeBlockContent)) {
       // First try evaluating the entire block
       const wholeBlockEval = evaluateTerminalCommandSecurity(
         "allowedWithoutPermission",
-        codeBlockContent,
+        safeCodeBlockContent,
       );
       if (
         wholeBlockEval === "disabled" ||
@@ -156,7 +158,7 @@ export function StepContainerPreToolbar({
 
       // If the whole block seems safe, check individual lines
       // This catches cases where dangerous commands are mixed with comments
-      const lines = codeBlockContent.split("\n");
+      const lines = safeCodeBlockContent.split("\n");
       for (const line of lines) {
         const trimmedLine = line.trim();
         // Skip empty lines and comments
@@ -236,7 +238,7 @@ export function StepContainerPreToolbar({
     ideMessenger.post("applyToFile", {
       streamId: codeBlockStreamId,
       filepath: fileUri,
-      text: codeBlockContent,
+      text: codeBlockContent || "",
     });
 
     setAppliedFileUri(fileUri);
@@ -244,7 +246,7 @@ export function StepContainerPreToolbar({
   }
 
   function onClickInsertAtCursor() {
-    ideMessenger.post("insertAtCursor", { text: codeBlockContent });
+    ideMessenger.post("insertAtCursor", { text: codeBlockContent || "" });
   }
 
   async function handleDiffAction(action: "accept" | "reject") {
@@ -288,7 +290,7 @@ export function StepContainerPreToolbar({
     const isPendingToolCall = toolCallApplyState?.status === "not-started";
 
     if (isGeneratingCodeBlock || isPendingToolCall) {
-      const numLines = codeBlockContent.split("\n").length;
+      const numLines = (codeBlockContent || "").split("\n").length;
       const plural = numLines === 1 ? "" : "s";
       if (isGeneratingCodeBlock) {
         return (
@@ -307,8 +309,8 @@ export function StepContainerPreToolbar({
       }
     }
 
-    if (isTerminalCodeBlock(language, codeBlockContent)) {
-      return <RunInTerminalButton command={codeBlockContent} />;
+    if (isTerminalCodeBlock(language, codeBlockContent || "")) {
+      return <RunInTerminalButton command={codeBlockContent || ""} />;
     }
 
     if (isLoadingFileExists) {
