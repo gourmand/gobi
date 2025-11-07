@@ -36,14 +36,26 @@ export async function setupCa() {
           }
         } catch (vscErr) {
           // If the vscode package isn't available, fall back to win-ca, then system-ca.
+          // Suppress noisy module-not-found errors and only warn on other failures.
+          const _vscErr: any = vscErr;
+          const isNotFound =
+            (_vscErr &&
+              (_vscErr.code === "ERR_MODULE_NOT_FOUND" ||
+                _vscErr.code === "MODULE_NOT_FOUND")) ||
+            (_vscErr &&
+              typeof _vscErr.message === "string" &&
+              _vscErr.message.includes("@vscode/windows-ca-certs"));
           try {
             const winCa = await import("win-ca");
             winCa.inject("+");
           } catch (winErr) {
-            console.warn(
-              "No windows CA helper available (tried @vscode/windows-ca-certs and win-ca), falling back to system-ca:",
-              winErr,
-            );
+            if (!isNotFound) {
+              console.warn(
+                "@vscode/windows-ca-certs failed to load and win-ca failed as a fallback:",
+                vscErr,
+                winErr,
+              );
+            }
             try {
               globalAgent.options.ca = await systemCertsAsync();
             } catch (sysErr) {

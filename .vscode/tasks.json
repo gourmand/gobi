@@ -3,8 +3,12 @@
   "tasks": [
     {
       "label": "tsc:watch",
-      "type": "npm",
-      "script": "tsc:watch",
+      "type": "shell",
+      "command": "bash",
+      "args": [
+        "-lc",
+        "[ -s \"$NVM_DIR/nvm.sh\" ] && source \"$NVM_DIR/nvm.sh\"; nvm use 24.11.0 || true; pnpm -w run tsc:watch"
+      ],
       "isBackground": true,
       "problemMatcher": ["$tsc-watch"],
       "group": {
@@ -34,9 +38,12 @@
     {
       "label": "vscode-extension:esbuild-notify",
       "dependsOn": ["vscode-extension:esbuild"],
-      "type": "npm",
-      "script": "esbuild-notify",
-      "path": "extensions/vscode",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "esbuild-notify"],
+      "options": {
+        "cwd": "${workspaceFolder}/extensions/vscode"
+      },
       "presentation": {
         "group": "build-tasks",
         "panel": "shared",
@@ -49,9 +56,12 @@
     {
       "label": "vscode-extension:esbuild",
       "dependsOn": ["vscode-extension:gobi-ui:build"],
-      "type": "npm",
-      "script": "esbuild-watch",
-      "path": "extensions/vscode",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "esbuild-watch"],
+      "options": {
+        "cwd": "${workspaceFolder}/extensions/vscode"
+      },
       "isBackground": true,
       "presentation": {
         "group": "dev-watchers",
@@ -81,9 +91,12 @@
     {
       "label": "vscode-extension:package",
       "dependsOn": ["vscode-extension:esbuild"],
-      "type": "npm",
-      "script": "package",
-      "path": "extensions/vscode",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "package"],
+      "options": {
+        "cwd": "${workspaceFolder}/extensions/vscode"
+      },
       "presentation": {
         "group": "build-tasks",
         "panel": "shared",
@@ -139,9 +152,9 @@
     {
       "label": "gui:dev",
       "type": "shell",
-      "command": "npm",
+      "command": "pnpm",
       "options": {
-        "cwd": "${workspaceFolder}/gui"
+        "cwd": "${workspaceFolder}/packages/gui"
       },
       "args": ["run", "dev"],
       "isBackground": true,
@@ -176,7 +189,7 @@
     {
       "label": "binary:esbuild",
       "type": "shell",
-      "command": "npm",
+      "command": "pnpm",
       "args": ["run", "esbuild"],
       "problemMatcher": [],
       "presentation": {
@@ -191,7 +204,7 @@
     {
       "label": "docs:start",
       "type": "shell",
-      "command": "npm",
+      "command": "pnpm",
       "args": ["run", "start", "--", "--no-open"],
       "problemMatcher": [],
       "presentation": {
@@ -218,7 +231,7 @@
     {
       "label": "refresh-dependencies:core",
       "type": "shell",
-      "command": "npm",
+      "command": "pnpm",
       "args": ["install"],
       "problemMatcher": [],
       "options": {
@@ -234,7 +247,7 @@
     {
       "label": "refresh-dependencies:vscode",
       "type": "shell",
-      "command": "npm",
+      "command": "pnpm",
       "args": ["install"],
       "problemMatcher": [],
       "options": {
@@ -250,11 +263,11 @@
     {
       "label": "refresh-dependencies:gui",
       "type": "shell",
-      "command": "npm",
+      "command": "pnpm",
       "args": ["install"],
       "problemMatcher": [],
       "options": {
-        "cwd": "${workspaceFolder}/gui"
+        "cwd": "${workspaceFolder}/packages/gui"
       },
       "presentation": {
         "group": "maintenance",
@@ -313,8 +326,9 @@
     },
     {
       "label": "cli:build",
-      "type": "npm",
-      "script": "build",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "build"],
       "group": "build",
       "presentation": {
         "echo": true,
@@ -332,7 +346,7 @@
     {
       "label": "cli:build-no-minify",
       "type": "shell",
-      "command": "npm",
+      "command": "pnpm",
       "args": ["run", "build:bundle", "--", "--no-minify"],
       "group": "build",
       "presentation": {
@@ -351,8 +365,9 @@
     },
     {
       "label": "cli:test",
-      "type": "npm",
-      "script": "test",
+      "type": "shell",
+      "command": "pnpm",
+      "args": ["run", "test"],
       "group": "test",
       "presentation": {
         "echo": true,
@@ -369,7 +384,8 @@
     {
       "label": "watch-logs",
       "type": "shell",
-      "command": "npm run watch:logs",
+      "command": "pnpm",
+      "args": ["run", "watch:logs"],
       "isBackground": true,
       "problemMatcher": {
         "pattern": {
