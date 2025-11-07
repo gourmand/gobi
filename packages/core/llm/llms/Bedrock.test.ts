@@ -325,7 +325,10 @@ describe("Bedrock", () => {
       const converted = bedrock["_convertMessages"](messages, availableTools);
 
       expect(converted).toEqual([
-        { role: "user", content: [{ text: "Hello" }] },
+        {
+          role: "user",
+          content: [{ guardContent: { text: { text: "Hello" } } }],
+        },
         { role: "assistant", content: [{ text: "Hi there" }] },
       ]);
     });
@@ -358,7 +361,10 @@ describe("Bedrock", () => {
       const converted = bedrock["_convertMessages"](messages, availableTools);
 
       expect(converted).toEqual([
-        { role: "user", content: [{ text: "Use a tool" }] },
+        {
+          role: "user",
+          content: [{ guardContent: { text: { text: "Use a tool" } } }],
+        },
         {
           role: "assistant",
           content: [
@@ -409,7 +415,10 @@ describe("Bedrock", () => {
       const converted = bedrock["_convertMessages"](messages, availableTools);
 
       expect(converted).toEqual([
-        { role: "user", content: [{ text: "Use a tool" }] },
+        {
+          role: "user",
+          content: [{ guardContent: { text: { text: "Use a tool" } } }],
+        },
         {
           role: "assistant",
           content: [
@@ -432,7 +441,10 @@ describe("Bedrock", () => {
       const converted = bedrock["_convertMessages"](messages, availableTools);
 
       expect(converted).toEqual([
-        { role: "user", content: [{ text: "Think about this" }] },
+        {
+          role: "user",
+          content: [{ guardContent: { text: { text: "Think about this" } } }],
+        },
         {
           role: "assistant",
           content: [
@@ -465,7 +477,10 @@ describe("Bedrock", () => {
       const converted = bedrock["_convertMessages"](messages, availableTools);
 
       expect(converted).toEqual([
-        { role: "user", content: [{ text: "Think about this" }] },
+        {
+          role: "user",
+          content: [{ guardContent: { text: { text: "Think about this" } } }],
+        },
         {
           role: "assistant",
           content: [
@@ -511,7 +526,7 @@ describe("Bedrock", () => {
         {
           role: "user",
           content: [
-            { text: "Look at this image:" },
+            { guardContent: { text: { text: "Look at this image:" } } },
             {
               image: {
                 format: "jpeg",

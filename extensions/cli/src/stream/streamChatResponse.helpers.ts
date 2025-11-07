@@ -1,7 +1,31 @@
 // Helper functions extracted from streamChatResponse.ts to reduce file size
 
-import { GobiError, GobiErrorReason } from "@gourmanddev/core/util/errors.js";
-import { ChatCompletionToolMessageParam } from "openai/resources/chat/completions.mjs";
+// Minimal local fallback definitions for GobiError and GobiErrorReason to avoid
+// depending on the external package in environments where it isn't installed.
+// If @gourmanddev/core is available at runtime, these can be removed.
+export class GobiError extends Error {
+  reason: GobiErrorReason;
+  constructor(
+    message: string,
+    reason: GobiErrorReason = GobiErrorReason.Unknown,
+  ) {
+    super(message);
+    this.reason = reason;
+    Object.setPrototypeOf(this, GobiError.prototype);
+  }
+}
+
+export enum GobiErrorReason {
+  Unknown = "Unknown",
+}
+
+// Local type to avoid relying on a specific OpenAI SDK internal path.
+// Fields mirror the usage in this file (role, tool_call_id, content).
+export type ChatCompletionToolMessageParam = {
+  role: string;
+  tool_call_id?: string;
+  content?: string;
+};
 
 import { checkToolPermission } from "../permissions/permissionChecker.js";
 import { toolPermissionManager } from "../permissions/permissionManager.js";
@@ -61,10 +85,10 @@ export async function handleHeadlessPermission(
   // Import safeStderr to bypass console blocking in headless mode
   const { safeStderr } = await import("../init.js");
   safeStderr(
-    `Error: Tool '${toolName}' requires permission but cn is running in headless mode.\n`,
+    `Error: Tool '${toolName}' requires permission but gobi is running in headless mode.\n`,
   );
   safeStderr(
-    `If you want to allow all tools without asking, use cn -p --auto "your prompt".\n`,
+    `If you want to allow all tools without asking, use gobi -p --auto "your prompt".\n`,
   );
   safeStderr(`If you want to allow this tool, use --allow ${toolName}.\n`);
   safeStderr(

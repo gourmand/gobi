@@ -11,7 +11,11 @@
   },
   "author": "Gourmand.dev",
   "license": "Apache-2.0",
-  "engine": {
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gourmand/gobi"
+  },
+  "engines": {
     "node": ">=24.11.0"
   }
 }

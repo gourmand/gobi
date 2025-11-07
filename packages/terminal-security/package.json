@@ -13,13 +13,17 @@
   },
   "author": "gourmand.dev",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gourmand/gobi"
+  },
   "devDependencies": {
     "@types/shell-quote": "^1.7.5"
   },
   "dependencies": {
     "shell-quote": "^1.8.3"
   },
-  "engine": {
+  "engines": {
     "node": ">=24.11.0"
   }
 }

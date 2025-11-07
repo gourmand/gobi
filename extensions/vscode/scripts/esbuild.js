@@ -28,6 +28,8 @@ const esbuildConfig = {
   loader: {
     // eslint-disable-next-line @typescript-eslint/naming-convention
     ".node": "file",
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    ".css": "text",
   },
 
   // To allow import.meta.path for transformers.js

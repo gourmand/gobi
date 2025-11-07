@@ -4,12 +4,12 @@ import React, { useMemo } from "react";
 // Array of helpful tips for Gobi CLI users
 const GOBI_CLI_TIPS = [
   "Use `/help` to learn keyboard shortcuts",
-  "Press escape to pause cn, and press enter to gobi",
+  "Press Escape to pause the TUI and Enter to submit your input",
   "Use arrow keys (↑/↓) to navigate through your input history",
   'Multi-line input is supported by typing "\\" and pressing enter',
-  "Use `cn ls` or `/resume` to resume a previous conversation",
-  'Run `cn` with the `-p` flag for headless mode. For example: `cn -p "Generate a commit message for the current changes. Output _only_ the commit message and nothing else."`',
-  "Use the /init slash command to generate an AGENTS.md file. This will help `cn` understand your codebase and generate better responses.",
+  "Use `gobi ls` or `/resume` to resume a previous conversation",
+  'Run `gobi` (or `gi`) with the `-p` flag for headless mode. For example: `gobi -p "Generate a commit message for the current changes. Output _only_ the commit message and nothing else."`',
+  "Use the /init slash command to generate an AGENTS.md file. This will help `gobi` understand your codebase and generate better responses.",
 ];
 
 interface TipsDisplayProps {

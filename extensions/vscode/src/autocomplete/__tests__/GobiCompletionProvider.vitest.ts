@@ -362,7 +362,7 @@ vi.mock("vscode", () => {
   };
 });
 
-vi.mock("core/autocomplete/CompletionProvider", () => {
+vi.mock("@gourmanddev/core/autocomplete/CompletionProvider", () => {
   return {
     CompletionProvider: class {
       provideInlineCompletionItems = vi.fn();
@@ -371,12 +371,15 @@ vi.mock("core/autocomplete/CompletionProvider", () => {
   };
 });
 
-vi.mock("core/autocomplete/util/processSingleLineCompletion", () => ({
-  processSingleLineCompletion: vi.fn((text: string) => ({
-    completionText: text,
-    range: { start: 0, end: text.length },
-  })),
-}));
+vi.mock(
+  "@gourmanddev/core/autocomplete/util/processSingleLineCompletion",
+  () => ({
+    processSingleLineCompletion: vi.fn((text: string) => ({
+      completionText: text,
+      range: { start: 0, end: text.length },
+    })),
+  }),
+);
 
 vi.mock("../statusBar", () => {
   const StatusBarStatus = {
@@ -442,7 +445,7 @@ vi.mock("../../activation/JumpManager", () => {
   };
 });
 
-vi.mock("core/nextEdit/NextEditPrefetchQueue", () => {
+vi.mock("@gourmanddev/core/nextEdit/NextEditPrefetchQueue", () => {
   let instance: any = null;
   return {
     PrefetchQueue: {
@@ -454,7 +457,7 @@ vi.mock("core/nextEdit/NextEditPrefetchQueue", () => {
   };
 });
 
-vi.mock("core/nextEdit/NextEditProvider", () => {
+vi.mock("@gourmanddev/core/nextEdit/NextEditProvider", () => {
   let instance: any = null;
   return {
     NextEditProvider: {
@@ -467,7 +470,7 @@ vi.mock("core/nextEdit/NextEditProvider", () => {
   };
 });
 
-vi.mock("core/nextEdit/NextEditLoggingService", () => {
+vi.mock("@gourmanddev/core/nextEdit/NextEditLoggingService", () => {
   let instance: any = null;
   return {
     NextEditLoggingService: {
@@ -479,7 +482,7 @@ vi.mock("core/nextEdit/NextEditLoggingService", () => {
   };
 });
 
-vi.mock("core/nextEdit/diff/diff", () => ({
+vi.mock("@gourmanddev/core/nextEdit/diff/diff", () => ({
   checkFim: vi.fn(() => ({ isFim: true, fimText: "ghost" })),
 }));
 

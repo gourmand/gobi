@@ -1,0 +1,10 @@
+# Ignore common build and dependency folders for AST tracker
+node_modules/
+**/dist/
+**/build/
+**/out/
+**/.cache/
+**/*.min.js
+
+# Explicitly *do not* ignore extension source
+!extensions/vscode/src/**

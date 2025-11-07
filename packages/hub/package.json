@@ -11,13 +11,17 @@
   },
   "author": "Gourmand Dev Inc.",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gourmand/gobi"
+  },
   "dependencies": {
     "@gourmanddev/config-yaml": "workspace:^"
   },
   "devDependencies": {
     "cross-env": "^10.1.0"
   },
-  "engine": {
+  "engines": {
     "node": ">=24.11.0"
   }
 }

@@ -6,9 +6,9 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import styled from "styled-components";
-import { lightGray } from "../index";
-import { cn } from "../../util/cn";
+import { gi } from "../../util/gi";
 import { ToolTip } from "../gui/Tooltip";
+import { lightGray } from "../index";
 
 export const OptionDiv = styled.div<{
   isDisabled?: boolean;
@@ -73,7 +73,7 @@ function IconBase({
 }: IconBaseProps) {
   return (
     <div
-      className={cn(
+      className={gi(
         "rounded-default h-[1.2em] w-[1.2em] cursor-pointer p-1",
         $hovered ? "visible opacity-75" : "invisible opacity-0",
         "hover:bg-lightgray/20 hover:opacity-100",

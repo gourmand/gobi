@@ -28,7 +28,7 @@ import {
 import { ChatScrollAnchor } from "../components/ChatScrollAnchor";
 import StepContainer from "../components/gui/StepContainer";
 import TimelineItem from "../components/gui/TimelineItem";
-import ContinueInputBox from "../components/mainInput/ContinueInputBox";
+import GobiInputBox from "../components/mainInput/GobiInputBox";
 import { defaultInputModifiers } from "../components/mainInput/inputModifiers";
 import { TutorialCard } from "../components/mainInput/TutorialCard";
 import {
@@ -358,7 +358,7 @@ function GUI() {
                     }}
                   >
                     {item.message.role === "user" ? (
-                      <ContinueInputBox
+                      <GobiInputBox
                         onEnter={async (editorState, modifiers) => {
                           streamResponse(
                             editorState,
@@ -371,7 +371,7 @@ function GUI() {
                         isMainInput={false}
                         editorState={item.editorState}
                         contextItems={item.contextItems}
-                      ></ContinueInputBox>
+                      ></GobiInputBox>
                     ) : (
                       <div className="thread-message">
                         <TimelineItem
@@ -451,14 +451,14 @@ function GUI() {
               );
             })}
           </StepsDiv>
-          <ContinueInputBox
+          <GobiInputBox
             onEnter={(editorContent, modifiers) => {
               sendInput(editorContent, modifiers);
             }}
             isLastUserInput={false}
             isMainInput={true}
             hidden={active}
-          ></ContinueInputBox>
+          ></GobiInputBox>
 
           {active ? (
             <>
@@ -651,7 +651,7 @@ import {
 import { ChatScrollAnchor } from "../components/ChatScrollAnchor";
 import StepContainer from "../components/gui/StepContainer";
 import TimelineItem from "../components/gui/TimelineItem";
-import ContinueInputBox from "../components/mainInput/ContinueInputBox";
+import GobiInputBox from "../components/mainInput/GobiInputBox";
 import { defaultInputModifiers } from "../components/mainInput/inputModifiers";
 import { TutorialCard } from "../components/mainInput/TutorialCard";
 import {
@@ -996,7 +996,7 @@ function GUI() {
                     }}
                   >
                     {item.message.role === "user" ? (
-                      <ContinueInputBox
+                      <GobiInputBox
                         onEnter={async (editorState, modifiers) => {
                           streamResponse(
                             editorState,
@@ -1009,7 +1009,7 @@ function GUI() {
                         isMainInput={false}
                         editorState={item.editorState}
                         contextItems={item.contextItems}
-                      ></ContinueInputBox>
+                      ></GobiInputBox>
                     ) : (
                       <div className="thread-message">
                         <TimelineItem
@@ -1089,14 +1089,14 @@ function GUI() {
               );
             })}
           </StepsDiv>
-          <ContinueInputBox
+          <GobiInputBox
             onEnter={(editorContent, modifiers) => {
               sendInput(editorContent, modifiers);
             }}
             isLastUserInput={false}
             isMainInput={true}
             hidden={active}
-          ></ContinueInputBox>
+          ></GobiInputBox>
 
           {active ? (
             <>

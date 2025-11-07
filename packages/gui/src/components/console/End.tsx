@@ -18,7 +18,7 @@ export default function Start({ item }: StartProps) {
     case "error":
       return (
         <div>
-          <span className="text-[color:var(--vscode-statusBarItem-errorForeground) m-0.5 inline-block rounded-sm bg-[color:var(--vscode-statusBarItem-errorBackground)] p-0.5">
+          <span className="m-0.5 inline-block rounded-sm bg-[color:var(--vscode-statusBarItem-errorBackground)] p-0.5 text-[color:var(--vscode-statusBarItem-errorForeground)]">
             Error
           </span>
           {item.message}
@@ -28,7 +28,7 @@ export default function Start({ item }: StartProps) {
     case "cancel":
       return (
         <div>
-          <span className="text-[color:var(--vscode-statusBarItem-warningForeground) m-0.5 inline-block rounded-sm bg-[color:var(--vscode-statusBarItem-warningBackground)] p-0.5">
+          <span className="m-0.5 inline-block rounded-sm bg-[color:var(--vscode-statusBarItem-warningBackground)] p-0.5 text-[color:var(--vscode-statusBarItem-warningForeground)]">
             Cancelled
           </span>
         </div>

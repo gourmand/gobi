@@ -114,4 +114,44 @@ module.exports = {
   corePlugins: {
     preflight: false,
   },
+  // Some classes are generated dynamically or use Tailwind's arbitrary value
+  // syntax (e.g. "max-h-[70vh]", "h-[16px]"). PostCSS/Tailwind's
+  // content scanner can miss these in some build setups, so add a safelist
+  // to ensure they are preserved in production builds. We include both
+  // specific utility patterns and a conservative catch-all for other
+  // bracketed utilities used in the GUI.
+  safelist: [
+    { pattern: /max-h-\[.*\]/ },
+    { pattern: /max-w-\[.*\]/ },
+    { pattern: /min-h-\[.*\]/ },
+    { pattern: /min-w-\[.*\]/ },
+    { pattern: /h-\[.*\]/ },
+    { pattern: /w-\[.*\]/ },
+    { pattern: /text-\[.*\]/ },
+    { pattern: /top-\[.*\]/ },
+    { pattern: /right-\[.*\]/ },
+    { pattern: /left-\[.*\]/ },
+    { pattern: /bottom-\[.*\]/ },
+    { pattern: /pr-\[.*\]/ },
+    { pattern: /pl-\[.*\]/ },
+    { pattern: /pt-\[.*\]/ },
+    { pattern: /pb-\[.*\]/ },
+    { pattern: /mr-\[.*\]/ },
+    { pattern: /ml-\[.*\]/ },
+    { pattern: /z-\[.*\]/ },
+    { pattern: /rounded-\[.*\]/ },
+    { pattern: /border-\[.*\]/ },
+    { pattern: /bg-\[.*\]/ },
+    { pattern: /text-\[color:.*\]/ },
+    // Conservative catch-all for any other utilities that use Tailwind's
+    // arbitrary value/bracket syntax (e.g. `something-[value]`). This
+    // prevents accidental removal of dynamically-generated classes.
+    { pattern: /[a-z-]+-\[.*\]/ },
+    // Preserve common plain numeric utilities (e.g. h-3, h-3.5, w-4, max-h-4/5)
+    // and their responsive variants (e.g. xs:h-4). This keeps small icon and
+    // layout sizing utilities from being purged in production builds.
+    { pattern: /^(?:xs:|sm:|md:|lg:|xl:|2xl:|3xl:|4xl:)?[a-z-]+-(?:\d+(?:\.\d+)?|\d+\/\d+)$/ },
+    // More targeted pattern for min-/max-/h-/w- variants (explicit).
+    { pattern: /^(?:xs:|sm:|md:|lg:|xl:|2xl:|3xl:|4xl:)?(?:h|w|min-h|min-w|max-h|max-w)-(?:\d+(?:\.\d+)?|\d+\/\d+)$/ },
+  ],
 };

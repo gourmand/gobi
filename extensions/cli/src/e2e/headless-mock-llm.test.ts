@@ -4,8 +4,8 @@ import {
   runCLI,
 } from "../test-helpers/cli-helpers.js";
 import {
-  setupMockLLMTest,
   cleanupMockLLMServer,
+  setupMockLLMTest,
   type MockLLMServer,
 } from "../test-helpers/mock-llm-server.js";
 
@@ -25,7 +25,7 @@ describe("E2E: Headless Mode with Mock Server", () => {
     await cleanupTestContext(context);
   });
 
-  it('should output "Hello World!" when using cn -p "Hi"', async () => {
+  it('should output "Hello World!" when using gobi -p "Hi"', async () => {
     const result = await runCLI(context, {
       args: ["-p", "--config", context.configPath, "Hi"],
       timeout: 15000,

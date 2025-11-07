@@ -5,12 +5,12 @@
 //   background-color: ${vscBackground};
 //   color: ${vscForeground};
 
+import { gi } from "../../util/gi";
 import {
   vscCommandCenterInactiveBorder,
   vscForeground,
   vscInputBackground,
 } from "../index";
-import { cn } from "../../util/cn";
 
 //   appearance: none;
 //   -webkit-appearance: none;
@@ -34,7 +34,7 @@ export const Select: React.FC<
   >
     <select
       {...props}
-      className={cn("rounded-default border px-3 py-1.5", className)}
+      className={gi("rounded-default border px-3 py-1.5", className)}
       style={{
         borderColor: vscCommandCenterInactiveBorder,
         backgroundColor: vscInputBackground,

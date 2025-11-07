@@ -80,9 +80,31 @@ void (async () => {
   console.log(`packages root: ${packagesRoot}`);
 
   process.chdir(path.join(packagesRoot, "gui"));
+  // Ensure the GUI dist exists. If tailwind/Vite build wasn't run, run a build
+  // so CSS assets are produced into dist/assets. This avoids packaging a stale
+  // extension/gui directory that lacks the compiled CSS after Tailwind changes.
+  try {
+    const distAssetsIndex = path.join(
+      process.cwd(),
+      "dist",
+      "assets",
+      "index.css",
+    );
+    if (!fs.existsSync(distAssetsIndex)) {
+      console.log(
+        "[info] GUI dist appears incomplete (missing index.css). Running 'pnpm build' in packages/gui...",
+      );
+      // Run the gui build in this packages/gui working directory
+      const { execSync } = require("child_process");
+      execSync("pnpm build", { stdio: "inherit" });
+    }
+  } catch (e) {
+    console.warn("[warn] Failed to auto-build GUI dist:", e);
+  }
 
   // Then copy over the dist folder to the VSCode extension //
   const vscodeGuiPath = path.join(extensionRoot, "gui");
+  const guiAssetsPath = path.join(vscodeGuiPath, "assets");
   // Only copy GUI build output if destination is missing or empty. This avoids copying
   // the GUI on repeated runs when `pnpm -r build` already produced the files.
   const shouldCopyGui = (() => {
@@ -120,10 +142,74 @@ void (async () => {
     console.log(
       `[timer] VSCode copy completed in ${Date.now() - vscodeCopyStart}ms`,
     );
+    // Post-copy: ensure expected CSS filenames exist. Some build setups (Vite/Tailwind)
+    // may emit hashed CSS filenames. If that happened, copy the emitted CSS to the
+    // expected filenames so the extension can reference them deterministically.
+    try {
+      const assetFiles = fs.existsSync(guiAssetsPath)
+        ? fs.readdirSync(guiAssetsPath)
+        : [];
+
+      const ensureCss = (expectedName, globMatcher) => {
+        if (assetFiles.includes(expectedName)) return;
+        // Find a candidate file matching the globMatcher (regex)
+        const rx = new RegExp(globMatcher);
+        const candidate = assetFiles.find(
+          (f) => rx.test(f) && f.endsWith(".css"),
+        );
+        if (candidate) {
+          const from = path.join(guiAssetsPath, candidate);
+          const to = path.join(guiAssetsPath, expectedName);
+          try {
+            fs.copyFileSync(from, to);
+            console.log(`[info] Copied ${candidate} -> ${expectedName}`);
+          } catch (e) {
+            console.warn(
+              `[warn] Failed to copy ${candidate} -> ${expectedName}`,
+              e,
+            );
+          }
+        }
+      };
+
+      // Ensure main index.css
+      ensureCss("index.css", "^index(\\..*)?\\.css$");
+      // Ensure console CSS (some builds emit indexConsole.*.css)
+      ensureCss("indexConsole.css", "^indexConsole(\\..*)?\\.css$");
+      // (override applied after the copy block below so it's executed even when
+      // we skip copying because extension/gui already exists)
+    } catch (e) {
+      console.warn("[warn] Error while normalizing GUI CSS filenames:", e);
+    }
   } else {
     console.log(
       "Skipping GUI copy: extension/gui already exists and is non-empty",
     );
+  }
+
+  // Packaging-time CSS override: ensure canonical CSS is present in the
+  // extension/gui assets regardless of whether we copied the GUI in this run.
+  try {
+    const repoRootIndexCss = path.join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "index.old.css",
+    );
+    const targetCss = path.join(guiAssetsPath, "index.css");
+    if (fs.existsSync(repoRootIndexCss) && fs.existsSync(guiAssetsPath)) {
+      fs.copyFileSync(repoRootIndexCss, targetCss);
+      console.log(
+        "[info] Overwrote gui assets index.css with canonical index.old.css from repo root",
+      );
+    } else if (!fs.existsSync(repoRootIndexCss)) {
+      console.log(
+        "[info] No canonical index.old.css found at repo root; leaving generated CSS in place",
+      );
+    }
+  } catch (e) {
+    console.warn("[warn] Failed to apply packaging-time CSS override:", e);
   }
 
   if (!fs.existsSync(path.join("dist", "assets", "index.js"))) {
@@ -131,6 +217,17 @@ void (async () => {
   }
   if (!fs.existsSync(path.join("dist", "assets", "index.css"))) {
     throw new Error("gui build did not produce index.css");
+  }
+  // Console view assets (tailwind build may produce separate console styles)
+  if (!fs.existsSync(path.join("dist", "assets", "indexConsole.js"))) {
+    console.warn(
+      "gui build did not produce indexConsole.js — continuing, but console view may be unstyled",
+    );
+  }
+  if (!fs.existsSync(path.join("dist", "assets", "indexConsole.css"))) {
+    console.warn(
+      "gui build did not produce indexConsole.css — continuing, but console view may be unstyled",
+    );
   }
 
   // Copy over native / wasm modules //
@@ -285,9 +382,16 @@ void (async () => {
   }
 
   console.log("[info] Copying sqlite node binding from core");
+  const sqliteSrc = path.join(packagesRoot, "core/node_modules/sqlite3/build");
+  if (!fs.existsSync(sqliteSrc)) {
+    throw new Error(
+      `[error] sqlite3 build not found at expected path: ${sqliteSrc}. Ensure packages are installed and sqlite3 has been built under packages/core/node_modules/sqlite3/build`,
+    );
+  }
+
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(packagesRoot, "core/node_modules/sqlite3/build"),
+      sqliteSrc,
       path.join(extensionRoot, "out/build"),
       { dereference: true },
       (error) => {
@@ -304,7 +408,7 @@ void (async () => {
   // Copied here as well for the VS Code test suite
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(packagesRoot, "core/node_modules/sqlite3/build"),
+      sqliteSrc,
       path.join(extensionRoot, "out"),
       { dereference: true },
       (error) => {
@@ -354,6 +458,34 @@ void (async () => {
     "out/xhr-sync-worker.js",
   );
 
+  // Copy jsdom's default stylesheet (required by jsdom@27+)
+  const jsdomStylesheetSrc = path.join(
+    extensionRoot,
+    "node_modules/jsdom/lib/jsdom/browser/default-stylesheet.css",
+  );
+  // Place the default stylesheet where extension.js expects it:
+  // extensions/build/extension.js loads '../../browser/default-stylesheet.css'
+  const jsdomStylesheetDest = path.join(
+    extensionRoot,
+    "browser",
+    "default-stylesheet.css",
+  );
+  try {
+    if (fs.existsSync(jsdomStylesheetSrc)) {
+      fs.mkdirSync(path.dirname(jsdomStylesheetDest), { recursive: true });
+      fs.cpSync(jsdomStylesheetSrc, jsdomStylesheetDest);
+      console.log(
+        "[info] Copied jsdom default-stylesheet.css to browser/default-stylesheet.css",
+      );
+    } else {
+      console.warn(
+        "[warn] jsdom default-stylesheet.css not found at expected location",
+      );
+    }
+  } catch (e) {
+    console.warn("[warn] Failed to copy jsdom default-stylesheet.css:", e);
+  }
+
   // Validate the all of the necessary files are present
   validateFilesPresent([
     // Queries used to create the index for @code context provider
@@ -372,9 +504,12 @@ void (async () => {
           : "onnxruntime.dll"
     }`,
 
-    // Code/styling for the sidebar
+    // Code/styling for the sidebar and console
     "gui/assets/index.js",
     "gui/assets/index.css",
+    // Console view assets (may be produced separately by Tailwind/Vite)
+    "gui/assets/indexConsole.js",
+    "gui/assets/indexConsole.css",
 
     // Tutorial
     "gobi_tutorial.py",

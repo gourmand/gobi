@@ -1,6 +1,5 @@
 import { readFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
+import { join } from "path";
 
 import node_machine_id from "node-machine-id";
 
@@ -9,9 +8,10 @@ import { logger } from "./util/logger.js";
 
 export function getVersion(): string {
   try {
-    const __filename = fileURLToPath(import.meta.url);
-    const __dirname = dirname(__filename);
-    const packageJsonPath = join(__dirname, "../package.json");
+    // In CJS bundles (like our CLI), __dirname is always available
+    // We don't need the ESM branch since we're building to CommonJS
+    const packageDir = __dirname;
+    const packageJsonPath = join(packageDir, "../package.json");
     const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf8"));
     return packageJson.version;
   } catch {
@@ -70,17 +70,23 @@ export async function getLatestVersion(
   return latestVersionCache;
 }
 
-getLatestVersion()
-  .then((version) => {
+/**
+ * Explicit startup hook to fetch latest version in the background.
+ * Call this from CLI startup rather than at module load time to avoid
+ * top-level await behavior in bundles.
+ */
+export async function initVersionCheck(): Promise<void> {
+  try {
+    const version = await getLatestVersion();
     if (version) {
       logger?.info(`Latest version: ${version}`);
     }
-  })
-  .catch((error) => {
+  } catch (error) {
     logger?.debug(
       `Warning: Could not fetch latest version from api.gourmand.dev: ${error}`,
     );
-  });
+  }
+}
 
 export function compareVersions(
   current: string,

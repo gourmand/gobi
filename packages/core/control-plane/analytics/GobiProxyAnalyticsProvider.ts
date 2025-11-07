@@ -1,5 +1,4 @@
 import { Analytics } from "@gourmanddev/config-types";
-import fetch from "node-fetch";
 
 import { ControlPlaneClient } from "../client.js";
 

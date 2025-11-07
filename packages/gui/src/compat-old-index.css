@@ -1,0 +1,118 @@
+/*
+  Compatibility CSS: provide default values for the VS Code CSS variables that
+  many GUI components rely on. These defaults match the previous canonical
+  theme used by the extension so the webview looks correct before the
+  application JS runs and applies the live theme.
+*/
+:root {
+  /* Background / foreground */
+  --vscode-sideBar-background: #1e1e1e;
+  --vscode-editor-background: #1e1e1e;
+  --vscode-panel-background: #1e1e1e;
+
+  --vscode-sideBar-foreground: #e6e6e6;
+  --vscode-editor-foreground: #e6e6e6;
+  --vscode-panel-foreground: #e6e6e6;
+
+  /* Buttons */
+  --vscode-button-background: #2c5aa0;
+  --vscode-button-foreground: #ffffff;
+  --vscode-button-hoverBackground: #3a6db3;
+  --vscode-button-secondaryBackground: #303030;
+  --vscode-button-secondaryForeground: #e6e6e6;
+  --vscode-button-secondaryHoverBackground: #3a3a3a;
+
+  /* Borders / focus */
+  --vscode-sideBar-border: #2a2a2a;
+  --vscode-panel-border: #2a2a2a;
+  --vscode-focusBorder: #3a6db3;
+
+  /* Command center */
+  --vscode-commandCenter-background: #252525;
+  --vscode-commandCenter-foreground: #e6e6e6;
+  --vscode-commandCenter-inactiveBorder: #555555;
+  --vscode-commandCenter-activeBorder: #4d8bf0;
+
+  /* Descriptions / muted */
+  --vscode-descriptionForeground: #b3b3b3;
+  --vscode-list-deemphasizedForeground: #8c8c8c;
+
+  /* Inputs */
+  --vscode-input-background: #2d2d2d;
+  --vscode-input-foreground: #e6e6e6;
+  --vscode-input-border: #555555;
+  --vscode-input-placeholderForeground: #9e9e9e;
+
+  /* Table / badge */
+  --vscode-tree-tableOddRowsBackground: #2d2d2d;
+  --vscode-badge-background: #4d4d4d;
+  --vscode-badge-foreground: #ffffff;
+
+  /* Charts / status */
+  --vscode-charts-blue: #2196f3;
+  --vscode-notebookStatusRunningIcon-foreground: #2196f3;
+  --vscode-notebookStatusSuccessIcon-foreground: #4caf50;
+  --vscode-testing-iconPassed: #4caf50;
+  --vscode-gitDecoration-addedResourceForeground: #4caf50;
+  --vscode-charts-green: #4caf50;
+
+  /* Warnings / errors / links */
+  --vscode-editorWarning-foreground: #ffb74d;
+  --vscode-list-warningForeground: #ffb74d;
+  --vscode-editorError-foreground: #f44336;
+  --vscode-list-errorForeground: #f44336;
+  --vscode-textLink-foreground: #5c9ce6;
+
+  /* Terminal */
+  --vscode-terminal-ansiGreen: #0dbc79;
+
+  /* Code block background */
+  --vscode-textCodeBlock-background: #1e1e1e;
+
+  /* Tab / accent */
+  --vscode-tab-activeBorderTop: #4d8bf0;
+
+  /* Find match */
+  --vscode-editor-findMatchBackground: #264f7840;
+  --vscode-editor-findMatchHighlightBackground: #ffb74d40;
+
+  /* List hover / selection */
+  --vscode-list-hoverBackground: #383838;
+  --vscode-list-activeSelectionBackground: #2c5aa050;
+  --vscode-list-activeSelectionForeground: #ffffff;
+}
+
+/* Small helpers used across many components */
+:root {
+  --gobi-default-radius: 6px;
+}
+
+/* Additional variables referenced in components (including some misspellings used
+   in classnames). These are safe defaults so components render before JS theme
+   hydration runs. */
+:root {
+  --vscode-list-inactiveSelectionBackground: #2a2a2a;
+  --vscode-list-inactiveSelectionForeground: #ffffff;
+
+  --vscode-statusBarItem-errorBackground: #f44336;
+  --vscode-statusBarItem-errorForeground: #ffffff;
+  --vscode-statusBarItem-warningBackground: #ffb74d;
+  --vscode-statusBarItem-warningForeground: #000000;
+
+  --vscode-textLink-activeForeground: #3b82f6;
+
+  --vscode-charts-purple: #9b59b6;
+  --vscode-charts-orange: #ff9800;
+  --vscode-charts-red: #f44336;
+  --vscode-charts-yellow: #ffeb3b;
+
+  --vscode-foreground: #e6e6e6;
+
+  /* Font fallbacks used by some components */
+  --vscode-editor-font-family:
+    "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco,
+    "Roboto Mono", "Courier New", monospace;
+  --vscode-font-family:
+    Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+    Arial, sans-serif;
+}

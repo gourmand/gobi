@@ -1,5 +1,5 @@
 import { RequestOptions } from "@gourmanddev/config-types";
-import { fetchwithRequestOptions, patchedFetch } from "@gourmanddev/fetch";
+import { fetchwithRequestOptions } from "@gourmanddev/fetch";
 import {
   ChatCompletionChunk,
   CompletionUsage,
@@ -154,15 +154,19 @@ export function model(options: { id: string; owned_by?: string }): Model {
 
 export function customFetch(
   requestOptions: RequestOptions | undefined,
-): typeof patchedFetch {
-  if (process.env.FEATURE_FLAG_DISABLE_CUSTOM_FETCH) {
-    return patchedFetch;
-  }
+): (req: URL | string | Request, init?: any) => Promise<Response> {
+  // Return a function compatible with the previous API that delegates to
+  // fetchwithRequestOptions so advanced requestOptions (proxy, CA, cert)
+  // are honored when present.
   return (req: URL | string | Request, init?: any) => {
     if (typeof req === "string" || req instanceof URL) {
-      return fetchwithRequestOptions(req, init, requestOptions);
+      return fetchwithRequestOptions(req as any, init as any, requestOptions);
     } else {
-      return fetchwithRequestOptions(req.url, init, requestOptions);
+      return fetchwithRequestOptions(
+        new URL((req as Request).url),
+        init as any,
+        requestOptions,
+      );
     }
   };
 }

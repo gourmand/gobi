@@ -11,6 +11,10 @@
   },
   "author": "Gourmand.dev",
   "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gourmand/gobi"
+  },
   "dependencies": {
     "zod": "^4.1.12"
   },

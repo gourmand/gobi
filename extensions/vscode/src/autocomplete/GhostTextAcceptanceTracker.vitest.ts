@@ -1,29 +1,79 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import * as vscode from "vscode";
-import { GhostTextAcceptanceTracker } from "./GhostTextAcceptanceTracker";
+// We'll import the module under test dynamically inside beforeEach
+let GhostTextAcceptanceTracker: any;
 
-// Mock the vscode module
-vi.mock("vscode", () => ({
-  Position: vi.fn((line: number, character: number) => ({
-    line,
-    character,
-    isEqual: vi.fn(
-      (other: any) => other.line === line && other.character === character,
-    ),
-  })),
-  Range: vi.fn((start: any, end: any) => ({ start, end })),
+// Mock the vscode module with constructible classes so tests can use `new vscode.Position(...)`
+vi.mock("vscode", () => {
+  class Position {
+    constructor(
+      public line: number,
+      public character: number,
+    ) {}
+    isEqual(other: any) {
+      return (
+        other && other.line === this.line && other.character === this.character
+      );
+    }
+  }
+
+  class Range {
+    constructor(
+      public start: any,
+      public end: any,
+    ) {}
+  }
+
+  return {
+    Position,
+    Range,
+  };
+});
+
+// Mock SelectionChangeManager to avoid importing large/async real implementation during tests.
+vi.mock("../activation/SelectionChangeManager", () => {
+  return {
+    HandlerPriority: {
+      CRITICAL: 5,
+      HIGH: 4,
+      NORMAL: 3,
+      LOW: 2,
+      FALLBACK: 1,
+    },
+    SelectionChangeManager: {
+      getInstance: () => ({
+        registerListener: () => {
+          return () => {};
+        },
+      }),
+    },
+  };
+});
+
+// Mock svg-builder and its content entry so ESM directory imports don't fail in tests
+vi.mock("svg-builder", () => {
+  const mockSvgBuilder = {
+    width: vi.fn().mockReturnThis(),
+    height: vi.fn().mockReturnThis(),
+    text: vi.fn().mockReturnThis(),
+    render: vi.fn().mockReturnValue("<svg/>"),
+  };
+  return { default: mockSvgBuilder };
+});
+
+vi.mock("svg-builder/dist/esm/content", () => ({
+  default: {
+    // Provide minimal content exports expected by svg-builder internals
+    text: (s: string) => s,
+  },
 }));
 
 describe("GhostTextAcceptanceTracker", () => {
-  let tracker: GhostTextAcceptanceTracker;
+  let tracker: any;
   let mockDocument: vscode.TextDocument;
 
   beforeEach(() => {
-    // Clear any existing instance
-    GhostTextAcceptanceTracker.clearInstance();
-    tracker = GhostTextAcceptanceTracker.getInstance();
-
-    // Create mock document
+    // Create mock document first so it's available to nested beforeEach blocks
     mockDocument = {
       uri: {
         toString: () => "file:///test.ts",
@@ -31,6 +81,14 @@ describe("GhostTextAcceptanceTracker", () => {
       version: 1,
       getText: vi.fn(),
     } as any;
+
+    // Clear any existing instance and import the module under test after mocks
+    // (dynamic import ensures our file-level mocks run before module evaluation)
+    return import("./GhostTextAcceptanceTracker").then((mod) => {
+      GhostTextAcceptanceTracker = mod.GhostTextAcceptanceTracker;
+      GhostTextAcceptanceTracker.clearInstance();
+      tracker = GhostTextAcceptanceTracker.getInstance();
+    });
   });
 
   describe("getInstance", () => {

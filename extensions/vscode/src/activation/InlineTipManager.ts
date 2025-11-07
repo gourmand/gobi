@@ -263,9 +263,9 @@ export class InlineTipManager {
     // }
 
     try {
-      const builder = svgBuilder.newInstance
-        ? svgBuilder.newInstance()
-        : svgBuilder;
+      const builder = (svgBuilder as any).newInstance
+        ? (svgBuilder as any).newInstance()
+        : (svgBuilder as any);
       const svgContent = builder
         .width(SVG_CONFIG.tipWidth)
         .height(SVG_CONFIG.tipHeight)

@@ -3,16 +3,11 @@ import * as os from "os";
 import * as path from "path";
 
 import chalk from "chalk";
-// Polyfill fetch for Node < 18
-import nodeFetch from "node-fetch";
 import open from "open";
 
 import { getApiClient } from "../config.js";
 // eslint-disable-next-line import/order
 import { env } from "../env.js";
-if (!globalThis.fetch) {
-  globalThis.fetch = nodeFetch as unknown as typeof globalThis.fetch;
-}
 
 // Config file path - define as a function to avoid initialization order issues
 function getAuthConfigPath() {
@@ -680,7 +675,7 @@ export async function listUserOrganizations(): Promise<
     const resp = await apiClient.listOrganizations();
     // Map the organizations to include slug field
     return (
-      resp.organizations?.map((org) => ({
+      resp.organizations?.map((org: { id: any; name: any; slug: any }) => ({
         id: org.id,
         name: org.name,
         slug: org.slug,

@@ -19,12 +19,17 @@ export default {
     "^(\\.{1,2}/.*)\\.js$": "$1",
     "^uuid$": "uuid", // https://stackoverflow.com/a/73626360
     "^@azure/(.*)$": "<rootDir>/node_modules/@azure/$1",
-    "^mssql$": "<rootDir>/node_modules/mssql",
+    "^mssql$": "<rootDir>/test/__mocks__/mssql.js",
+    // Ensure parse5 CJS entry is used under Jest to avoid ESM load errors
+    "^parse5$": "<rootDir>/node_modules/parse5/dist/cjs/index.js",
   },
   extensionsToTreatAsEsm: [".ts"],
   preset: "ts-jest/presets/default-esm",
   testTimeout: 10000,
   testEnvironment: "node",
+  // Reduce noisy console output and avoid "Cannot log after tests are done"
+  // errors from asynchronous logging in background utilities.
+  silent: true,
   globals: {
     __dirname: path.dirname(fileURLToPath(import.meta.url)),
     __filename: path.resolve(fileURLToPath(import.meta.url)),
@@ -40,4 +45,7 @@ export default {
   setupFilesAfterEnv: ["<rootDir>/test/jest.setup-after-env.js"],
   maxWorkers: 1, // equivalent to CLI --runInBand
   testMatch: ["**/*.test.ts"],
+  // Ignore long-running or network-dependent LLM integration tests during
+  // local unit runs that don't have API keys available.
+  testPathIgnorePatterns: ["<rootDir>/llm/llm.test.ts"],
 };

@@ -1,7 +1,7 @@
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { ToolTip } from "../../../components/gui/Tooltip";
 import { Button } from "../../../components/ui";
-import { cn } from "../../../util/cn";
+import { gi } from "../../../util/gi";
 
 interface ConfigHeaderProps {
   title: string;
@@ -29,7 +29,7 @@ export function ConfigHeader({
 
   return (
     <div
-      className={cn(
+      className={gi(
         `${marginBottom} flex items-center justify-between`,
         className,
       )}

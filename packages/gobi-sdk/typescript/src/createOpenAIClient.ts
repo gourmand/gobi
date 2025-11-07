@@ -1,8 +1,7 @@
 import {
-    AssistantUnrolled,
-    GobiProperties,
+  AssistantUnrolled,
+  GobiProperties,
 } from "@gourmanddev/config-yaml";
-import fetch, { Response } from "node-fetch";
 import OpenAI from "openai";
 import { Fetch } from "openai/core";
 

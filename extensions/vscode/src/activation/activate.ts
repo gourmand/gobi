@@ -65,12 +65,23 @@ export async function activateExtension(context: vscode.ExtensionContext) {
     "config-yaml-schema.json",
   ).toString();
 
+  // Only attempt to update yaml.schemas if the configuration key is contributed in this host.
+  // In lightweight or minimal VS Code instances the YAML extension may not be installed
+  // and the `yaml.schemas` setting won't be registered, which causes update() to throw.
   try {
-    await yamlConfig.update(
-      "schemas",
-      { [newPath]: [yamlMatcher] },
-      vscode.ConfigurationTarget.Global,
-    );
+    if (typeof yamlConfig.has === "function" && yamlConfig.has("schemas")) {
+      await yamlConfig.update(
+        "schemas",
+        { [newPath]: [yamlMatcher] },
+        vscode.ConfigurationTarget.Global,
+      );
+    } else {
+      // If the host doesn't expose the yaml.schemas setting, skip registration.
+      // This keeps activation error-free in environments without the YAML extension.
+      console.info(
+        "Skipping Gobi config.yaml schema registration because 'yaml.schemas' is not available in this host.",
+      );
+    }
   } catch (error) {
     console.error(
       "Failed to register Gobi config.yaml schema, most likely, YAML extension is not installed",

@@ -49,7 +49,7 @@ describe("Rule duplication integration test", () => {
 
     // Simulate command-line options with --rule flag
     const options: BaseCommandOptions = {
-      rule: ["nate/spanish"],
+      rule: ["example/spanish"],
     };
 
     // Enhance config with command-line rules
@@ -58,7 +58,7 @@ describe("Rule duplication integration test", () => {
     // Verify the rule was added exactly once as a RuleObject
     expect(enhancedConfig.rules).toHaveLength(1);
     expect(enhancedConfig.rules).toEqual([
-      { name: "nate/spanish", rule: "Content for nate/spanish" },
+      { name: "example/spanish", rule: "Content for example/spanish" },
     ]);
   });
 
@@ -73,7 +73,7 @@ describe("Rule duplication integration test", () => {
 
     // Simulate command-line options with --rule flag
     const options: BaseCommandOptions = {
-      rule: ["nate/spanish", "direct-rule"],
+      rule: ["example/spanish", "direct-rule"],
     };
 
     // Enhance config with command-line rules
@@ -83,7 +83,7 @@ describe("Rule duplication integration test", () => {
     expect(enhancedConfig.rules).toHaveLength(3);
     expect(enhancedConfig.rules).toEqual([
       "existing-rule",
-      { name: "nate/spanish", rule: "Content for nate/spanish" },
+      { name: "example/spanish", rule: "Content for example/spanish" },
       "direct-rule",
     ]);
   });
@@ -94,7 +94,7 @@ describe("Rule duplication integration test", () => {
     // Mock processRule to return content with frontmatter
     const { processRule } = await import("../hubLoader.js");
     (processRule as any).mockImplementation((rule: string) => {
-      if (rule === "nate/spanish") {
+      if (rule === "example/spanish") {
         return Promise.resolve(`---
 alwaysApply: true
 ---
@@ -110,7 +110,7 @@ Always respond in Spanish.`);
     } as any;
 
     const options: BaseCommandOptions = {
-      rule: ["nate/spanish"],
+      rule: ["example/spanish"],
     };
 
     const enhancedConfig = await enhancer.enhanceConfig(initialConfig, options);
@@ -118,7 +118,7 @@ Always respond in Spanish.`);
     // Hub rules should be stored as RuleObject with name and content
     expect(enhancedConfig.rules).toHaveLength(1);
     const ruleObj = enhancedConfig.rules?.[0] as any;
-    expect(ruleObj.name).toBe("nate/spanish");
+    expect(ruleObj.name).toBe("example/spanish");
     expect(ruleObj.rule).toContain("Always respond in Spanish.");
     expect(ruleObj.rule).toContain("alwaysApply: true");
   });

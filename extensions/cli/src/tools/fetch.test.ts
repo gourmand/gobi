@@ -5,7 +5,8 @@ import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { fetchTool } from "./fetch.js";
 
 // Mock the core fetchUrlContent implementation
-vi.mock("core/tools/implementations/fetchUrlContent.js", () => ({
+// Use the full package name so vitest/jest resolves the mocked module correctly
+vi.mock("@gourmanddev/core/tools/implementations/fetchUrlContent.js", () => ({
   fetchUrlContentImpl: vi.fn(),
 }));
 

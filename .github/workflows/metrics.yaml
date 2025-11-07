@@ -7,7 +7,7 @@ on:
 
   push:
     branches:
-      - nate/metrics-action
+      - example/metrics-action
 
 permissions:
   contents: read

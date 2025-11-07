@@ -77,7 +77,7 @@ vi.mock("vscode", () => ({
   },
 }));
 
-vi.mock("core/control-plane/env", () => ({
+vi.mock("@gourmanddev/core/control-plane/env", () => ({
   EXTENSION_NAME: "gobi",
 }));
 
@@ -85,7 +85,7 @@ vi.mock("../util/getTheme", () => ({
   getThemeString: vi.fn(() => "dark"),
 }));
 
-vi.mock("core/codeRenderer/CodeRenderer", () => ({
+vi.mock("@gourmanddev/core/codeRenderer/CodeRenderer", () => ({
   CodeRenderer: {
     getInstance: vi.fn(() => ({
       setTheme: vi.fn(),
@@ -94,7 +94,7 @@ vi.mock("core/codeRenderer/CodeRenderer", () => ({
   },
 }));
 
-vi.mock("core/nextEdit/NextEditProvider", () => ({
+vi.mock("@gourmanddev/core/nextEdit/NextEditProvider", () => ({
   NextEditProvider: {
     getInstance: vi.fn(() => ({
       deleteChain: vi.fn(),
@@ -102,7 +102,7 @@ vi.mock("core/nextEdit/NextEditProvider", () => ({
   },
 }));
 
-vi.mock("core/nextEdit/NextEditLoggingService", () => ({
+vi.mock("@gourmanddev/core/nextEdit/NextEditLoggingService", () => ({
   NextEditLoggingService: {
     getInstance: vi.fn(() => ({
       cancelRejectionTimeout: vi.fn(),
@@ -111,11 +111,11 @@ vi.mock("core/nextEdit/NextEditLoggingService", () => ({
   },
 }));
 
-vi.mock("core/diff/myers", () => ({
+vi.mock("@gourmanddev/core/diff/myers", () => ({
   myersCharDiff: vi.fn(() => []),
 }));
 
-vi.mock("core/nextEdit/diff/diff", () => ({
+vi.mock("@gourmanddev/core/nextEdit/diff/diff", () => ({
   getOffsetPositionAtLastNewLine: vi.fn(() => ({ line: 0, character: 0 })),
 }));
 

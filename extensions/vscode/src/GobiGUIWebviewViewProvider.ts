@@ -1,3 +1,5 @@
+import * as fs from "fs";
+import * as path from "path";
 import * as vscode from "vscode";
 
 import { getTheme } from "./util/getTheme";
@@ -76,19 +78,15 @@ export class GobiGUIWebviewViewProvider implements vscode.WebviewViewProvider {
       .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui"))
       .toString();
 
-    const inDevelopmentMode =
-      context?.extensionMode === vscode.ExtensionMode.Development;
-    if (!inDevelopmentMode) {
-      scriptUri = panel.webview
-        .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui/assets/index.js"))
-        .toString();
-      styleMainUri = panel.webview
-        .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui/assets/index.css"))
-        .toString();
-    } else {
-      scriptUri = "http://localhost:5173/src/main.tsx";
-      styleMainUri = "http://localhost:5173/src/index.css";
-    }
+    // Always use the built/bundled assets inside the extension. We avoid
+    // referencing a dev server (http://localhost) so the webview makes zero
+    // external network calls and everything resolves via asWebviewUri.
+    scriptUri = panel.webview
+      .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui/assets/index.js"))
+      .toString();
+    styleMainUri = panel.webview
+      .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui/assets/index.css"))
+      .toString();
 
     panel.webview.options = {
       enableScripts: true,
@@ -125,56 +123,129 @@ export class GobiGUIWebviewViewProvider implements vscode.WebviewViewProvider {
 
     this.webviewProtocol.webview = panel.webview;
 
-    return `<!DOCTYPE html>
-    <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <script>const vscode = acquireVsCodeApi();</script>
-        <link href="${styleMainUri}" rel="stylesheet">
+    const htmlParts: string[] = [];
+    htmlParts.push("<!DOCTYPE html>");
+    htmlParts.push('<html lang="en">');
+    htmlParts.push("<head>");
+    htmlParts.push('<meta charset="UTF-8">');
+    htmlParts.push(
+      '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
+    );
+    htmlParts.push("<script>const vscode = acquireVsCodeApi();</script>");
 
-        <title>Gobi</title>
-      </head>
-      <body>
-        <div id="root"></div>
+    // Load and patch CSS on the extension host (synchronously) and inline it into the webview HTML.
+    // This avoids doing a synchronous XHR from inside the webview which can fail with the
+    // 'file+.vscode-resource.vscode-cdn.net' host rewriting in some environments.
+    try {
+      const cssFilePath = path.join(
+        getExtensionUri().fsPath,
+        "gui",
+        "assets",
+        "index.css",
+      );
+      if (fs.existsSync(cssFilePath)) {
+        let css = fs.readFileSync(cssFilePath, "utf8");
+        // Rewrite url(/...) to use the webview media root so absolute URLs in CSS resolve
+        css = css.replace(/url\(\s*(["']?)\//g, `url($1${vscMediaUrl}/`);
+        htmlParts.push('<style nonce="' + nonce + '">');
+        htmlParts.push(css);
+        htmlParts.push("</style>");
+      } else {
+        // Fallback: warn in the webview console instead of failing the page load
+        htmlParts.push(
+          '<script nonce="' +
+            nonce +
+            '">console.warn("Gobi: index.css not found on disk: ' +
+            cssFilePath.replace(/"/g, '\\"') +
+            '")</script>',
+        );
+      }
+    } catch (e) {
+      htmlParts.push(
+        '<script nonce="' +
+          nonce +
+          '">console.warn("Failed to load patched CSS for webview: ' +
+          JSON.stringify(String(e)) +
+          '")</script>',
+      );
+    }
 
-        ${
-          inDevelopmentMode
-            ? `<script type="module">
-          import RefreshRuntime from "http://localhost:5173/@react-refresh"
-          RefreshRuntime.injectIntoGlobalHook(window)
-          window.$RefreshReg$ = () => {}
-          window.$RefreshSig$ = () => (type) => type
-          window.__vite_plugin_react_preamble_installed__ = true
-          </script>`
-            : ""
-        }
+    htmlParts.push("<title>Gobi</title>");
+    htmlParts.push("</head>");
+    htmlParts.push("<body>");
+    htmlParts.push('<div id="root"></div>');
 
-        <script type="module" nonce="${nonce}" src="${scriptUri}"></script>
+    // Note: we deliberately avoid injecting HMR/dev runtime scripts via
+    // http://localhost. If developers want HMR, they can open the GUI in a
+    // browser or run the extension in a dev setup that copies the built
+    // assets into the extension gui/ folder.
 
-        <script>localStorage.setItem("ide", '"vscode"')</script>
-        <script>localStorage.setItem("vsCodeUriScheme", '"${getvsCodeUriScheme()}"')</script>
-        <script>localStorage.setItem("extensionVersion", '"${getExtensionVersion()}"')</script>
-        <script>window.windowId = "${this.windowId}"</script>
-        <script>window.vscMachineId = "${getUniqueId()}"</script>
-        <script>window.vscMediaUrl = "${vscMediaUrl}"</script>
-        <script>window.ide = "vscode"</script>
-        <script>window.fullColorTheme = ${JSON.stringify(currentTheme)}</script>
-        <script>window.colorThemeName = "dark-plus"</script>
-        <script>window.workspacePaths = ${JSON.stringify(
+    htmlParts.push(
+      '<script type="module" nonce="' +
+        nonce +
+        '" src="' +
+        scriptUri +
+        '"></script>',
+    );
+
+    htmlParts.push(
+      '<script>localStorage.setItem("ide", "\\"vscode\\"")</script>',
+    );
+    htmlParts.push(
+      '<script>localStorage.setItem("vsCodeUriScheme", "' +
+        JSON.stringify(getvsCodeUriScheme()) +
+        '")</script>',
+    );
+    htmlParts.push(
+      '<script>localStorage.setItem("extensionVersion", "' +
+        JSON.stringify(getExtensionVersion()) +
+        '")</script>',
+    );
+    htmlParts.push(
+      '<script>window.windowId = "' + this.windowId + '"</script>',
+    );
+    htmlParts.push(
+      '<script>window.vscMachineId = "' + getUniqueId() + '"</script>',
+    );
+    htmlParts.push(
+      '<script>window.vscMediaUrl = "' + vscMediaUrl + '"</script>',
+    );
+    htmlParts.push('<script>window.ide = "vscode"</script>');
+    htmlParts.push(
+      "<script>window.fullColorTheme = " +
+        JSON.stringify(currentTheme) +
+        "</script>",
+    );
+    htmlParts.push('<script>window.colorThemeName = "dark-plus"</script>');
+    htmlParts.push(
+      "<script>window.workspacePaths = " +
+        JSON.stringify(
           vscode.workspace.workspaceFolders?.map((folder) =>
             folder.uri.toString(),
           ) || [],
-        )}</script>
-        <script>window.isFullScreen = ${isFullScreen}</script>
+        ) +
+        "</script>",
+    );
+    htmlParts.push(
+      "<script>window.isFullScreen = " +
+        (isFullScreen ? "true" : "false") +
+        "</script>",
+    );
 
-        ${
-          edits
-            ? `<script>window.edits = ${JSON.stringify(edits)}</script>`
-            : ""
-        }
-        ${page ? `<script>window.location.pathname = "${page}"</script>` : ""}
-      </body>
-    </html>`;
+    if (edits) {
+      htmlParts.push(
+        "<script>window.edits = " + JSON.stringify(edits) + "</script>",
+      );
+    }
+    if (page) {
+      htmlParts.push(
+        '<script>window.location.pathname = "' + page + '"</script>',
+      );
+    }
+
+    htmlParts.push("</body>");
+    htmlParts.push("</html>");
+
+    return htmlParts.join("\n");
   }
 }

@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "../../../components/ui/Button";
-import { cn } from "../../../util/cn";
+import { gi } from "../../../util/gi";
 
 export interface ConfigRowProps {
   title: string;
@@ -48,7 +48,7 @@ export function ConfigRow({
     return (
       <Button
         variant="ghost"
-        className={cn(
+        className={gi(
           baseClasses,
           interactiveClasses,
           disabledClasses,
@@ -73,7 +73,7 @@ export function ConfigRow({
 
   return (
     <div
-      className={cn(baseClasses, disabledClasses, className)}
+      className={gi(baseClasses, disabledClasses, className)}
       data-config-row
     >
       <div className="flex flex-col">

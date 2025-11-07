@@ -40,7 +40,7 @@ describe("PosthogService Error Handling", () => {
         test: "data",
         os: expect.any(String),
         extensionVersion: expect.any(String),
-        ideName: "cn",
+        ideName: "gobi",
         ideType: "cli",
       }),
       sendFeatureFlags: true,

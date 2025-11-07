@@ -23,9 +23,9 @@ class SentryService {
 
   constructor() {
     this.config = this.loadConfig();
-    if (this.config.enabled) {
-      this.initialize();
-    }
+    // Do NOT auto-initialize in the constructor. Initialization may be
+    // asynchronous and should be invoked explicitly during CLI startup to
+    // avoid top-level awaits being emitted in the bundle.
   }
 
   private loadConfig(): SentryConfig {
@@ -171,6 +171,26 @@ class SentryService {
 
     return await Sentry.close(timeout);
   }
+
+  /**
+   * Explicit initializer to be called from application startup. This avoids
+   * performing async work at module load time which can produce top-level
+   * awaits in bundled output.
+   */
+  public async init(): Promise<void> {
+    await this.initialize();
+  }
 }
 
 export const sentryService = new SentryService();
+
+export async function initSentry(): Promise<void> {
+  try {
+    await sentryService.init();
+  } catch (err) {
+    // If sentry init fails, don't crash the CLI; log and continue.
+    try {
+      logger.error("Sentry init failed:", err);
+    } catch {}
+  }
+}

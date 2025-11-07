@@ -8,7 +8,7 @@ import { Telemetry } from "@gourmanddev/core/util/posthog";
 import { v4 as uuidv4 } from "uuid";
 import * as vscode from "vscode";
 
-import { IMessenger } from "../../../core/protocol/messenger";
+import { IMessenger } from "@gourmanddev/core/protocol/messenger";
 
 import { handleLLMError } from "./util/errorHandling";
 

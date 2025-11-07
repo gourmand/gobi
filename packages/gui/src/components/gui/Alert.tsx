@@ -5,7 +5,7 @@ import {
   InformationCircleIcon,
 } from "@heroicons/react/16/solid";
 import { varWithFallback } from "../../styles/theme";
-import { cn } from "../../util/cn";
+import { gi } from "../../util/gi";
 
 type AlertTypes = "info" | "success" | "warning" | "error";
 type AlertSize = "sm" | "lg";
@@ -84,7 +84,7 @@ function Alert({
 
   return (
     <div
-      className={cn(
+      className={gi(
         `flex flex-row items-start border-[0.5px] ${border} border-solid shadow-sm ${alertSizes[size]}`,
         className,
       )}

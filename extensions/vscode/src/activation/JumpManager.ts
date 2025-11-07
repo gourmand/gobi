@@ -135,9 +135,9 @@ export class JumpManager {
       // NOTE: it's critical to use svgBuilder.newInstance.
       // svgBuilder holds state of previously created SVGs,
       // so you end up with SVGs stacking on top of each other and being interleaved.
-      const builder = svgBuilder.newInstance
-        ? svgBuilder.newInstance()
-        : svgBuilder;
+      const builder = (svgBuilder as any).newInstance
+        ? (svgBuilder as any).newInstance()
+        : (svgBuilder as any);
       const svgContent = builder
         .width(SVG_CONFIG.getTipWidth())
         .height(SVG_CONFIG.getTipHeight())

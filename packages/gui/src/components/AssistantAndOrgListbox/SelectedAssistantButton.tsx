@@ -1,9 +1,9 @@
+import type { ProfileDescription } from "@gourmanddev/core/config/ConfigHandler";
 import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ArrowPathIcon } from "@heroicons/react/24/solid";
-import type { ProfileDescription } from "@gourmanddev/core/config/ConfigHandler";
 import { useAppSelector } from "../../redux/hooks";
 import { fontSize } from "../../util";
-import { cn } from "../../util/cn";
+import { gi } from "../../util/gi";
 import { ListboxButton } from "../ui";
 import { AssistantIcon } from "./AssistantIcon";
 
@@ -38,7 +38,7 @@ export function SelectedAssistantButton({
           ) : configLoading ? (
             <span className="text-description flex flex-row items-center">
               <ArrowPathIcon
-                className={cn(
+                className={gi(
                   `text-description mr-1.5 ${iconSize}`,
                   configLoading && "animate-spin-slow",
                 )}

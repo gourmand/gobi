@@ -91,7 +91,7 @@ export class PosthogService {
         ...properties,
         os: this.os,
         extensionVersion: getVersion(),
-        ideName: "cn",
+        ideName: "gobi",
         ideType: "cli",
         isHeadless: isHeadlessMode(),
         isGitHubCI: isGitHubActions(),

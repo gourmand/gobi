@@ -1,6 +1,21 @@
-// Stub for react-devtools-core to prevent errors when it's not installed
+// Minimal stub for react-devtools-core to avoid runtime import errors
+// during bundling for the CLI. Exposes a tiny surface that ink/devtools
+// may call. All functions are no-ops.
+
+export function connectToDevTools() {
+  return {
+    unsubscribe() {},
+  };
+}
+
+export function registerDevtoolsMessageListener() {
+  return {
+    unsubscribe() {},
+  };
+}
+
 export default {
-  connectToDevTools: () => {
-    // No-op - devtools not available in production bundle
-  },
+  connectToDevTools,
+  registerDevtoolsMessageListener,
 };
+// End of stub

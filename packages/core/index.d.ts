@@ -3,7 +3,7 @@ import {
   ModelRole,
   PromptTemplates,
 } from "@gourmanddev/config-yaml";
-import { Parser } from "web-tree-sitter";
+import type { SyntaxNode } from "web-tree-sitter";
 import { CodebaseIndexer } from "./indexing/CodebaseIndexer";
 import { LLMConfigurationStatuses } from "./llm/constants";
 
@@ -449,7 +449,7 @@ export interface InputModifiers {
 
 export interface SymbolWithRange extends RangeInFile {
   name: string;
-  type: Parser.SyntaxNode["type"];
+  type: SyntaxNode["type"];
   content: string;
 }
 

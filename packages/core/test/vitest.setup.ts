@@ -1,6 +1,5 @@
 import { TextDecoder, TextEncoder } from "util";
 
-import fetch, { Request, Response } from "node-fetch";
 import { beforeAll } from "vitest";
 
 beforeAll(() => {

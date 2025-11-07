@@ -7,16 +7,17 @@ const { rimrafSync } = require("rimraf");
 const { execCmdSync } = require("../../../scripts/util");
 
 const gobiDir = path.join(__dirname, "..", "..", "..");
+const coreRoot = path.join(gobiDir, "packages", "core");
 
 function copyTokenizers() {
   fs.copyFileSync(
-    path.join(__dirname, "../../../core/llm/llamaTokenizerWorkerPool.mjs"),
+    path.join(coreRoot, "llm", "llamaTokenizerWorkerPool.mjs"),
     path.join(__dirname, "../out/llamaTokenizerWorkerPool.mjs"),
   );
   console.log("[info] Copied llamaTokenizerWorkerPool");
 
   fs.copyFileSync(
-    path.join(__dirname, "../../../core/llm/llamaTokenizer.mjs"),
+    path.join(coreRoot, "llm", "llamaTokenizer.mjs"),
     path.join(__dirname, "../out/llamaTokenizer.mjs"),
   );
   console.log("[info] Copied llamaTokenizer");
@@ -126,7 +127,7 @@ async function copyOnnxRuntimeFromNodeModules(target) {
 
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(__dirname, "../../../core/node_modules/onnxruntime-node/bin"),
+      path.join(coreRoot, "node_modules", "onnxruntime-node", "bin"),
       path.join(__dirname, "../bin"),
       {
         dereference: true,
@@ -184,7 +185,7 @@ async function copyTreeSitterWasms() {
 
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(__dirname, "../../../core/node_modules/tree-sitter-wasms/out"),
+      path.join(coreRoot, "node_modules", "tree-sitter-wasms", "out"),
       path.join(__dirname, "../out/tree-sitter-wasms"),
       { dereference: true },
       (error) => {
@@ -197,9 +198,8 @@ async function copyTreeSitterWasms() {
       },
     );
   });
-
   fs.copyFileSync(
-    path.join(__dirname, "../../../core/vendor/tree-sitter.wasm"),
+    path.join(coreRoot, "vendor", "tree-sitter.wasm"),
     path.join(__dirname, "../out/tree-sitter.wasm"),
   );
   console.log("[info] Copied tree-sitter wasms");
@@ -240,7 +240,7 @@ async function copyNodeModules() {
 
 async function downloadSqliteBinary(target) {
   console.log("[info] Downloading pre-built sqlite3 binary");
-  rimrafSync("../../core/node_modules/sqlite3/build");
+  rimrafSync(path.join(coreRoot, "node_modules", "sqlite3", "build"));
   const downloadUrl = {
     "darwin-arm64":
       "https://github.com/TryGhost/node-sqlite3/releases/download/v5.1.7/sqlite3-v5.1.7-napi-v6-darwin-arm64.tar.gz",
@@ -255,11 +255,17 @@ async function downloadSqliteBinary(target) {
     "win32-x64":
       "https://github.com/TryGhost/node-sqlite3/releases/download/v5.1.7/sqlite3-v5.1.7-napi-v3-win32-x64.tar.gz",
   }[target];
-  execCmdSync(
-    `curl -L -o ../../core/node_modules/sqlite3/build.tar.gz ${downloadUrl}`,
+  const buildTar = path.join(
+    coreRoot,
+    "node_modules",
+    "sqlite3",
+    "build.tar.gz",
   );
-  execCmdSync("cd ../../core/node_modules/sqlite3 && tar -xvzf build.tar.gz");
-  fs.unlinkSync("../../core/node_modules/sqlite3/build.tar.gz");
+  execCmdSync(`curl -L -o ${buildTar} ${downloadUrl}`);
+  execCmdSync(
+    `cd ${path.join(coreRoot, "node_modules", "sqlite3")} && tar -xvzf build.tar.gz`,
+  );
+  fs.unlinkSync(buildTar);
 }
 
 async function copySqliteBinary() {
@@ -267,7 +273,7 @@ async function copySqliteBinary() {
   console.log("[info] Copying sqlite node binding from core");
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(__dirname, "../../../core/node_modules/sqlite3/build"),
+      path.join(coreRoot, "node_modules", "sqlite3", "build"),
       path.join(__dirname, "../out/build"),
       { dereference: true },
       (error) => {
@@ -382,7 +388,7 @@ async function copyScripts() {
   process.chdir(path.join(gobiDir, "extensions", "vscode"));
   console.log("[info] Copying scripts from core");
   fs.copyFileSync(
-    path.join(__dirname, "../../../core/util/start_ollama.sh"),
+    path.join(coreRoot, "util", "start_ollama.sh"),
     path.join(__dirname, "../out/start_ollama.sh"),
   );
   console.log("[info] Copied script files");

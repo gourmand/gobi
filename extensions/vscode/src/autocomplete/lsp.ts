@@ -24,7 +24,7 @@ import type {
   RangeInFileWithContents,
   SignatureHelp,
 } from "@gourmanddev/core";
-import type Parser from "web-tree-sitter";
+import type { SyntaxNode } from "web-tree-sitter";
 
 type GotoProviderName =
   | "vscode.executeDefinitionProvider"
@@ -106,11 +106,11 @@ function isRifWithContents(
 }
 
 function findChildren(
-  node: Parser.SyntaxNode,
-  predicate: (n: Parser.SyntaxNode) => boolean,
+  node: SyntaxNode,
+  predicate: (n: SyntaxNode) => boolean,
   firstN?: number,
-): Parser.SyntaxNode[] {
-  let matchingNodes: Parser.SyntaxNode[] = [];
+): SyntaxNode[] {
+  let matchingNodes: SyntaxNode[] = [];
 
   if (firstN && firstN <= 0) {
     return [];
@@ -135,7 +135,7 @@ function findChildren(
   return matchingNodes;
 }
 
-function findTypeIdentifiers(node: Parser.SyntaxNode): Parser.SyntaxNode[] {
+function findTypeIdentifiers(node: SyntaxNode): SyntaxNode[] {
   return findChildren(
     node,
     (childNode) =>
@@ -230,7 +230,7 @@ async function crawlTypes(
 
 export async function getDefinitionsForNode(
   uri: vscode.Uri,
-  node: Parser.SyntaxNode,
+  node: SyntaxNode,
   ide: IDE,
   lang: AutocompleteLanguageInfo,
 ): Promise<RangeInFileWithContents[]> {
@@ -301,7 +301,7 @@ export async function getDefinitionsForNode(
     case "new_expression":
       // In 'new MyClass(...)', "MyClass" is the classNameNode
       const classNameNode = node.children.find(
-        (child) => child.type === "identifier",
+        (child: any) => child.type === "identifier",
       );
       const [classDef] = await executeGotoProvider({
         uri,

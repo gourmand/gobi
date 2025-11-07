@@ -37,7 +37,7 @@ export default function ListItem({
         "w-full cursor-pointer pt-[3px] pr-[4px] pb-[3px] pl-[4px] " +
         (selected
           ? "bg-[color:var(--vscode-list-inactiveSelectionBackground)]" +
-            " text-[color:var(--vscode-list-inctiveSelectionForeground)]" +
+            " text-[color:var(--vscode-list-inactiveSelectionForeground)]" +
             " group-focus-within:bg-[color:var(--vscode-list-activeSelectionBackground)]" +
             " group-focus-within:text-[color:var(--vscode-list-activeSelectionForeground)]"
           : "hover:bg-[color:var(--vscode-list-inactiveSelectionBackground)]")

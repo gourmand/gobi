@@ -1,4 +1,4 @@
-import { Parser } from "web-tree-sitter";
+import type { SyntaxNode, Tree } from "web-tree-sitter";
 import { getAst } from "../autocomplete/util/ast";
 import { Chunk, IDE, ILLM, Position, Range, RangeInFile } from "../index";
 import { NEXT_EDIT_MODELS } from "../llm/constants";
@@ -492,7 +492,7 @@ async function staticJump(ctx: {
 
     // Find the closest identifier node.
     const identifierNode = findClosestIdentifierNode(
-      nodeAtCursor as Parser.SyntaxNode | null,
+      nodeAtCursor as SyntaxNode | null,
     );
     if (!identifierNode) {
       console.log("No identifier node found near cursor position");
@@ -536,9 +536,7 @@ async function staticJump(ctx: {
 /* AST HELPER FUNCTIONS */
 
 // Helper function to find the closest identifier node.
-function findClosestIdentifierNode(
-  node: Parser.SyntaxNode | null,
-): Parser.SyntaxNode | null {
+function findClosestIdentifierNode(node: SyntaxNode | null): SyntaxNode | null {
   if (!node) return null;
 
   if (isIdentifierNode(node)) return node;
@@ -558,7 +556,7 @@ function findClosestIdentifierNode(
     // Check if one of the siblings is an identifier.
     for (let i = 0; i < parent.childCount; ++i) {
       // const sibling = node.child(i);
-      const sibling = parent.children[i] as Parser.SyntaxNode | null;
+      const sibling = parent.children[i] as SyntaxNode | null;
       if (sibling && isIdentifierNode(sibling)) {
         // Get the leftmost identifier sibling.
         return sibling;
@@ -569,9 +567,7 @@ function findClosestIdentifierNode(
   return findClosestIdentifierNode(parent ?? null);
 }
 
-function findLeftmostIdentifier(
-  node: Parser.SyntaxNode,
-): Parser.SyntaxNode | null {
+function findLeftmostIdentifier(node: SyntaxNode): SyntaxNode | null {
   if (isIdentifierNode(node)) return node;
 
   for (let i = 0; i < node.childCount; ++i) {
@@ -586,7 +582,7 @@ function findLeftmostIdentifier(
 }
 
 // Helper function to check if a node is an identifier.
-function isIdentifierNode(node: Parser.SyntaxNode) {
+function isIdentifierNode(node: SyntaxNode) {
   const nodeType = node.type;
 
   if (nodeType === "identifier") return true;
@@ -600,7 +596,7 @@ function isIdentifierNode(node: Parser.SyntaxNode) {
 }
 
 // Helper function to check if a node is a declaration.
-function isDeclarationNode(node: Parser.SyntaxNode) {
+function isDeclarationNode(node: SyntaxNode) {
   const nodeType = node.type;
 
   // Common declaration patterns.
@@ -636,13 +632,13 @@ function isDeclarationNode(node: Parser.SyntaxNode) {
   return declarationTypes.includes(nodeType);
 }
 
-// Ensure compatibility of Node type with Parser.SyntaxNode
-interface Node extends Parser.SyntaxNode {
+// Ensure compatibility of Node type with SyntaxNode
+interface Node extends SyntaxNode {
   // Add any additional properties or methods if required
 }
 
 // Adjust compareAsts function to ensure compatibility
-function compareAsts(oldAst: Parser.Tree, newAst: Parser.Tree) {
+function compareAsts(oldAst: Tree, newAst: Tree) {
   const changedNodes: {
     oldNode: Node | null;
     newNode: Node | null;
@@ -687,14 +683,14 @@ function compareAsts(oldAst: Parser.Tree, newAst: Parser.Tree) {
 }
 
 // Helper function to get a node's text.
-function getNodeText(node: Parser.SyntaxNode): string {
+function getNodeText(node: SyntaxNode): string {
   if (!node) return "";
 
   return node.text;
 }
 
 // Helper function to get a node's position.
-function getNodePosition(node: Parser.SyntaxNode): Position | null {
+function getNodePosition(node: SyntaxNode): Position | null {
   if (!node) return null;
 
   // Tree-sitter nodes have startPosition property that contains row and column.

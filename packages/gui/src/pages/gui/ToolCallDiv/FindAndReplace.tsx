@@ -1,4 +1,3 @@
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { ApplyState } from "@gourmanddev/core";
 import { trimEmptyLines } from "@gourmanddev/core/edit/searchAndReplace/findAndReplaceUtils";
 import { executeFindAndReplace } from "@gourmanddev/core/edit/searchAndReplace/performReplace";
@@ -8,6 +7,7 @@ import {
   getLastNPathParts,
   getUriPathBasename,
 } from "@gourmanddev/core/util/uri";
+import { ChevronDownIcon } from "@heroicons/react/24/outline";
 import { diffLines } from "diff";
 import { useContext, useMemo, useState } from "react";
 import { ApplyActions } from "../../../components/StyledMarkdownPreview/StepContainerPreToolbar/ApplyActions";
@@ -18,7 +18,7 @@ import {
   selectApplyStateByToolCallId,
   selectToolCallById,
 } from "../../../redux/selectors/selectToolCalls";
-import { cn } from "../../../util/cn";
+import { gi } from "../../../util/gi";
 import { getStatusIcon } from "./utils";
 
 interface FindAndReplaceDisplayProps {
@@ -60,9 +60,9 @@ function DiffLines({
         return (
           <div
             key={lineIndex}
-            className={cn("text-foreground px-3 py-px font-mono", className)}
+            className={gi("text-foreground px-3 py-px font-mono", className)}
           >
-            <span className={cn("mr-2 select-none", diffCharClass)}>
+            <span className={gi("mr-2 select-none", diffCharClass)}>
               {diffChar}
             </span>
             {line}

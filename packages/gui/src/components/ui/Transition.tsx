@@ -1,5 +1,5 @@
 import { Transition as HLTransition } from "@headlessui/react";
-import { cn } from "../../util/cn";
+import { gi } from "../../util/gi";
 
 type TransitionProps = React.ComponentProps<typeof HLTransition>;
 function Transition(props: TransitionProps) {
@@ -12,7 +12,7 @@ function Transition(props: TransitionProps) {
       leaveFrom="transform scale-100 opacity-100"
       leaveTo="transform scale-95 opacity-0"
       {...props}
-      className={cn("flex flex-col", props.className)}
+      className={gi("flex flex-col", props.className)}
     />
   );
 }

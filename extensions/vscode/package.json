@@ -7,6 +7,11 @@
     "type": "git",
     "url": "https://github.com/gourmand/gobi"
   },
+  "vitest": {
+    "setupFiles": [
+      "src/testSetup.ts"
+    ]
+  },
   "extensionKind": [
     "ui",
     "workspace"
@@ -52,7 +57,45 @@
   "activationEvents": [
     "onUri",
     "onStartupFinished",
-    "onView:gourmand.gobiGUIView"
+    "onView:gourmand.gobiGUIView",
+    "onCommand:gobi.applyCodeFromChat",
+    "onCommand:gobi.acceptDiff",
+    "onCommand:gobi.rejectDiff",
+    "onCommand:gobi.acceptVerticalDiffBlock",
+    "onCommand:gobi.rejectVerticalDiffBlock",
+    "onCommand:gobi.focusEdit",
+    "onCommand:gobi.focusGobiInput",
+    "onCommand:gobi.focusGobiInputWithoutClear",
+    "onCommand:gobi.debugTerminal",
+    "onCommand:gobi.exitEditMode",
+    "onCommand:gobi.openConfigPage",
+    "onCommand:gobi.toggleTabAutocompleteEnabled",
+    "onCommand:gobi.forceAutocomplete",
+    "onCommand:gobi.selectFilesAsContext",
+    "onCommand:gobi.newSession",
+    "onCommand:gobi.shareSession",
+    "onCommand:gobi.viewHistory",
+    "onCommand:gobi.viewLogs",
+    "onCommand:gobi.clearConsole",
+    "onCommand:gobi.navigateTo",
+    "onCommand:gobi.writeCommentsForCode",
+    "onCommand:gobi.writeDocstringForCode",
+    "onCommand:gobi.fixCode",
+    "onCommand:gobi.optimizeCode",
+    "onCommand:gobi.fixGrammar",
+    "onCommand:gobi.codebaseForceReIndex",
+    "onCommand:gobi.rebuildCodebaseIndex",
+    "onCommand:gobi.docsIndex",
+    "onCommand:gobi.docsReIndex",
+    "onCommand:gobi.enterEnterpriseLicenseKey",
+    "onCommand:gobi.toggleNextEditEnabled",
+    "onCommand:gobi.nextEditWindow.hideNextEditSuggestion",
+    "onCommand:gobi.nextEditWindow.acceptNextEditSuggestion",
+    "onCommand:gobi.forceNextEdit",
+    "onCommand:gobi.acceptJump",
+    "onCommand:gobi.rejectJump",
+    "onCommand:gobi.generateRule",
+    "onCommand:gobi.openInNewWindow"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -619,6 +662,15 @@
       "gobi": [
         {
           "type": "webview",
+          "authentication": {
+            "providers": [
+              {
+                "id": "gobi",
+                "label": "Gobi",
+                "supportsMultipleAccounts": false
+              }
+            ]
+          },
           "id": "gourmand.gobiGUIView",
           "name": "Gobi",
           "icon": "media/icon-sidebar.svg",
@@ -671,13 +723,14 @@
     "package": "node scripts/package.js",
     "package-a  \"dependencies\": {\n    \"data-uri-to-buffer\": \"^4.0.1\",\n ll": "node scripts/package-all.js",
     "package:pre-release": "node scripts/package.js --pre-release",
-    "vsix": "pnpm run vscode:prepublish && pnpm run package",
+    "vsix:other": "pnpm dlx @vscode/vsce@3.6.2 package --no-dependencies --no-yarn",
+    "vsix": "pnpm run prepackage && pnpm run package",
     "openvsx": "pnpm run vsode:prepublish && pnpm exec ovsx package -o gobi.vsix",
     "build:rust": "cargo-cp-artifact -ac sync sync.node -- cargo build --manifest-path ../../sync/Cargo.toml --message-format=json-render-diagnostics",
     "build-debug:rust": "pnpm run build:rust --",
     "build-release:rust": "pnpm run build:rust -- --release",
     "e2e:compile": "pnpm exec tsc -p ./tsconfig.e2e.json",
-    "e2e:build": "npm --prefix ../../gui run build && npm run package",
+    "e2e:build": "pnpm --prefix ../../packages/gui run build && npm run package",
     "e2e:create-storage": "mkdir -p ./e2e/storage",
     "e2e:get-chromedriver": "extest get-chromedriver --storage ./e2e/storage --code_version 1.95.0",
     "e2e:get-vscode": "extest get-vscode --storage ./e2e/storage --code_version 1.95.0",
@@ -753,7 +806,6 @@
     "monaco-editor": "^0.54.0",
     "monaco-vscode-textmate-theme-converter": "^0.1.7",
     "ncp": "^2.0.0",
-    "node-fetch": "^3.3.2",
     "node-machine-id": "^1.1.12",
     "posthog-node": "^5.11.1",
     "react-markdown": "^10.1.0",
