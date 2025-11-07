@@ -382,9 +382,16 @@ void (async () => {
   }
 
   console.log("[info] Copying sqlite node binding from core");
+  const sqliteSrc = path.join(packagesRoot, "core/node_modules/sqlite3/build");
+  if (!fs.existsSync(sqliteSrc)) {
+    throw new Error(
+      `[error] sqlite3 build not found at expected path: ${sqliteSrc}. Ensure packages are installed and sqlite3 has been built under packages/core/node_modules/sqlite3/build`,
+    );
+  }
+
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(packagesRoot, "core/node_modules/sqlite3/build"),
+      sqliteSrc,
       path.join(extensionRoot, "out/build"),
       { dereference: true },
       (error) => {
@@ -401,7 +408,7 @@ void (async () => {
   // Copied here as well for the VS Code test suite
   await new Promise((resolve, reject) => {
     ncp(
-      path.join(packagesRoot, "core/node_modules/sqlite3/build"),
+      sqliteSrc,
       path.join(extensionRoot, "out"),
       { dereference: true },
       (error) => {

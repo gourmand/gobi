@@ -10,7 +10,7 @@
 import {
   headerIsMarkdown,
   MarkdownBlockStateTracker,
-} from "../../../../../core/utils/markdownUtils";
+} from "@gourmanddev/core/utils/markdownUtils";
 
 export const patchNestedMarkdown = (source: string): string => {
   // Early return if no markdown codeblock pattern is found (including GitHub variants)

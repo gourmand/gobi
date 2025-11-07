@@ -1,3 +1,5 @@
+import * as fs from "fs";
+import * as path from "path";
 import * as vscode from "vscode";
 
 import { getTheme } from "./util/getTheme";
@@ -134,23 +136,43 @@ export class GobiGUIWebviewViewProvider implements vscode.WebviewViewProvider {
       '<meta name="viewport" content="width=device-width, initial-scale=1.0">',
     );
     htmlParts.push("<script>const vscode = acquireVsCodeApi();</script>");
-    // Synchronously fetch and patch CSS so fonts and absolute paths resolve inside the webview
-    htmlParts.push('<script nonce="' + nonce + '">(function(){');
-    htmlParts.push("try{");
-    htmlParts.push(
-      "var __gobi_media_root=" + JSON.stringify(vscMediaUrl) + ";",
-    );
-    htmlParts.push(
-      'var xhr=new XMLHttpRequest();xhr.open("GET",' +
-        JSON.stringify(styleMainUri) +
-        ",false);xhr.send(null);",
-    );
-    htmlParts.push(
-      "if(xhr.status===200){var css=xhr.responseText;css=css.replace(/url\\(\\s*([\"\"])?\\//g,'url($1' + __gobi_media_root + '/');var style=document.createElement('style');style.type='text/css';try{style.appendChild(document.createTextNode(css))}catch(e){style.innerHTML=css}document.head.appendChild(style)}",
-    );
-    htmlParts.push(
-      "}catch(e){console.warn('Failed to load patched CSS for webview',e);} })();</script>",
-    );
+
+    // Load and patch CSS on the extension host (synchronously) and inline it into the webview HTML.
+    // This avoids doing a synchronous XHR from inside the webview which can fail with the
+    // 'file+.vscode-resource.vscode-cdn.net' host rewriting in some environments.
+    try {
+      const cssFilePath = path.join(
+        getExtensionUri().fsPath,
+        "gui",
+        "assets",
+        "index.css",
+      );
+      if (fs.existsSync(cssFilePath)) {
+        let css = fs.readFileSync(cssFilePath, "utf8");
+        // Rewrite url(/...) to use the webview media root so absolute URLs in CSS resolve
+        css = css.replace(/url\(\s*(["']?)\//g, `url($1${vscMediaUrl}/`);
+        htmlParts.push('<style nonce="' + nonce + '">');
+        htmlParts.push(css);
+        htmlParts.push("</style>");
+      } else {
+        // Fallback: warn in the webview console instead of failing the page load
+        htmlParts.push(
+          '<script nonce="' +
+            nonce +
+            '">console.warn("Gobi: index.css not found on disk: ' +
+            cssFilePath.replace(/"/g, '\\"') +
+            '")</script>',
+        );
+      }
+    } catch (e) {
+      htmlParts.push(
+        '<script nonce="' +
+          nonce +
+          '">console.warn("Failed to load patched CSS for webview: ' +
+          JSON.stringify(String(e)) +
+          '")</script>',
+      );
+    }
 
     htmlParts.push("<title>Gobi</title>");
     htmlParts.push("</head>");
