@@ -78,19 +78,15 @@ export class GobiGUIWebviewViewProvider implements vscode.WebviewViewProvider {
       .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui"))
       .toString();
 
-    const inDevelopmentMode =
-      context?.extensionMode === vscode.ExtensionMode.Development;
-    if (!inDevelopmentMode) {
-      scriptUri = panel.webview
-        .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui/assets/index.js"))
-        .toString();
-      styleMainUri = panel.webview
-        .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui/assets/index.css"))
-        .toString();
-    } else {
-      scriptUri = "http://localhost:5173/src/main.tsx";
-      styleMainUri = "http://localhost:5173/src/index.css";
-    }
+    // Always use the built/bundled assets inside the extension. We avoid
+    // referencing a dev server (http://localhost) so the webview makes zero
+    // external network calls and everything resolves via asWebviewUri.
+    scriptUri = panel.webview
+      .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui/assets/index.js"))
+      .toString();
+    styleMainUri = panel.webview
+      .asWebviewUri(vscode.Uri.joinPath(extensionUri, "gui/assets/index.css"))
+      .toString();
 
     panel.webview.options = {
       enableScripts: true,
@@ -179,17 +175,10 @@ export class GobiGUIWebviewViewProvider implements vscode.WebviewViewProvider {
     htmlParts.push("<body>");
     htmlParts.push('<div id="root"></div>');
 
-    if (inDevelopmentMode) {
-      htmlParts.push('<script type="module">');
-      htmlParts.push(
-        'import RefreshRuntime from "http://localhost:5173/@react-refresh"',
-      );
-      htmlParts.push("RefreshRuntime.injectIntoGlobalHook(window)");
-      htmlParts.push("window.$RefreshReg$ = () => {}");
-      htmlParts.push("window.$RefreshSig$ = () => (type) => type");
-      htmlParts.push("window.__vite_plugin_react_preamble_installed__ = true");
-      htmlParts.push("</script>");
-    }
+    // Note: we deliberately avoid injecting HMR/dev runtime scripts via
+    // http://localhost. If developers want HMR, they can open the GUI in a
+    // browser or run the extension in a dev setup that copies the built
+    // assets into the extension gui/ folder.
 
     htmlParts.push(
       '<script type="module" nonce="' +

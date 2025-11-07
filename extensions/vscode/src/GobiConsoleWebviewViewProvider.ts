@@ -1,6 +1,8 @@
 import { LLMInteractionItem } from "@gourmanddev/core";
 import { EXTENSION_NAME } from "@gourmanddev/core/control-plane/env";
 import { LLMLogger } from "@gourmanddev/core/llm/logger";
+import * as fs from "fs";
+import * as path from "path";
 import * as vscode from "vscode";
 
 import { getExtensionUri, getNonce } from "./util/vscode";
@@ -155,23 +157,19 @@ export class GobiConsoleWebviewViewProvider
     let scriptUri: string;
     let styleMainUri: string;
 
-    const inDevelopmentMode =
-      context?.extensionMode === vscode.ExtensionMode.Development;
-    if (!inDevelopmentMode) {
-      scriptUri = panel.webview
-        .asWebviewUri(
-          vscode.Uri.joinPath(extensionUri, "gui/assets/indexConsole.js"),
-        )
-        .toString();
-      styleMainUri = panel.webview
-        .asWebviewUri(
-          vscode.Uri.joinPath(extensionUri, "gui/assets/indexConsole.css"),
-        )
-        .toString();
-    } else {
-      scriptUri = "http://localhost:5173/src/console.tsx";
-      styleMainUri = "http://localhost:5173/src/indexConsole.css";
-    }
+    // Always use the built/bundled assets from the installed extension. Do
+    // not reference a dev server — the webview should have zero external
+    // network calls and should load everything from local extension files.
+    scriptUri = panel.webview
+      .asWebviewUri(
+        vscode.Uri.joinPath(extensionUri, "gui/assets/indexConsole.js"),
+      )
+      .toString();
+    styleMainUri = panel.webview
+      .asWebviewUri(
+        vscode.Uri.joinPath(extensionUri, "gui/assets/indexConsole.css"),
+      )
+      .toString();
 
     panel.webview.options = {
       enableScripts: true,
@@ -190,30 +188,65 @@ export class GobiConsoleWebviewViewProvider
 
     const nonce = getNonce();
 
+    // Inline CSS from the extension's bundled assets (preferred). If that
+    // isn't available (for some developer setups), try a couple of likely
+    // fallback paths in the workspace. If none are found, fall back to
+    // linking the asWebviewUri (still local to the installed extension).
+    let inlineCss: string | undefined = undefined;
+    try {
+      const extensionUri = getExtensionUri();
+      const candidates = [
+        path.join(extensionUri.fsPath, "gui", "assets", "indexConsole.css"),
+        // possible relative paths when running from source tree
+        path.join(
+          extensionUri.fsPath,
+          "..",
+          "..",
+          "gui",
+          "dist",
+          "assets",
+          "indexConsole.css",
+        ),
+        path.join(
+          extensionUri.fsPath,
+          "..",
+          "..",
+          "..",
+          "gui",
+          "dist",
+          "assets",
+          "indexConsole.css",
+        ),
+      ];
+      for (const p of candidates) {
+        if (fs.existsSync(p)) {
+          inlineCss = fs.readFileSync(p, "utf8");
+          break;
+        }
+      }
+    } catch (e) {
+      console.warn("Failed to read console CSS for inlining", e);
+      inlineCss = undefined;
+    }
+
+    const cssBlock = inlineCss
+      ? `<style nonce="${nonce}">${inlineCss.replace(/url\(\s*(["']?)\//g, `url($1${panel.webview.asWebviewUri(vscode.Uri.joinPath(getExtensionUri(), "gui")).toString()}/`)}</style>`
+      : `<link href="${panel.webview.asWebviewUri(vscode.Uri.joinPath(getExtensionUri(), "gui", "assets", "indexConsole.css")).toString()}" rel="stylesheet">`;
+
     return `<!DOCTYPE html>
     <html lang="en">
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <script>const vscode = acquireVsCodeApi();</script>
-        <link href="${styleMainUri}" rel="stylesheet">
+        ${cssBlock}
 
         <title>Gobi</title>
       </head>
       <body>
         <div id="root"></div>
 
-        ${
-          inDevelopmentMode
-            ? `<script type="module">
-          import RefreshRuntime from "http://localhost:5173/@react-refresh"
-          RefreshRuntime.injectIntoGlobalHook(window)
-          window.$RefreshReg$ = () => {}
-          window.$RefreshSig$ = () => (type) => type
-          window.__vite_plugin_react_preamble_installed__ = true
-          </script>`
-            : ""
-        }
+        ${""}
         <script type="module" nonce="${nonce}" src="${scriptUri}"></script>
       </body>
     </html>`;
