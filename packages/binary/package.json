@@ -67,6 +67,7 @@
     "@lancedb/vectordb-linux-arm64-gnu": "^0.21.2",
     "@lancedb/vectordb-linux-x64-gnu": "^0.21.2",
     "@lancedb/vectordb-win32-arm64-msvc": "^0.18.1",
-    "@lancedb/vectordb-win32-x64-msvc": "^0.21.2"
+    "@lancedb/vectordb-win32-x64-msvc": "^0.21.2",
+    "@vscode/windows-ca-certs": "^1.0.0"
   }
 }
