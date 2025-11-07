@@ -10,15 +10,15 @@ const gradient = keyframes`
 `;
 
 export const GradientBorder = styled.div<{
-  $borderRadius?: string;
-  $borderColor?: string;
+  borderRadius?: string;
+  borderColor?: string;
   loading: 0 | 1;
 }>`
-  border-radius: ${(props) => props.$borderRadius || "0"};
+  border-radius: ${(props) => props.borderRadius || "0"};
   padding: 1px;
   background: ${(props) =>
-    props.$borderColor
-      ? props.$borderColor
+    props.borderColor
+      ? props.borderColor
       : `repeating-linear-gradient(
       101.79deg,
       #1BBE84 0%,

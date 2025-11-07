@@ -8,8 +8,7 @@ vi.mock("uuid", () => ({
   v4: vi.fn(() => "test-uuid"),
 }));
 
-// Mock the actual package path so vitest/jest resolves the module correctly
-vi.mock("@gourmanddev/core/util/ideUtils", () => ({
+vi.mock("core/util/ideUtils", () => ({
   resolveRelativePathInDir: vi.fn(),
 }));
 

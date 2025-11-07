@@ -1,11 +1,11 @@
+import { NodeViewProps } from "@tiptap/react";
 import { ContextItemWithId } from "@gourmanddev/core";
 import { ctxItemToRifWithContents } from "@gourmanddev/core/commands/util";
 import { dedent, getMarkdownLanguageTagForFile } from "@gourmanddev/core/util";
-import { NodeViewProps } from "@tiptap/react";
 import { useContext, useMemo } from "react";
+import { vscBadgeBackground } from "../../../../index";
 import { IdeMessengerContext } from "../../../../../context/IdeMessenger";
 import FileIcon from "../../../../FileIcon";
-import { vscBadgeBackground } from "../../../../index";
 import StyledMarkdownPreview from "../../../../StyledMarkdownPreview";
 import { ExpandableToolbarPreview } from "../../components/ExpandableToolbarPreview";
 import { NodeViewWrapper } from "../../components/NodeViewWrapper";

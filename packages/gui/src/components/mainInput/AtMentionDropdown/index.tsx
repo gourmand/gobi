@@ -1,3 +1,4 @@
+import type { RangeInFile } from "@gourmanddev/core";
 import {
   ArrowRightIcon,
   AtSymbolIcon,
@@ -5,10 +6,8 @@ import {
   PlusIcon,
 } from "@heroicons/react/24/outline";
 import type { Editor } from "@tiptap/react";
-import type { RangeInFile } from "@gourmanddev/core";
 import {
   forwardRef,
-  useCallback,
   useContext,
   useEffect,
   useImperativeHandle,
@@ -17,14 +16,6 @@ import {
 } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
-import {
-  defaultBorderRadius,
-  lightGray,
-  vscForeground,
-  vscListActiveBackground,
-  vscListActiveForeground,
-  vscQuickInputBackground,
-} from "../../index";
 import { IdeMessengerContext } from "../../../context/IdeMessenger";
 import { useAppSelector } from "../../../redux/hooks";
 import { setDialogMessage, setShowDialog } from "../../../redux/slices/uiSlice";
@@ -33,6 +24,14 @@ import FileIcon from "../../FileIcon";
 import SafeImg from "../../SafeImg";
 import AddDocsDialog from "../../dialogs/AddDocsDialog";
 import HeaderButtonWithToolTip from "../../gui/HeaderButtonWithToolTip";
+import {
+  defaultBorderRadius,
+  lightGray,
+  vscForeground,
+  vscListActiveBackground,
+  vscListActiveForeground,
+  vscQuickInputBackground,
+} from "../../index";
 import { Button } from "../../ui";
 import { NAMED_ICONS } from "../icons";
 import type { ComboBoxItem, ComboBoxItemType } from "../types";
@@ -384,12 +383,6 @@ const AtMentionDropdown = forwardRef((props: AtMentionDropdownProps, ref) => {
   const totalItems = allItems.length;
 
   const itemRefs = useRef<Array<HTMLButtonElement | null>>([]);
-  const setItemRef = useCallback(
-    (index: number, element: HTMLButtonElement | null) => {
-      itemRefs.current[index] = element;
-    },
-    [],
-  );
 
   const upHandler = () => {
     setSelectedIndex((prevIndex) => {
@@ -544,7 +537,9 @@ const AtMentionDropdown = forwardRef((props: AtMentionDropdownProps, ref) => {
               return (
                 <ItemDiv
                   as="button"
-                  ref={(el) => setItemRef(index, el)}
+                  ref={(el) => {
+                    itemRefs.current[index] = el;
+                  }}
                   className={`item cursor-pointer ${isSelected ? "is-selected" : ""}`}
                   key={index}
                   onClick={(e) => {

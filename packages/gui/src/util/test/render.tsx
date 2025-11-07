@@ -21,21 +21,11 @@ type ExtendedRenderOptions = Omit<RenderOptions, "queries"> & {
 };
 
 function setupMocks() {
-  // Provide a constructible ResizeObserver mock (some components call `new ResizeObserver(...)`)
-  class MockResizeObserver {
-    cb: ResizeObserverCallback | null = null;
-    constructor(cb?: ResizeObserverCallback) {
-      this.cb = cb ?? null;
-    }
-    observe = vi.fn();
-    unobserve = vi.fn();
-    disconnect = vi.fn();
-  }
-
-  // Assign to global so code using `new ResizeObserver(...)` works in tests
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore - test shim
-  (global as any).ResizeObserver = MockResizeObserver;
+  global.ResizeObserver = vi.fn().mockImplementation(() => ({
+    observe: vi.fn(),
+    unobserve: vi.fn(),
+    disconnect: vi.fn(),
+  }));
 }
 
 export async function renderWithProviders(
@@ -75,14 +65,6 @@ export async function renderWithProviders(
   let rendered: RenderResult;
   await act(async () => {
     rendered = render(ui, { wrapper: Wrapper, ...renderOptions });
-  });
-
-  // Flush pending effects and microtasks to reduce "not wrapped in act(...)" warnings
-  // Tests can still opt to await specific updates where needed, but this helps
-  // reduce common noisy warnings caused by microtask scheduling during mount.
-  // Small timeout ensures queued macrotasks are processed as well.
-  await act(async () => {
-    await new Promise((resolve) => setTimeout(resolve, 0));
   });
 
   // Return an object with the store and all of RTL's query functions

@@ -1,9 +1,9 @@
-import { ChatMessage } from "@gourmanddev/core";
 import { act } from "@testing-library/react";
-import { updateConfig } from "../../../redux/slices/configSlice";
+import { ChatMessage } from "@gourmanddev/core";
 import { renderWithProviders } from "../../../util/test/render";
 import { sendInputWithMockedResponse } from "../../../util/test/utils";
 import { Chat } from "../Chat";
+import { updateConfig } from "../../../redux/slices/configSlice";
 
 describe("Parallel Tool Calls - Streaming", () => {
   test("should handle streaming deltas for multiple tool calls", async () => {
@@ -130,5 +130,5 @@ describe("Parallel Tool Calls - Streaming", () => {
     );
     expect(toolCallIds).toContain("tool-call-1");
     expect(toolCallIds).toContain("tool-call-2");
-  }, 15_000);
+  });
 });

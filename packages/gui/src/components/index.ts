@@ -138,14 +138,14 @@ export const Input = styled.input`
 `;
 
 export const HeaderButton = styled.button<{
-  $inverted: boolean | undefined;
-  $backgroundColor?: string;
-  $hoverBackgroundColor?: string;
+  inverted: boolean | undefined;
+  backgroundColor?: string;
+  hoverBackgroundColor?: string;
 }>`
-  background-color: ${({ $inverted, $backgroundColor }) => {
-    return $backgroundColor ?? ($inverted ? vscForeground : "transparent");
+  background-color: ${({ inverted, backgroundColor }) => {
+    return backgroundColor ?? (inverted ? vscForeground : "transparent");
   }};
-  color: ${({ $inverted }) => ($inverted ? vscBackground : vscForeground)};
+  color: ${({ inverted }) => (inverted ? vscBackground : vscForeground)};
 
   border: none;
   border-radius: ${defaultBorderRadius};
@@ -157,9 +157,9 @@ export const HeaderButton = styled.button<{
   }
 
   &:hover {
-    background-color: ${({ $inverted, $hoverBackgroundColor }) =>
-      typeof $inverted === "undefined" || $inverted
-        ? ($hoverBackgroundColor ?? vscInputBackground)
+    background-color: ${({ inverted, hoverBackgroundColor }) =>
+      typeof inverted === "undefined" || inverted
+        ? (hoverBackgroundColor ?? vscInputBackground)
         : "transparent"};
   }
 

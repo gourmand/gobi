@@ -1,10 +1,10 @@
+import { isOnPremSession } from "@gourmanddev/core/control-plane/AuthTypes";
 import {
   ArrowPathIcon,
   ArrowRightStartOnRectangleIcon,
   Cog6ToothIcon,
   PlusIcon,
 } from "@heroicons/react/24/outline";
-import { isOnPremSession } from "@gourmanddev/core/control-plane/AuthTypes";
 import { useContext, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/Auth";
@@ -15,7 +15,7 @@ import {
   setSelectedProfile,
 } from "../../redux/slices/profilesSlice";
 import { getMetaKeyLabel, isMetaEquivalentKeyPressed } from "../../util";
-import { cn } from "../../util/cn";
+import { gi } from "../../util/gi";
 import { CONFIG_ROUTES } from "../../util/navigation";
 import {
   Button,
@@ -241,7 +241,7 @@ export function AssistantAndOrgListbox({
                 >
                   <div className="flex w-full items-center">
                     <ArrowPathIcon
-                      className={cn(
+                      className={gi(
                         "mr-2 ml-1.5 h-3.5 w-3.5 flex-shrink-0",
                         configLoading && "animate-spin-slow",
                       )}

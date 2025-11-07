@@ -34,59 +34,55 @@ const NORMAL_RULE: RuleWithSource = {
   rule: "Always apply rule",
 };
 
-// Mock using the full package path so vitest resolves the mocked module correctly
-vi.mock(
-  "@gourmanddev/core/llm/rules/getSystemMessageWithRules",
-  async (importOriginal) => {
-    const original = (await importOriginal()) as any;
-    return {
-      ...original,
-      getSystemMessageWithRules: ({
-        baseSystemMessage,
-        availableRules,
-        userMessage,
-        contextItems,
-        rulePolicies,
-      }: {
-        baseSystemMessage: string;
-        availableRules: RuleWithSource[];
-        userMessage?: UserChatMessage | ToolResultChatMessage;
-        contextItems: ContextItemWithId[];
-        rulePolicies?: Record<string, any>;
-      }) => {
-        // Filter rules based on our mock logic
-        const appliedRules = availableRules.filter((rule) => {
-          if (rule.rule === LAST_MESSAGE_RULE.rule) {
-            if (userMessage) {
-              return renderChatMessage(userMessage).includes(
-                LAST_MESSAGE_RULE.description!,
-              );
-            } else {
-              return false;
-            }
-          }
-          if (rule.rule === CONTEXT_RULE.rule) {
-            return contextItems.some((item) =>
-              item.content.includes(CONTEXT_RULE.description!),
+vi.mock("core/llm/rules/getSystemMessageWithRules", async (importOriginal) => {
+  const original = (await importOriginal()) as any;
+  return {
+    ...original,
+    getSystemMessageWithRules: ({
+      baseSystemMessage,
+      availableRules,
+      userMessage,
+      contextItems,
+      rulePolicies,
+    }: {
+      baseSystemMessage: string;
+      availableRules: RuleWithSource[];
+      userMessage?: UserChatMessage | ToolResultChatMessage;
+      contextItems: ContextItemWithId[];
+      rulePolicies?: Record<string, any>;
+    }) => {
+      // Filter rules based on our mock logic
+      const appliedRules = availableRules.filter((rule) => {
+        if (rule.rule === LAST_MESSAGE_RULE.rule) {
+          if (userMessage) {
+            return renderChatMessage(userMessage).includes(
+              LAST_MESSAGE_RULE.description!,
             );
-          }
-          return true;
-        });
-
-        // Build the system message with applied rules
-        let systemMessage = baseSystemMessage || "";
-        if (appliedRules.length > 0) {
-          systemMessage += "\n\nRules to follow:\n";
-          for (const rule of appliedRules) {
-            systemMessage += `- ${rule.rule}\n`;
+          } else {
+            return false;
           }
         }
+        if (rule.rule === CONTEXT_RULE.rule) {
+          return contextItems.some((item) =>
+            item.content.includes(CONTEXT_RULE.description!),
+          );
+        }
+        return true;
+      });
 
-        return { systemMessage, appliedRules };
-      },
-    };
-  },
-);
+      // Build the system message with applied rules
+      let systemMessage = baseSystemMessage || "";
+      if (appliedRules.length > 0) {
+        systemMessage += "\n\nRules to follow:\n";
+        for (const rule of appliedRules) {
+          systemMessage += `- ${rule.rule}\n`;
+        }
+      }
+
+      return { systemMessage, appliedRules };
+    },
+  };
+});
 
 describe("constructMessages", () => {
   // Setup mock data

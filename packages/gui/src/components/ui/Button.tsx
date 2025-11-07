@@ -1,5 +1,5 @@
 import * as React from "react";
-import { cn } from "../../util/cn";
+import { gi } from "../../util/gi";
 
 type ButtonVariant = "ghost" | "primary" | "secondary" | "outline" | "icon";
 type ButtonSize = "sm" | "lg";
@@ -37,7 +37,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     return (
       <button
         ref={ref}
-        className={cn(
+        className={gi(
           "cursor-pointer transition-all duration-200",
           "hover:enabled:cursor-pointer",
           "disabled:cursor-not-allowed disabled:opacity-50",

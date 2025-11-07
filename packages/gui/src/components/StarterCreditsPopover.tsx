@@ -1,15 +1,15 @@
+import { CreditStatus } from "@gourmanddev/core/control-plane/client";
 import {
   ArrowPathIcon,
   GiftIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { CreditStatus } from "@gourmanddev/core/control-plane/client";
 import { useContext, useState } from "react";
-import { Button, SecondaryButton, vscButtonBackground } from "./index";
 import { useAuth } from "../context/Auth";
 import { IdeMessengerContext } from "../context/IdeMessenger";
-import { cn } from "../util/cn";
+import { gi } from "../util/gi";
 import { setLocalStorage } from "../util/localStorage";
+import { Button, SecondaryButton, vscButtonBackground } from "./index";
 import { ToolbarButtonWithTooltip } from "./StyledMarkdownPreview/StepContainerPreToolbar/ToolbarButtonWithTooltip";
 import { Listbox, ListboxButton, ListboxOptions, Transition } from "./ui";
 
@@ -138,7 +138,7 @@ export default function StarterCreditsPopover({
                 tooltipContent="Refresh credit usage"
               >
                 <ArrowPathIcon
-                  className={cn("h-3 w-3", isRefreshing && "animate-spin-slow")}
+                  className={gi("h-3 w-3", isRefreshing && "animate-spin-slow")}
                 />
               </ToolbarButtonWithTooltip>
               <ToolbarButtonWithTooltip

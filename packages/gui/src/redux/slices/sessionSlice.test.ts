@@ -7,8 +7,7 @@ import { ChatHistoryItemWithMessageId, sessionSlice } from "./sessionSlice";
 
 // Mock dependencies
 vi.mock("uuid");
-// Use full package name so vitest resolves the mocked module correctly
-vi.mock("@gourmanddev/core/util/messageContent");
+vi.mock("core/util/messageContent");
 vi.mock("../../util/toolCallState");
 
 const mockUuidv4 = vi.mocked(uuidv4);

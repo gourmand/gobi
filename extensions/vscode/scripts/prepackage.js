@@ -80,9 +80,31 @@ void (async () => {
   console.log(`packages root: ${packagesRoot}`);
 
   process.chdir(path.join(packagesRoot, "gui"));
+  // Ensure the GUI dist exists. If tailwind/Vite build wasn't run, run a build
+  // so CSS assets are produced into dist/assets. This avoids packaging a stale
+  // extension/gui directory that lacks the compiled CSS after Tailwind changes.
+  try {
+    const distAssetsIndex = path.join(
+      process.cwd(),
+      "dist",
+      "assets",
+      "index.css",
+    );
+    if (!fs.existsSync(distAssetsIndex)) {
+      console.log(
+        "[info] GUI dist appears incomplete (missing index.css). Running 'pnpm build' in packages/gui...",
+      );
+      // Run the gui build in this packages/gui working directory
+      const { execSync } = require("child_process");
+      execSync("pnpm build", { stdio: "inherit" });
+    }
+  } catch (e) {
+    console.warn("[warn] Failed to auto-build GUI dist:", e);
+  }
 
   // Then copy over the dist folder to the VSCode extension //
   const vscodeGuiPath = path.join(extensionRoot, "gui");
+  const guiAssetsPath = path.join(vscodeGuiPath, "assets");
   // Only copy GUI build output if destination is missing or empty. This avoids copying
   // the GUI on repeated runs when `pnpm -r build` already produced the files.
   const shouldCopyGui = (() => {
@@ -124,7 +146,6 @@ void (async () => {
     // may emit hashed CSS filenames. If that happened, copy the emitted CSS to the
     // expected filenames so the extension can reference them deterministically.
     try {
-      const guiAssetsPath = path.join(vscodeGuiPath, "assets");
       const assetFiles = fs.existsSync(guiAssetsPath)
         ? fs.readdirSync(guiAssetsPath)
         : [];
@@ -155,6 +176,8 @@ void (async () => {
       ensureCss("index.css", "^index(\\..*)?\\.css$");
       // Ensure console CSS (some builds emit indexConsole.*.css)
       ensureCss("indexConsole.css", "^indexConsole(\\..*)?\\.css$");
+      // (override applied after the copy block below so it's executed even when
+      // we skip copying because extension/gui already exists)
     } catch (e) {
       console.warn("[warn] Error while normalizing GUI CSS filenames:", e);
     }
@@ -162,6 +185,31 @@ void (async () => {
     console.log(
       "Skipping GUI copy: extension/gui already exists and is non-empty",
     );
+  }
+
+  // Packaging-time CSS override: ensure canonical CSS is present in the
+  // extension/gui assets regardless of whether we copied the GUI in this run.
+  try {
+    const repoRootIndexCss = path.join(
+      __dirname,
+      "..",
+      "..",
+      "..",
+      "index.old.css",
+    );
+    const targetCss = path.join(guiAssetsPath, "index.css");
+    if (fs.existsSync(repoRootIndexCss) && fs.existsSync(guiAssetsPath)) {
+      fs.copyFileSync(repoRootIndexCss, targetCss);
+      console.log(
+        "[info] Overwrote gui assets index.css with canonical index.old.css from repo root",
+      );
+    } else if (!fs.existsSync(repoRootIndexCss)) {
+      console.log(
+        "[info] No canonical index.old.css found at repo root; leaving generated CSS in place",
+      );
+    }
+  } catch (e) {
+    console.warn("[warn] Failed to apply packaging-time CSS override:", e);
   }
 
   if (!fs.existsSync(path.join("dist", "assets", "index.js"))) {
@@ -402,6 +450,24 @@ void (async () => {
     "node_modules/jsdom/lib/jsdom/living/xhr/xhr-sync-worker.js",
     "out/xhr-sync-worker.js",
   );
+
+  // Copy jsdom's default stylesheet (required by jsdom@27+)
+  const jsdomStylesheetSrc = path.join(
+    extensionRoot,
+    "node_modules/jsdom/lib/jsdom/browser/default-stylesheet.css",
+  );
+  const jsdomStylesheetDest = path.join(
+    extensionRoot,
+    "out/default-stylesheet.css",
+  );
+  if (fs.existsSync(jsdomStylesheetSrc)) {
+    fs.cpSync(jsdomStylesheetSrc, jsdomStylesheetDest);
+    console.log("[info] Copied jsdom default-stylesheet.css");
+  } else {
+    console.warn(
+      "[warn] jsdom default-stylesheet.css not found at expected location",
+    );
+  }
 
   // Validate the all of the necessary files are present
   validateFilesPresent([

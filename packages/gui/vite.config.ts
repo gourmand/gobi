@@ -8,7 +8,7 @@ export default defineConfig({
   plugins: [
     react(),
     sentryVitePlugin({
-      org: "gobi-xd",
+      org: "gobi",
       project: "gobi",
     }),
   ],
@@ -55,6 +55,16 @@ export default defineConfig({
         ) {
           return false;
         }
+      }
+      return true;
+    },
+    onUnhandledRejection(err) {
+      // Suppress ProseMirror DOM errors in test environment
+      if (
+        err.message?.includes("getClientRects") ||
+        err.message?.includes("prosemirror")
+      ) {
+        return false;
       }
       return true;
     },

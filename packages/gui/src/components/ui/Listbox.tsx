@@ -5,8 +5,8 @@ import {
   Listbox,
 } from "@headlessui/react";
 import * as React from "react";
-import { defaultBorderRadius, vscCommandCenterInactiveBorder } from "../index";
-import { cn } from "../../util/cn";
+import { defaultBorderRadius, vscCommandCenterInactiveBorder } from "..";
+import { gi } from "../../util/gi";
 import { FontSizeModifier, useFontSize } from "./font";
 
 type ListboxButtonProps = React.ComponentProps<typeof HLButton> & {
@@ -20,7 +20,7 @@ const ListboxButton = React.forwardRef<HTMLButtonElement, ListboxButtonProps>(
       <HLButton
         ref={ref}
         {...props}
-        className={cn(
+        className={gi(
           "bg-vsc-input-background text-vsc-foreground border-border m-0 flex flex-1 cursor-pointer flex-row items-center gap-1 border border-solid px-1 py-0.5 text-left transition-colors duration-200",
           props.className,
         )}
@@ -45,7 +45,7 @@ const ListboxOptions = React.forwardRef<HTMLUListElement, ListboxOptionsProps>(
         ref={ref}
         anchor={"bottom start"}
         {...props}
-        className={cn(
+        className={gi(
           "bg-vsc-input-background flex w-max max-w-[400px] min-w-[160px] flex-col overflow-auto px-0 shadow-md",
           props.className,
         )}
@@ -71,7 +71,7 @@ const ListboxOption = React.forwardRef<HTMLLIElement, ListboxOptionProps>(
       <HLOption
         ref={ref}
         {...props}
-        className={cn(
+        className={gi(
           "text-foreground flex flex-row items-center justify-between px-2 py-1 select-none",
           props.disabled
             ? "opacity-50"

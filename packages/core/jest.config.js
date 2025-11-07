@@ -27,6 +27,9 @@ export default {
   preset: "ts-jest/presets/default-esm",
   testTimeout: 10000,
   testEnvironment: "node",
+  // Reduce noisy console output and avoid "Cannot log after tests are done"
+  // errors from asynchronous logging in background utilities.
+  silent: true,
   globals: {
     __dirname: path.dirname(fileURLToPath(import.meta.url)),
     __filename: path.resolve(fileURLToPath(import.meta.url)),

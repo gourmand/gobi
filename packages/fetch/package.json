@@ -24,7 +24,7 @@
   "devDependencies": {
     "@types/follow-redirects": "^1.14.4"
   },
-  "engine": {
+  "engines": {
     "node": ">=24.11.0"
   }
 }

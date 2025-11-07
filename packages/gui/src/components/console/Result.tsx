@@ -25,7 +25,7 @@ const Result = memo(function Result({ result, prevResult }: ResultProps) {
           // We don't expect anything but AssistantChatMessages and ThinkingChatMessages in the reply
           // from the LLM output, but log them if they do occur.
           return (
-            <div className="border-[color:var(--vscode-panel-border) border-2 border-solid p-1">
+            <div className="border-2 border-solid border-[color:var(--vscode-panel-border)] p-1">
               {renderMessage(result.message, true)}
             </div>
           );

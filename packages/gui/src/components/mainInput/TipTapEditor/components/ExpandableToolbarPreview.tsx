@@ -6,9 +6,6 @@ import {
 import { EyeIcon } from "@heroicons/react/24/solid";
 import { useEffect, useMemo, useState } from "react";
 import styled from "styled-components";
-import { useAppSelector } from "../../../../redux/hooks";
-import { getFontSize } from "../../../../util";
-import HeaderButtonWithToolTip from "../../../gui/HeaderButtonWithToolTip";
 import {
   defaultBorderRadius,
   lightGray,
@@ -16,16 +13,19 @@ import {
   vscCommandCenterInactiveBorder,
   vscEditorBackground,
 } from "../../../index";
+import { useAppSelector } from "../../../../redux/hooks";
+import { getFontSize } from "../../../../util";
+import HeaderButtonWithToolTip from "../../../gui/HeaderButtonWithToolTip";
 
 const MAX_PREVIEW_HEIGHT = 100;
 const MAX_EXPANED_PREVIEW_HEIGHT = MAX_PREVIEW_HEIGHT * 3;
 
 const PreviewDiv = styled.div<{
-  $borderColor?: string;
+  borderColor?: string;
 }>`
   background-color: ${vscEditorBackground};
   border-radius: ${defaultBorderRadius};
-  border: 0.5px solid ${(props) => props.$borderColor || lightGray};
+  border: 0.5px solid ${(props) => props.borderColor || lightGray};
   margin-top: 4px;
   margin-bottom: 4px;
   overflow: hidden;
@@ -36,10 +36,10 @@ const PreviewDiv = styled.div<{
   }
 `;
 
-const ContentContainer = styled.div<{ $expanded: boolean }>`
+const ContentContainer = styled.div<{ expanded: boolean }>`
   position: relative;
   max-height: ${(props) =>
-    props.$expanded
+    props.expanded
       ? `${MAX_EXPANED_PREVIEW_HEIGHT}px`
       : `${MAX_PREVIEW_HEIGHT}px`};
   overflow: hidden;
@@ -47,9 +47,9 @@ const ContentContainer = styled.div<{ $expanded: boolean }>`
   flex-direction: column;
 `;
 
-const ScrollableContent = styled.div<{ $shouldShowChevron: boolean }>`
+const ScrollableContent = styled.div<{ shouldShowChevron: boolean }>`
   overflow-y: auto;
-  padding-bottom: ${(props) => (props.$shouldShowChevron ? "24px" : "0px")};
+  padding-bottom: ${(props) => (props.shouldShowChevron ? "24px" : "0px")};
 `;
 
 const ChevronContainer = styled.div`
@@ -154,9 +154,8 @@ export function ExpandableToolbarPreview(props: ExpandableToolbarPreviewProps) {
   return (
     <PreviewDiv
       spellCheck={false}
-      $borderColor={
-        props.borderColor ??
-        (props.isSelected ? vscBadgeBackground : vscCommandCenterInactiveBorder)
+      borderColor={
+        props.isSelected ? vscBadgeBackground : vscCommandCenterInactiveBorder
       }
       className="find-widget-skip !my-0"
       contentEditable={false}
@@ -206,10 +205,10 @@ export function ExpandableToolbarPreview(props: ExpandableToolbarPreviewProps) {
       </div>
 
       {!hidden && !!props.children && (
-        <ContentContainer $expanded={isExpanded}>
+        <ContentContainer expanded={isExpanded}>
           <ScrollableContent
             ref={setContentElement}
-            $shouldShowChevron={contentDims.height > MAX_PREVIEW_HEIGHT}
+            shouldShowChevron={contentDims.height > MAX_PREVIEW_HEIGHT}
           >
             {props.children}
           </ScrollableContent>

@@ -30,10 +30,10 @@ const HeaderButtonWithToolTip = React.forwardRef<
       content={<span className="text-xs">{props.text}</span>}
     >
       <HeaderButton
-        $hoverBackgroundColor={props.hoverBackgroundColor}
-        $backgroundColor={props.backgroundColor}
+        hoverBackgroundColor={props.hoverBackgroundColor}
+        backgroundColor={props.backgroundColor}
         data-testid={props.testId}
-        $inverted={props.inverted}
+        inverted={props.inverted}
         disabled={props.disabled}
         onClick={props.onClick}
         onKeyDown={props.onKeyDown}

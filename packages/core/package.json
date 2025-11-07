@@ -127,7 +127,7 @@
     "zod": "^4.1.12"
   },
   "engine-strict": true,
-  "engine": {
+  "engines": {
     "node": ">=24.11.0"
   }
 }

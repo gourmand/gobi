@@ -15,6 +15,6 @@ import { twMerge } from "tailwind-merge";
  * cn('px-2 py-1', 'px-4') // Returns 'py-1 px-4' (px-2 is overridden by px-4)
  * cn('text-red-500', { 'text-blue-500': isActive }) // Conditionally applies classes
  */
-export function cn(...inputs: ClassValue[]) {
+export function gi(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
