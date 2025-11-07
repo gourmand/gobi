@@ -1,6 +1,6 @@
 import { ctxItemToRifWithContents } from "@gourmanddev/core/commands/util";
-import { memo, useEffect, useMemo, useRef } from "react";
-import { useRemark } from "react-remark";
+import { memo, useMemo, useRef } from "react";
+import ReactMarkdown from "react-markdown";
 import rehypeKatex from "rehype-katex";
 import remarkMath from "remark-math";
 import styled from "styled-components";
@@ -224,8 +224,8 @@ const StyledMarkdownPreview = memo(function StyledMarkdownPreview(
 
   const codeblockStreamIds = useRef<string[]>([]);
 
-  const [reactContent, setMarkdownSource] = useRemark({
-    remarkPlugins: [
+  const remarkPlugins = useMemo(
+    () => [
       remarkTables,
       [
         remarkMath,
@@ -258,7 +258,11 @@ const StyledMarkdownPreview = memo(function StyledMarkdownPreview(
         });
       },
     ],
-    rehypePlugins: [
+    [],
+  );
+
+  const rehypePlugins = useMemo(
+    () => [
       rehypeKatex as any,
       {},
       rehypeHighlightPlugin(),
@@ -268,7 +272,7 @@ const StyledMarkdownPreview = memo(function StyledMarkdownPreview(
       // https://github.com/highlightjs/highlight.js/blob/main/SUPPORTED_LANGUAGES.md
       () => {
         let codeBlockIndex = 0;
-        return (tree) => {
+        return (tree: any) => {
           visit(tree, { tagName: "pre" }, (node: any) => {
             // Add an index (0, 1, 2, etc...) to each code block.
             node.properties = { "data-codeblockindex": codeBlockIndex };
@@ -278,105 +282,114 @@ const StyledMarkdownPreview = memo(function StyledMarkdownPreview(
       },
       {},
     ],
-    rehypeReactOptions: {
-      components: {
-        a: ({ ...aProps }) => {
-          return (
-            <ToolTip place="top" className="m-0 p-0" content={aProps.href}>
-              <a href={aProps.href} target="_blank" className="hover:underline">
-                {aProps.children}
-              </a>
-            </ToolTip>
+    [],
+  );
+
+  const components = useMemo(
+    () => ({
+      a: ({ ...aProps }) => {
+        return (
+          <ToolTip place="top" className="m-0 p-0" content={aProps.href}>
+            <a href={aProps.href} target="_blank" className="hover:underline">
+              {aProps.children}
+            </a>
+          </ToolTip>
+        );
+      },
+      pre: ({ ...preProps }) => {
+        const codeBlockIndex = preProps["data-codeblockindex"];
+
+        const preChildProps = preProps?.children?.[0]?.props ?? {};
+        const { className, range } = preChildProps;
+
+        const relativeFilePath = preChildProps["data-relativefilepath"];
+        const codeBlockContent = preChildProps["data-codeblockcontent"];
+
+        if (!props.isRenderingInStepContainer) {
+          return <SyntaxHighlightedPre {...preProps} />;
+        }
+
+        const language = getLanguageFromClassName(className);
+
+        const isLastCodeblock = preChildProps["data-islastcodeblock"];
+
+        if (codeblockStreamIds.current[codeBlockIndex] === undefined) {
+          codeblockStreamIds.current[codeBlockIndex] = uuidv4();
+        }
+
+        return (
+          <StepContainerPreToolbar
+            showToolCallStatusIcon={props.showToolCallStatusIcon}
+            codeBlockContent={codeBlockContent}
+            itemIndex={itemIndexRef.current}
+            codeBlockIndex={codeBlockIndex}
+            language={language}
+            relativeFilepath={relativeFilePath}
+            isLastCodeblock={isLastCodeblock}
+            range={range}
+            codeBlockStreamId={codeblockStreamIds.current[codeBlockIndex]} // ignored if toolCallId stream state is found
+            forceToolCallId={props.toolCallId}
+            expanded={props.expandCodeblocks}
+            disableManualApply={props.disableManualApply}
+            collapsible={props.collapsible}
+          >
+            <SyntaxHighlightedPre {...preProps} />
+          </StepContainerPreToolbar>
+        );
+      },
+      code: ({ ...codeProps }) => {
+        const content = getCodeChildrenContent(codeProps.children);
+
+        if (content) {
+          const { symbols, rifs } = pastFileInfoRef.current;
+
+          const matchedSymbolOrFile = matchCodeToSymbolOrFile(
+            content,
+            symbols,
+            rifs,
           );
-        },
-        pre: ({ ...preProps }) => {
-          const codeBlockIndex = preProps["data-codeblockindex"];
-
-          const preChildProps = preProps?.children?.[0]?.props ?? {};
-          const { className, range } = preChildProps;
-
-          const relativeFilePath = preChildProps["data-relativefilepath"];
-          const codeBlockContent = preChildProps["data-codeblockcontent"];
-
-          if (!props.isRenderingInStepContainer) {
-            return <SyntaxHighlightedPre {...preProps} />;
-          }
-
-          const language = getLanguageFromClassName(className);
-
-          const isLastCodeblock = preChildProps["data-islastcodeblock"];
-
-          if (codeblockStreamIds.current[codeBlockIndex] === undefined) {
-            codeblockStreamIds.current[codeBlockIndex] = uuidv4();
-          }
-
-          return (
-            <StepContainerPreToolbar
-              showToolCallStatusIcon={props.showToolCallStatusIcon}
-              codeBlockContent={codeBlockContent}
-              itemIndex={itemIndexRef.current}
-              codeBlockIndex={codeBlockIndex}
-              language={language}
-              relativeFilepath={relativeFilePath}
-              isLastCodeblock={isLastCodeblock}
-              range={range}
-              codeBlockStreamId={codeblockStreamIds.current[codeBlockIndex]} // ignored if toolCallId stream state is found
-              forceToolCallId={props.toolCallId}
-              expanded={props.expandCodeblocks}
-              disableManualApply={props.disableManualApply}
-              collapsible={props.collapsible}
-            >
-              <SyntaxHighlightedPre {...preProps} />
-            </StepContainerPreToolbar>
-          );
-        },
-        code: ({ ...codeProps }) => {
-          const content = getCodeChildrenContent(codeProps.children);
-
-          if (content) {
-            const { symbols, rifs } = pastFileInfoRef.current;
-
-            const matchedSymbolOrFile = matchCodeToSymbolOrFile(
-              content,
-              symbols,
-              rifs,
-            );
-            if (matchedSymbolOrFile) {
-              if (isSymbolNotRif(matchedSymbolOrFile)) {
-                return (
-                  <SymbolLink content={content} symbol={matchedSymbolOrFile} />
-                );
-              } else {
-                return <FilenameLink rif={matchedSymbolOrFile} />;
-              }
+          if (matchedSymbolOrFile) {
+            if (isSymbolNotRif(matchedSymbolOrFile)) {
+              return (
+                <SymbolLink content={content} symbol={matchedSymbolOrFile} />
+              );
+            } else {
+              return <FilenameLink rif={matchedSymbolOrFile} />;
             }
           }
-          if (codeProps.className?.includes("language-mermaid")) {
-            const codeText = String(codeProps.children || "");
-            return <MermaidBlock code={codeText} />;
-          }
-          return <code {...codeProps}>{codeProps.children}</code>;
-        },
-        img: ({ ...imgProps }) => {
-          return (
-            <SecureImageComponent
-              src={imgProps.src}
-              alt={imgProps.alt}
-              title={imgProps.title}
-              className={imgProps.className}
-            />
-          );
-        },
+        }
+        if (codeProps.className?.includes("language-mermaid")) {
+          const codeText = String(codeProps.children || "");
+          return <MermaidBlock code={codeText} />;
+        }
+        return <code {...codeProps}>{codeProps.children}</code>;
       },
-    },
-  });
+      img: ({ ...imgProps }) => {
+        return (
+          <SecureImageComponent
+            src={imgProps.src}
+            alt={imgProps.alt}
+            title={imgProps.title}
+            className={imgProps.className}
+          />
+        );
+      },
+    }),
+    [
+      props.showToolCallStatusIcon,
+      props.isRenderingInStepContainer,
+      props.toolCallId,
+      props.expandCodeblocks,
+      props.disableManualApply,
+      props.collapsible,
+      itemIndexRef,
+      pastFileInfoRef,
+    ],
+  );
 
-  useEffect(() => {
-    setMarkdownSource(
-      // some patches to source markdown are applied here:
-      fixDoubleDollarNewLineLatex(patchNestedMarkdown(props.source ?? "")),
-    );
-  }, [props.source, allSymbols]);
+  const patchedSource = useMemo(() => {
+    return fixDoubleDollarNewLineLatex(patchNestedMarkdown(props.source ?? ""));
+  }, [props.source]);
 
   const uiConfig = useAppSelector(selectUIConfig);
   const codeWrapState = uiConfig?.codeWrap ? "pre-wrap" : "pre";
@@ -386,8 +399,15 @@ const StyledMarkdownPreview = memo(function StyledMarkdownPreview(
       fontSize={getFontSize()}
       whiteSpace={codeWrapState}
       bgColor={props.useParentBackgroundColor ? "" : vscBackground}
+      className={props.className}
     >
-      {reactContent}
+      <ReactMarkdown
+        remarkPlugins={remarkPlugins as any}
+        rehypePlugins={rehypePlugins as any}
+        components={components as any}
+      >
+        {patchedSource}
+      </ReactMarkdown>
     </StyledMarkdown>
   );
 });
