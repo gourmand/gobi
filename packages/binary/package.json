@@ -10,7 +10,7 @@
   "scripts": {
     "test": "jest",
     "tsup:build": "tsup",
-    "build": "pnpm run sea:build",
+    "build": "echo 'pnpm run sea:build'",
     "sea:blob": "node --experimental-sea-config sea.config.json",
     "sea:build": "node sea-build.mjs",
     "build:darwin-x64": "TARGET=darwin-x64 node sea-build.mjs",
