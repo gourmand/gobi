@@ -459,10 +459,27 @@ void (async () => {
   );
 
   // Copy jsdom's default stylesheet (required by jsdom@27+)
-  const jsdomStylesheetSrc = path.join(
+  // Try to locate jsdom's default stylesheet. pnpm/workspace setups may hoist
+  // jsdom outside the extension folder, so prefer require.resolve to find the
+  // actual installed package, and fall back to the path under extensionRoot.
+  let jsdomStylesheetSrc = path.join(
     extensionRoot,
     "node_modules/jsdom/lib/jsdom/browser/default-stylesheet.css",
   );
+  try {
+    const resolvedJsdom = require.resolve("jsdom");
+    const resolvedDir = path.dirname(resolvedJsdom);
+    const candidate = path.join(
+      resolvedDir,
+      "browser",
+      "default-stylesheet.css",
+    );
+    if (fs.existsSync(candidate)) {
+      jsdomStylesheetSrc = candidate;
+    }
+  } catch (e) {
+    // ignore and fall back to extensionRoot path
+  }
   // Place the default stylesheet where extension.js expects it:
   // extensions/build/extension.js loads '../../browser/default-stylesheet.css'
   const jsdomStylesheetDest = path.join(

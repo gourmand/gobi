@@ -5,11 +5,14 @@
 import { setupCa } from "@gourmanddev/core/util/ca";
 import { extractMinimalStackTraceInfo } from "@gourmanddev/core/util/extractMinimalStackTraceInfo";
 import { Telemetry } from "@gourmanddev/core/util/posthog";
+import * as fs from "fs";
+import * as path from "path";
 import * as vscode from "vscode";
 import {
   disposeHttpInterceptor,
   initHttpInterceptor,
 } from "./security/interceptor";
+import { getExtensionUri } from "./util/vscode";
 
 import { SentryLogger } from "@gourmanddev/core/util/sentry/SentryLogger";
 import { getExtensionVersion } from "./util/util";
@@ -17,6 +20,35 @@ export { default as buildTimestamp } from "./.buildTimestamp";
 
 async function dynamicImportAndActivate(context: vscode.ExtensionContext) {
   await setupCa();
+
+  // Ensure jsdom's default-stylesheet.css is available at the runtime path
+  // that the bundled jsdom tries to read (it uses path.resolve(__dirname, "../../browser/default-stylesheet.css")).
+  // In some packaging/install scenarios __dirname can point outside the extension
+  // folder which causes jsdom to attempt to read /Users/.../.vscode/extensions/browser/default-stylesheet.css.
+  // Copy the stylesheet from the installed extension browser/ folder to that resolved path if needed.
+  try {
+    const extUri = getExtensionUri();
+    const src = path.join(extUri.fsPath, "browser", "default-stylesheet.css");
+    if (fs.existsSync(src)) {
+      // replicate jsdom's computed target path relative to this compiled file's __dirname
+      // (this mirrors the path used in the bundled module)
+      const target = path.resolve(
+        __dirname,
+        "../../browser/default-stylesheet.css",
+      );
+      if (!fs.existsSync(target)) {
+        fs.mkdirSync(path.dirname(target), { recursive: true });
+        fs.copyFileSync(src, target);
+      }
+    }
+  } catch (e) {
+    // best effort only — don't block activation on copy failures
+    console.warn(
+      "[warn] Could not ensure jsdom default-stylesheet location:",
+      e,
+    );
+  }
+
   const { activateExtension } = await import("./activation/activate");
   return await activateExtension(context);
 }
