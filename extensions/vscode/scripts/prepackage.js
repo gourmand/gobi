@@ -463,17 +463,27 @@ void (async () => {
     extensionRoot,
     "node_modules/jsdom/lib/jsdom/browser/default-stylesheet.css",
   );
+  // Place the default stylesheet where extension.js expects it:
+  // extensions/build/extension.js loads '../../browser/default-stylesheet.css'
   const jsdomStylesheetDest = path.join(
     extensionRoot,
-    "out/default-stylesheet.css",
+    "browser",
+    "default-stylesheet.css",
   );
-  if (fs.existsSync(jsdomStylesheetSrc)) {
-    fs.cpSync(jsdomStylesheetSrc, jsdomStylesheetDest);
-    console.log("[info] Copied jsdom default-stylesheet.css");
-  } else {
-    console.warn(
-      "[warn] jsdom default-stylesheet.css not found at expected location",
-    );
+  try {
+    if (fs.existsSync(jsdomStylesheetSrc)) {
+      fs.mkdirSync(path.dirname(jsdomStylesheetDest), { recursive: true });
+      fs.cpSync(jsdomStylesheetSrc, jsdomStylesheetDest);
+      console.log(
+        "[info] Copied jsdom default-stylesheet.css to browser/default-stylesheet.css",
+      );
+    } else {
+      console.warn(
+        "[warn] jsdom default-stylesheet.css not found at expected location",
+      );
+    }
+  } catch (e) {
+    console.warn("[warn] Failed to copy jsdom default-stylesheet.css:", e);
   }
 
   // Validate the all of the necessary files are present
