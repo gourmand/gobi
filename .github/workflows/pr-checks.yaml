@@ -15,14 +15,14 @@ jobs:
     runs-on: ubuntu-latest
     if: github.run_attempt > 1
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Track workflow rerun
         uses: ./.github/actions/track-rerun
 
   prettier-check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
@@ -36,7 +36,7 @@ jobs:
   core-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Needed for git diff to work
       - name: Setup packages
@@ -84,7 +84,7 @@ jobs:
   gui-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup packages
         uses: ./.github/actions/setup-packages
       - name: Setup core component
@@ -114,7 +114,7 @@ jobs:
   binary-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup packages
         uses: ./.github/actions/setup-packages
       - name: Setup core component
@@ -136,7 +136,7 @@ jobs:
   vscode-checks:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup packages
         uses: ./.github/actions/setup-packages
       - name: Setup core component
@@ -169,7 +169,7 @@ jobs:
     outputs:
       packages: ${{ steps.get-packages.outputs.packages }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Get package list
         id: get-packages
         run: |
@@ -184,7 +184,7 @@ jobs:
       matrix:
         package: ${{ fromJson(needs.get-packages-matrix.outputs.packages) }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0 # Needed for git diff to work
       - name: Setup packages
@@ -220,7 +220,7 @@ jobs:
     outputs:
       test_file_matrix: ${{ steps.vscode-get-test-file-matrix.outputs.test_file_matrix }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v5
@@ -259,7 +259,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Setup pnpm
@@ -297,7 +297,7 @@ jobs:
         test_file: ${{ fromJson(needs.vscode-get-test-file-matrix.outputs.test_file_matrix) }}
         command: ["e2e:ci:run", "e2e:ci:run-yaml"]
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run VS Code E2E test
         uses: ./.github/actions/run-vscode-e2e-test
         with:
@@ -311,7 +311,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Run JetBrains tests
         uses: ./.github/actions/run-jetbrains-tests
         with:
